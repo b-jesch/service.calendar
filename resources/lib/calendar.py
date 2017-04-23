@@ -9,6 +9,15 @@ from resources.lib.simplemail import SMTPMail
 
 mail = SMTPMail()
 
+# set this properly
+# if a property is empty an exception is raised
+
+mail.setproperty(host='')
+mail.setproperty(user='')
+mail.setproperty(passwd='')
+mail.setproperty(sender='')
+mail.setproperty(recipient='')
+
 # If modifying these scopes, delete your previously saved credentials
 # at ~/.credentials/service.calendar.json
 
