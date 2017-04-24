@@ -1,5 +1,5 @@
 from apiclient import discovery
-from oauth2client import client
+from oauth2client import client, clientsecrets
 from oauth2client.file import Storage
 
 import httplib2
@@ -33,6 +33,10 @@ APPLICATION_NAME = 'service.calendar'
 
 class Calendar(object):
 
+    class oAuthMissingSecretFile(Exception):
+        pass
+
+
     def __init__(self):
         credentials = self.get_credentials()
         http = credentials.authorize(httplib2.Http())
@@ -60,17 +64,21 @@ class Calendar(object):
         store = Storage(credential_path)
         credentials = store.get()
         if not credentials or credentials.invalid:
-            flow = client.flow_from_clientsecrets(credential_auth, SCOPES, redirect_uri='urn:ietf:wg:oauth:2.0:oob')
-            flow.user_agent = APPLICATION_NAME
-            auth_uri = tinyurl.create_one(flow.step1_get_authorize_url())
+            try:
+                flow = client.flow_from_clientsecrets(credential_auth, SCOPES, redirect_uri='urn:ietf:wg:oauth:2.0:oob')
+                flow.user_agent = APPLICATION_NAME
 
-            mail.sendmail('\'service.calender\' Anforderung Authentifizierungscode',
-                          'Ein Addon fordert einen Code an. Folgen Sie dem Link:\n%s' % (auth_uri))
+                auth_uri = tinyurl.create_one(flow.step1_get_authorize_url())
 
-            print(auth_uri)
-            auth_code = raw_input('Enter the authentication code: ')
-            credentials = flow.step2_exchange(auth_code)
-            store.put(credentials)
+                mail.sendmail('\'service.calender\' Anforderung Authentifizierungscode',
+                              'Ein Addon fordert einen Code an. Folgen Sie dem Link:\n%s' % (auth_uri))
+
+                print(auth_uri)
+                auth_code = raw_input('Enter the authentication code: ')
+                credentials = flow.step2_exchange(auth_code)
+                store.put(credentials)
+            except clientsecrets.InvalidClientSecretsError:
+                raise self.oAuthMissingSecretFile()
 
         return credentials
 
