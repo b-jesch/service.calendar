@@ -36,6 +36,8 @@ class Calendar(object):
     class oAuthMissingSecretFile(Exception):
         pass
 
+    class oAuthIncomplete(Exception):
+        pass
 
     def __init__(self):
         credentials = self.get_credentials()
@@ -70,6 +72,7 @@ class Calendar(object):
 
                 auth_uri = tinyurl.create_one(flow.step1_get_authorize_url())
 
+                mail.checkproperties()
                 mail.sendmail('\'service.calender\' Anforderung Authentifizierungscode',
                               'Ein Addon fordert einen Code an. Folgen Sie dem Link:\n%s' % (auth_uri))
 
@@ -78,7 +81,8 @@ class Calendar(object):
                 credentials = flow.step2_exchange(auth_code)
                 store.put(credentials)
             except clientsecrets.InvalidClientSecretsError:
-                raise self.oAuthMissingSecretFile()
+                raise self.oAuthMissingSecretFile('missing %s, contact author' % (credential_auth))
+
 
         return credentials
 

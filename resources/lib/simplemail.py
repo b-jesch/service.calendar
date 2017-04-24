@@ -16,7 +16,7 @@ class SMTPMail(object):
         pass
 
 
-    class SMPTMailInvalidOrMissingException(Exception):
+    class SMPTMailInvalidOrMissingParameterException(Exception):
         pass
 
 
@@ -37,11 +37,12 @@ class SMTPMail(object):
         if param:
             self.smtp_client.update(param)
 
-    def sendmail(self, subject, message):
+    def checkproperties(self):
         for item, ivalue in self.smtp_client.items():
             if not ivalue or ivalue == '':
-                raise self.SMPTMailInvalidOrMissingException(item)
+                raise self.SMPTMailInvalidOrMissingParameterException('%s not set' % (item))
 
+    def sendmail(self, subject, message):
         try:
             __port = {'None': 25, 'SSL/TLS': 465, 'STARTTLS': 587}
             __enctype = self.smtp_client['enc']
