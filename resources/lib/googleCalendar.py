@@ -110,7 +110,7 @@ class Calendar(object):
 
         start, sheets = calendar.monthrange(sheet_y, sheet_m)
 
-        for cid in xrange(0,36):
+        for cid in xrange(0,43):
             if cid < start or cid >= start + sheets:
 
                 # dayly sheets outside of actual month, set these to valid:0
