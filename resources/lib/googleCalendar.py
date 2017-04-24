@@ -7,6 +7,10 @@ import os
 from resources.lib import tinyurl
 from resources.lib.simplemail import SMTPMail
 
+import calendar
+import datetime
+from dateutil import parser
+
 mail = SMTPMail()
 
 # set this properly
@@ -85,3 +89,43 @@ class Calendar(object):
         :return:        dict(foreground:#RGB, background: #RGB) or fallback (white, black) 
         """
         return self.colors.get(scope, 'calendar').get(id, {u'foreground': u'#ffffff', u'background': u'#000000'})
+
+    def build_sheet(self, events, sheet_y=None, sheet_m=None):
+        """
+        Building a month calendar sheet and filling days (dom) with events 
+        :param events:      event list
+        :param sheet_y:     year of the calendar sheet
+        :param sheet_m:     month of the calender sheet
+        :return:            None
+        """
+
+        # dayly sheet
+
+        self.sheet_dom = []
+        dom = 1
+
+        # calculate current month/year if not given
+        if sheet_m is None: sheet_m = datetime.datetime.today().month
+        if sheet_y is None: sheet_y = datetime.datetime.today().year
+
+        start, sheets = calendar.monthrange(sheet_y, sheet_m)
+
+        for cid in xrange(0,36):
+            if cid < start or cid >= start + sheets:
+
+                # dayly sheets outside of actual month, set these to valid:0
+                self.sheet_dom.append({'cid': cid, 'valid': 0})
+                print sheet_dom[cid]
+                continue
+
+            event_list = []
+            for event in events:
+                _start = event['start'].get('dateTime', event['start'].get('date'))
+                dt = parser.parse(_start)
+
+                if dt.day == dom and dt.month == sheet_m and dt.year == sheet_y:
+                    event_list.append(event)
+
+            self.sheet_dom.append({'cid': cid, 'valid': 1, 'dom': dom, 'events': event_list})
+            print sheet_dom[cid]
+            dom += 1
