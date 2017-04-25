@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<window>
+    <control type="panel" id="150">
+            <description>Calendar monthly sheet</description>
+            <width>840</width>
+            <height>720</height>
+            <itemlayout width="120" height="120">
+                <control type="image">
+                    <description>Calender day sheet</description>
+                    <width>120</width>
+                    <height>120</height>
+                    <posx>0</posx>
+                    <posy>0</posy>
+                    <texture>calendar_background.png</texture>
+                    <visible>!IsEmpty(ListItem.Property(today))</visible>
+                </control>
+                <control type="image">
+                    <description>Calender day sheet today</description>
+                    <width>114</width>
+                    <height>114</height>
+                    <posx>3</posx>
+                    <posy>3</posy>
+                    <texture>calendar_background_today.png</texture>
+                    <visible>!IsEmpty(ListItem.Property(today))</visible>
+                </control>
+                <control type="label">
+                    <description>Day of month</description>
+                    <width>85</width>
+                    <height>85</height>
+                    <posx>5</posx>
+                    <posy>45</posy>
+                    <align>center</align>
+                    <aligny>center</aligny>
+                    <info>ListItem.Property(dom)</info>
+                </control>
+                <control type="group">
+                    <visible>Int.IsGreater(ListItem.Property(event_count),0)</visible>
+                    <control type="image">
+                        <description>Background of event list</description>
+                        <width>25</width>
+                        <height>25</height>
+                        <posx>90</posx>
+                        <posy>5</posy>
+                    </control>
+                    <control type="label">
+                        <description>Event count of the day</description>
+                        <width>25</width>
+                        <height>25</height>
+                        <posx>90</posx>
+                        <posy>5</posy>
+                        <align>center</align>
+                        <aligny>center</aligny>
+                        <info>ListItem.Property(event_count)</info>
+                    </control>
+                </control>
+            </itemlayout>
+            <focusedlayout width="120" height="120">
+                <control type="image">
+                    <description>Calender day sheet</description>
+                    <width>120</width>
+                    <height>120</height>
+                    <posx>0</posx>
+                    <posy>0</posy>
+                    <texture>calendar_background_select.png</texture>
+                </control>
+                <control type="label">
+                    <description>Day of month</description>
+                    <width>85</width>
+                    <height>85</height>
+                    <posx>5</posx>
+                    <posy>45</posy>
+                    <align>center</align>
+                    <aligny>center</aligny>
+                    <info>ListItem.Property(dom)</info>
+                </control>
+                <control type="group">
+                    <visible>Int.IsGreater(ListItem.Property(event_count),0)</visible>
+                    <control type="image">
+                        <description>Background of event list</description>
+                        <width>25</width>
+                        <height>25</height>
+                        <posx>90</posx>
+                        <posy>5</posy>
+                    </control>
+                    <control type="label">
+                        <description>Event count of the day</description>
+                        <width>25</width>
+                        <height>25</height>
+                        <posx>90</posx>
+                        <posy>5</posy>
+                        <align>center</align>
+                        <aligny>center</aligny>
+                        <info>ListItem.Property(event_count)</info>
+                    </control>
+                </control>
+            </focusedlayout>
+            <content>plugin://service.calendar?action=getsheet</content>
+    </control>
+</window>

@@ -127,7 +127,7 @@ class Calendar(object):
 
                 # dayly sheets outside of actual month, set these to valid:0
                 self.sheet_dom.append({'cid': cid, 'valid': 0})
-                print sheet_dom[cid]
+                print self.sheet_dom[cid]
                 continue
 
             event_list = []
@@ -139,5 +139,5 @@ class Calendar(object):
                     event_list.append(event)
 
             self.sheet_dom.append({'cid': cid, 'valid': 1, 'dom': dom, 'events': event_list})
-            print sheet_dom[cid]
+            print self.sheet_dom[cid]
             dom += 1

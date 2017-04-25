@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 from __future__ import print_function
 
 import datetime
@@ -24,12 +25,8 @@ def main():
 
     if not events:
         print('No upcoming events found.')
-    for event in events:
-        print (event)
-        _start = event['start'].get('dateTime', event['start'].get('date'))
-        # print (', '.join([parser.parse(_start).strftime('%d.%m.%Y %H:%M'), event.get('summary', ''), event.get('location', 'n.a.')]))
-
-    # print (cal.get_color('1', scope='event'))
+    else:
+        cal.build_sheet(events)
 
 if __name__ == '__main__':
     main()
