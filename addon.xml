@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="service.calendar" name="KN Calendar Reminder" version="0.0.1" provider-name="Birger Jesch">
+  <requires>
+    <import addon="xbmc.python" version="2.25.0"/>
+    <import addon="script.module.oauth2client" version="1.4.7"/>
+    <import addon="script.module.googleapi" version="1.4.2"/>
+    <import addon="script.module.httplib2" version="0.8.0"/>
+    <import addon="script.module.dateutil" version="2.5.3"/>
+  </requires>
+  <extension point="xbmc.service" library="default.py">
+    <provides>executable</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <platform>all</platform>
+    <summary lang="en_GB">View your appointments of current month from Google Calendar</summary>
+    <summary lang="de_DE">Zeigt Dir Termine des aktuellen Monats aus Deinem Google Kalender</summary>
+    <description lang="en_GB">See all appointments of the actual month in one view of a calendar sheet. Reminds you with a separate feed about the most important events.</description>
+    <description lang="de_DE">Finde alle Termine eines Monats auf einem Kalenderblatt. Lasse Dich in einem separaten Feed über die wichtigsten Ereignisse informieren.</description>
+    <disclaimer lang="en_GB">Use at your own risk. Check your origin calendar regularly.</disclaimer>
+    <disclaimer lang="de_DE">Benutzung auf eigene Gefahr. Überprüfe regelmäßig Deinen Kalender.</disclaimer>
+    <license>GNU GENERAL PUBLIC LICENSE. Version 3, June 2007</license>
+    <forum></forum>
+    <website></website>
+    <email></email>
+    <source></source>
+  </extension>
+</addon>

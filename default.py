@@ -1,10 +1,25 @@
 # -*- encoding: utf-8 -*-
 from __future__ import print_function
-
 import datetime
 
-from dateutil import parser
+import resources.lib.tools as tools
 from resources.lib.googleCalendar import Calendar
+
+import xbmc
+import xbmcaddon
+import xbmcgui
+
+__addon__ = xbmcaddon.Addon()
+__addonname__ = __addon__.getAddonInfo('id')
+__path__ = __addon__.getAddonInfo('path')
+__profiles__ = __addon__.getAddonInfo('profile')
+__version__ = __addon__.getAddonInfo('version')
+__LS__ = __addon__.getLocalizedString
+
+
+def getsettings():
+
+    tools.getAddonSetting()
 
 def main():
     """

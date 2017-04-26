@@ -1,0 +1,39 @@
+msgctxt "#30041"
+msgid "Mailserver"
+msgstr ""
+
+msgctxt "#30042"
+msgid "Username"
+msgstr ""
+
+msgctxt "#30043"
+msgid "Password"
+msgstr ""
+
+msgctxt "#30044"
+msgid "Sender"
+msgstr ""
+
+msgctxt "#30045"
+msgid "Recipient"
+msgstr ""
+
+msgctxt "#30048"
+msgid "Charset"
+msgstr ""
+
+msgctxt "#30049"
+msgid "Encryption"
+msgstr ""
+
+msgctxt "#30100"
+msgid "%s: Request for authentication"
+msgstr ""
+
+msgctxt "#30101"
+msgid "An application requests for an authentication code. Please visit the link below, confirm the request on that page and type in the received key sequence in your application.\n\nThis is the link for confirmation: %s "
+msgstr ""
+
+msgctxt "#30102"
+msgid "Enter authentication code"
+msgstr ""

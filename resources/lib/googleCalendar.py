@@ -6,30 +6,39 @@ import httplib2
 import os
 from resources.lib import tinyurl
 from resources.lib.simplemail import SMTPMail
+import resources.lib.tools as tools
 
 import calendar
 import datetime
 from dateutil import parser
+
+import xbmc
+import xbmcaddon
 
 mail = SMTPMail()
 
 # set this properly
 # if a property is empty an exception is raised
 
-mail.setproperty(host='')
-mail.setproperty(user='')
-mail.setproperty(passwd='')
-mail.setproperty(sender='')
-mail.setproperty(recipient='')
+mail.setproperty(host=tools.getAddonSetting('host'))
+mail.setproperty(user=tools.getAddonSetting('user'))
+mail.setproperty(passwd=tools.getAddonSetting('passwd'))
+mail.setproperty(enc=tools.getAddonSetting('enc'))
+mail.setproperty(sender=tools.getAddonSetting('sender'))
+mail.setproperty(recipient=tools.getAddonSetting('recipient'))
+mail.setproperty(charset=tools.getAddonSetting('charset'))
+
+__addonname__ = xbmcaddon.Addon().getAddonInfo('id')
+__LS__ = xbmcaddon.Addon().getLocalizedString
 
 # If modifying these scopes, delete your previously saved credentials
 # at ~/.credentials/service.calendar.json
 
 SCOPES = 'https://www.googleapis.com/auth/calendar.readonly'
-CREDENTIALS_DIR = os.path.join(os.getcwd(), '.credentials')
-CREDENTIALS_FILE = 'service.calendar.json'
-CLIENT_SECRET_FILE = 'service.calendar.auth.json'
+CREDENTIALS_FILE = os.path.join(xbmc.translatePath(xbmcaddon.Addon().getAddonInfo('profile')), 'service.calendar.json')
+CLIENT_SECRET_FILE = os.path.join(xbmc.translatePath(xbmcaddon.Addon().getAddonInfo('path')), '.credentials', 'service.calendar.auth.json')
 APPLICATION_NAME = 'service.calendar'
+
 
 class Calendar(object):
 
@@ -59,46 +68,40 @@ class Calendar(object):
         Returns:
             Credentials, the obtained credential.
         """
-        if not os.path.exists(CREDENTIALS_DIR): os.makedirs(CREDENTIALS_DIR)
-        credential_path = os.path.join(CREDENTIALS_DIR, CREDENTIALS_FILE)
-        credential_auth = os.path.join(CREDENTIALS_DIR, CLIENT_SECRET_FILE)
-
-        store = Storage(credential_path)
+        store = Storage(CREDENTIALS_FILE)
         credentials = store.get()
         if not credentials or credentials.invalid:
             try:
-                flow = client.flow_from_clientsecrets(credential_auth, SCOPES, redirect_uri='urn:ietf:wg:oauth:2.0:oob')
+                flow = client.flow_from_clientsecrets(CLIENT_SECRET_FILE, SCOPES, redirect_uri='urn:ietf:wg:oauth:2.0:oob')
                 flow.user_agent = APPLICATION_NAME
 
                 auth_uri = tinyurl.create_one(flow.step1_get_authorize_url())
 
                 mail.checkproperties()
-                mail.sendmail('\'service.calender\' Anforderung Authentifizierungscode',
-                              'Ein Addon fordert einen Code an. Folgen Sie dem Link:\n%s' % (auth_uri))
+                mail.sendmail(__LS__(30010) % (__addonname__), __LS__(30011) % (auth_uri))
 
-                print(auth_uri)
-                auth_code = raw_input('Enter the authentication code: ')
+                auth_code = tools.dialogKeyboard(__LS__(30102))
+                if auth_code == '':
+                    raise self.oAuthIncomplete('no key provided')
                 credentials = flow.step2_exchange(auth_code)
                 store.put(credentials)
             except clientsecrets.InvalidClientSecretsError:
-                raise self.oAuthMissingSecretFile('missing %s, contact author' % (credential_auth))
-
-
+                raise self.oAuthMissingSecretFile('missing %s' % (CLIENT_SECRET_FILE))
         return credentials
 
     def get_colors(self):
         """
         Getting colors from google calender app and store them in property colors
-        :return: None
+        :return:            None
         """
         self.colors = self.service.colors().get().execute()
 
     def get_color(self, id, scope='calendar'):
         """
         Getting color attributes (foreground, background) for a named color id
-        :param id:      color id
-        :param scope:   'calendar|item'
-        :return:        dict(foreground:#RGB, background: #RGB) or fallback (white, black) 
+        :param id:          color id
+        :param scope:       'calendar|item'
+        :return:            dict(foreground:#RGB, background: #RGB) or fallback (white, black) 
         """
         return self.colors.get(scope, 'calendar').get(id, {u'foreground': u'#ffffff', u'background': u'#000000'})
 
@@ -110,9 +113,6 @@ class Calendar(object):
         :param sheet_m:     month of the calender sheet
         :return:            None
         """
-
-        # dayly sheet
-
         self.sheet_dom = []
         dom = 1
 
