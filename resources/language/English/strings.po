@@ -1,0 +1,177 @@
+# XBMC Media Center language file
+# Addon Name: KN Calendar Reminder
+# Addon id: service.calendar
+# Addon version: 0.0.1
+# Addon Provider: Birger Jesch
+msgid ""
+msgstr ""
+"Project-Id-Version: XBMC-Addons\n"
+"Report-Msgid-Bugs-To: alanwww1@xbmc.org\n"
+"POT-Creation-Date: 2017-05-16 14:28+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: en\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+
+
+msgctxt "#30010"
+msgid "Kodi Calendar Reminder"
+msgstr ""
+
+#empty strings from id 30011 to 30040
+
+msgctxt "#30041"
+msgid "SMTP-Mailserver"
+msgstr ""
+
+msgctxt "#30042"
+msgid "Username"
+msgstr ""
+
+msgctxt "#30043"
+msgid "Password"
+msgstr ""
+
+msgctxt "#30044"
+msgid "Email of Sender"
+msgstr ""
+
+msgctxt "#30045"
+msgid "Email of Recipient"
+msgstr ""
+
+#empty strings from id 30046 to 30047
+
+msgctxt "#30048"
+msgid "Charset"
+msgstr ""
+
+msgctxt "#30049"
+msgid "Encryption"
+msgstr ""
+
+#empty strings from id 30050 to 30053
+
+msgctxt "#30054"
+msgid "Check Email Settings (send mail)"
+msgstr ""
+
+#empty strings from id 30055 to 30069
+
+msgctxt "#30070"
+msgid "Keyfile missing, Reinstallation required"
+msgstr ""
+
+msgctxt "#30071"
+msgid "Authentication process incomplete"
+msgstr ""
+
+msgctxt "#30072"
+msgid "Keyfile invalid, require new one in addon settings"
+msgstr ""
+
+msgctxt "#30073"
+msgid "Keyfile succesfully renewed"
+msgstr ""
+
+msgctxt "#30074"
+msgid "%s: Message from %s"
+msgstr ""
+
+msgctxt "#30075"
+msgid "This mail indicates that you have created your setup for delivering mails successfully. Calendar Reminder will use these settings for future notifications.\n\nDo not answer to this mail, as this is generated automatically.\n"
+msgstr ""
+
+msgctxt "#30076"
+msgid "Mail was successfully delivered to %s. Your setup seems to be ok for further notifications."
+msgstr ""
+
+msgctxt "#30077"
+msgid "An error occured while delivering mail to %s. Check your settings and your logfile for errors and try again."
+msgstr ""
+
+#empty strings from id 30078 to 30079
+
+msgctxt "#30080"
+msgid "Require Authentication Key"
+msgstr ""
+
+msgctxt "#30081"
+msgid "An authentication key is missing, incomplete or invalid."
+msgstr ""
+
+msgctxt "#30082"
+msgid "Do You want to request a new key by email now?"
+msgstr ""
+
+msgctxt "#30083"
+msgid "Check your email account, follow the instructions within the received email and put in the generated authentication key here."
+msgstr ""
+
+#empty strings from id 30084 to 30099
+
+msgctxt "#30100"
+msgid "%s: Request for authentication"
+msgstr ""
+
+msgctxt "#30101"
+msgid "An application requests for an authentication code. Please visit the link below, confirm the request on that page and type in the received key sequence in your application.\n\nThis is the link for confirmation: %s"
+msgstr ""
+
+msgctxt "#30102"
+msgid "Enter authentication code"
+msgstr ""
+
+#empty strings from id 30103 to 30119
+
+msgctxt "#30120"
+msgid "January"
+msgstr ""
+
+msgctxt "#30121"
+msgid "February"
+msgstr ""
+
+msgctxt "#30122"
+msgid "March"
+msgstr ""
+
+msgctxt "#30123"
+msgid "April"
+msgstr ""
+
+msgctxt "#30124"
+msgid "May"
+msgstr ""
+
+msgctxt "#30125"
+msgid "June"
+msgstr ""
+
+msgctxt "#30126"
+msgid "July"
+msgstr ""
+
+msgctxt "#30127"
+msgid "August"
+msgstr ""
+
+msgctxt "#30128"
+msgid "September"
+msgstr ""
+
+msgctxt "#30129"
+msgid "October"
+msgstr ""
+
+msgctxt "#30130"
+msgid "November"
+msgstr ""
+
+msgctxt "#30131"
+msgid "December"
+msgstr ""

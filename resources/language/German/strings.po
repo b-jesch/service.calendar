@@ -1,0 +1,162 @@
+# XBMC Media Center language file
+# Addon Name: KN Calendar Reminder
+# Addon id: service.calendar
+# Addon version: 0.0.1
+# Addon Provider: Birger Jesch
+msgid ""
+msgstr ""
+"Project-Id-Version: XBMC-Addons\n"
+"Report-Msgid-Bugs-To: alanwww1@xbmc.org\n"
+"POT-Creation-Date: 2017-05-16 14:28+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: de\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+
+msgctxt "#30010"
+msgid "Kodi Calendar Reminder"
+msgstr "Kodi Notizkalender"
+
+msgctxt "#30041"
+msgid "SMTP-Mailserver"
+msgstr "SMTP-Mailserver"
+
+msgctxt "#30042"
+msgid "Username"
+msgstr "Nutzername"
+
+msgctxt "#30043"
+msgid "Password"
+msgstr "Passwort"
+
+msgctxt "#30044"
+msgid "Email of Sender"
+msgstr "Email-Adresse des Absenders"
+
+msgctxt "#30045"
+msgid "Email of Recipient"
+msgstr "Email-Adresse des Empfängers"
+
+msgctxt "#30048"
+msgid "Charset"
+msgstr "Zeichensatz"
+
+msgctxt "#30049"
+msgid "Encryption"
+msgstr "Verschlüsselung"
+
+msgctxt "#30054"
+msgid "Check Email Settings (send mail)"
+msgstr "Einstellungen für Email-Benachrichtigungen testen (Mail senden)"
+
+msgctxt "#30070"
+msgid "Keyfile missing, Reinstallation required"
+msgstr "Schlüsseldatei fehlt oder defekt, Neuinstallation erforderlich"
+
+msgctxt "#30071"
+msgid "Authentication process incomplete"
+msgstr "Authentifizierungsprozess unvollständig"
+
+msgctxt "#30072"
+msgid "Keyfile invalid, require new one in addon settings"
+msgstr "Schlüssel defekt, neuen Schlüssel über Addon-Settings anfordern"
+
+msgctxt "#30073"
+msgid "Keyfile succesfully renewed"
+msgstr "Schlüssel erfolgreich erneuert"
+
+msgctxt "#30074"
+msgid "%s: Message from %s"
+msgstr "%s: Nachricht von %s"
+
+msgctxt "#30075"
+msgid "This mail indicates that you have created your setup for delivering mails successfully. Calendar Reminder will use these settings for future notifications.\n\nDo not answer to this mail, as this is generated automatically.\n"
+msgstr "Mit dieser Mail werden die korrekten Einstellungen im Setup des Kodi Notizkalenders für den Versand von Emails bestätigt. Der Kodi Notizkalender wird diese Einstellungen für den künftigen Versand von Emails benutzen.\n\nBitte antworten Sie nicht auf diese Mail, diese wurde automatisch generiert.\n"
+
+msgctxt "#30076"
+msgid "Mail was successfully delivered to %s. Your setup seems to be ok for further notifications."
+msgstr "Mail wurde erfolgreich an %s versendet. Ihre Einstellungen im Setup des Kodi Notizkalenders scheinen korrekt zu sein."
+
+msgctxt "#30077"
+msgid "An error occured while delivering mail to %s. Check your settings and your logfile for errors and try again."
+msgstr "Ein Fehler ist während des Versands einer Mail an %s aufgetreten. Überprüfen Sie Ihre Einstellungen im Addon sowie die Logdatei auf Fehler."
+
+msgctxt "#30080"
+msgid "Require Authentication Key"
+msgstr "Authentifizierungsschlüssel anfordern"
+
+msgctxt "#30081"
+msgid "An authentication key is missing, incomplete or invalid."
+msgstr "Ihr Authentifizierungsschlüssel fehlt, ist unvollständig oder ungültig."
+
+msgctxt "#30082"
+msgid "Do You want to request a new key by email now?"
+msgstr "Möchten Sie jetzt einen neuen Schlüssel per Email anfordern?"
+
+msgctxt "#30083"
+msgid "Check your email account, follow the instructions within the received email and put in the generated authentication key here."
+msgstr "Überprüfen Sie Ihr E-Mail-Konto, folgen Sie den Anweisungen in der empfangenen E-Mail und geben Sie den neu generierten Authentifizierungsschlüssel hier ein."
+
+msgctxt "#30100"
+msgid "%s: Request for authentication"
+msgstr "%s: Authentifizierungsanforderung"
+
+msgctxt "#30101"
+msgid "An application requests for an authentication code. Please visit the link below, confirm the request on that page and type in the received key sequence in your application.\n\nThis is the link for confirmation: %s"
+msgstr "Eine Applikation fordert einen Authentifizierungscode an. Besuchen Sie den folgenden Link, bestätigen Sie die Anforderung auf dieser Seite und geben Sie den erhaltenen Schlüssel in die Applikation ein.\n\nNachfolgend der Link für die Anforderungsbestätigung: %s"
+
+msgctxt "#30102"
+msgid "Enter authentication code"
+msgstr "Authentifizierungscode eingeben"
+
+msgctxt "#30120"
+msgid "January"
+msgstr "Januar"
+
+msgctxt "#30121"
+msgid "February"
+msgstr "Februar"
+
+msgctxt "#30122"
+msgid "March"
+msgstr "März"
+
+msgctxt "#30123"
+msgid "April"
+msgstr "April"
+
+msgctxt "#30124"
+msgid "May"
+msgstr "Mai"
+
+msgctxt "#30125"
+msgid "June"
+msgstr "Juni"
+
+msgctxt "#30126"
+msgid "July"
+msgstr "Juli"
+
+msgctxt "#30127"
+msgid "August"
+msgstr "August"
+
+msgctxt "#30128"
+msgid "September"
+msgstr "September"
+
+msgctxt "#30129"
+msgid "October"
+msgstr "Oktober"
+
+msgctxt "#30130"
+msgid "November"
+msgstr "November"
+
+msgctxt "#30131"
+msgid "December"
+msgstr "Dezember"

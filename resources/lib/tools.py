@@ -54,6 +54,9 @@ class release(object):
 def dialogOK(header, message):
     xbmcgui.Dialog().ok(header.encode('utf-8'), message.encode('utf-8'))
 
+def dialogYesNo(header, message):
+    return xbmcgui.Dialog().yesno(header.encode('utf-8'),message.encode('utf-8'))
+
 def dialogKeyboard(header, type=xbmcgui.INPUT_ALPHANUM):
     return xbmcgui.Dialog().input(header.encode('utf-8'), type=type)
 
@@ -64,12 +67,20 @@ def jsonrpc(query):
 
 def getAddonSetting(setting, sType=STRING, multiplicator=1):
     if sType == BOOL:
-        _ret =  True if xbmcaddon.Addon().getSetting(setting).upper() == 'TRUE' else False
+        return  True if xbmcaddon.Addon().getSetting(setting).upper() == 'TRUE' else False
     elif sType == NUM:
         try:
-            _ret = int(re.match('\d+', xbmcaddon.Addon().getSetting(setting)).group()) * multiplicator
+            return int(re.match('\d+', xbmcaddon.Addon().getSetting(setting)).group()) * multiplicator
         except AttributeError:
-            _ret = 0
+            return 0
     else:
-        _ret = xbmcaddon.Addon().getSetting(setting)
-    return _ret
+        return xbmcaddon.Addon().getSetting(setting)
+
+def ParamsToDict(args):
+    p_Dict = {}
+    if args:
+        pairs = args.split("&")
+        for pair in pairs:
+            par, value = pair.split('=')
+            p_Dict[par] = value
+    return p_Dict

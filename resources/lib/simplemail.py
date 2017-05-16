@@ -1,5 +1,6 @@
 import smtplib
 from email.message import Message
+import tools
 
 class SMTPMail(object):
     """
@@ -23,14 +24,13 @@ class SMTPMail(object):
     def __init__(self):
 
         self.smtp_client = dict(
-            host = '',
-            user = '',
-            passwd = '',
-            enc = 'None',
-            sender = '',
-            recipient = '',
-            charset = 'ISO-8859-1')
-
+            host = tools.getAddonSetting('host'),
+            user = tools.getAddonSetting('user'),
+            passwd = tools.getAddonSetting('passwd'),
+            enc = tools.getAddonSetting('enc'),
+            sender = tools.getAddonSetting('sender'),
+            recipient = tools.getAddonSetting('recipient'),
+            charset = tools.getAddonSetting('charset'))
 
     def setproperty(self, **param):
 
@@ -38,11 +38,13 @@ class SMTPMail(object):
             self.smtp_client.update(param)
 
     def checkproperties(self):
+
         for item, ivalue in self.smtp_client.items():
             if not ivalue or ivalue == '':
                 raise self.SMPTMailInvalidOrMissingParameterException('%s not set' % (item))
 
     def sendmail(self, subject, message):
+
         try:
             __port = {'None': 25, 'SSL/TLS': 465, 'STARTTLS': 587}
             __enctype = self.smtp_client['enc']
