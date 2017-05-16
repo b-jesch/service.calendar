@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XBMC-Addons\n"
 "Report-Msgid-Bugs-To: alanwww1@xbmc.org\n"
-"POT-Creation-Date: 2017-05-16 18:38+0000\n"
+"POT-Creation-Date: 2017-05-16 19:18+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -19,7 +19,7 @@ msgstr ""
 
 
 msgctxt "#30010"
-msgid "Kodi Calendar Reminder"
+msgid "KN Calendar Reminder"
 msgstr ""
 
 #empty strings from id 30011 to 30040
