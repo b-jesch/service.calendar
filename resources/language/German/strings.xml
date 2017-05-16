@@ -37,4 +37,12 @@
     <string id="30129">Oktober</string>
     <string id="30130">November</string>
     <string id="30131">Dezember</string>
+
+    <string id="30132">Mo</string>
+    <string id="30133">Di</string>
+    <string id="30134">Mi</string>
+    <string id="30135">Do</string>
+    <string id="30136">Fr</string>
+    <string id="30137">Sa</string>
+    <string id="30138">So</string>
 </strings>

@@ -36,4 +36,12 @@
     <string id="30129">October</string>
     <string id="30130">November</string>
     <string id="30131">December</string>
+
+    <string id="30132">Mon</string>
+    <string id="30133">Thu</string>
+    <string id="30134">Wed</string>
+    <string id="30135">Thu</string>
+    <string id="30136">Fri</string>
+    <string id="30137">Sat</string>
+    <string id="30138">Sun</string>
 </strings>

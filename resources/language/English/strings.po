@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XBMC-Addons\n"
 "Report-Msgid-Bugs-To: alanwww1@xbmc.org\n"
-"POT-Creation-Date: 2017-05-16 14:28+0000\n"
+"POT-Creation-Date: 2017-05-16 18:38+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -174,4 +174,32 @@ msgstr ""
 
 msgctxt "#30131"
 msgid "December"
+msgstr ""
+
+msgctxt "#30132"
+msgid "Mon"
+msgstr ""
+
+msgctxt "#30133"
+msgid "Thu"
+msgstr ""
+
+msgctxt "#30134"
+msgid "Wed"
+msgstr ""
+
+msgctxt "#30135"
+msgid "Thu"
+msgstr ""
+
+msgctxt "#30136"
+msgid "Fri"
+msgstr ""
+
+msgctxt "#30137"
+msgid "Sat"
+msgstr ""
+
+msgctxt "#30138"
+msgid "Sun"
 msgstr ""

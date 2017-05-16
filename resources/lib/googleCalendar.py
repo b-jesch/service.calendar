@@ -40,6 +40,9 @@ class Calendar(object):
     # If modifying these scopes, delete your previously saved credentials
     # at ~/.credentials/service.calendar.json
 
+    if not os.path.exists(os.path.join(xbmc.translatePath(xbmcaddon.Addon().getAddonInfo('profile')), '_credentials')):
+        os.makedirs(os.path.join(xbmc.translatePath(xbmcaddon.Addon().getAddonInfo('profile')), '_credentials'))
+
     SCOPES = 'https://www.googleapis.com/auth/calendar.readonly'
     CLIENT_SECRET_FILE = os.path.join(xbmc.translatePath(xbmcaddon.Addon().getAddonInfo('path')), '_credentials', 'service.calendar.oauth.json')
     CLIENT_CREDENTIALS = os.path.join(xbmc.translatePath(xbmcaddon.Addon().getAddonInfo('profile')), '_credentials', 'service.calendar.credits.json')
@@ -151,7 +154,6 @@ class Calendar(object):
 
                 # dayly sheets outside of actual month, set these to valid:0
                 self.sheet_dom.append({'cid': cid, 'valid': 0})
-                print self.sheet_dom[cid]
                 continue
             event_list = []
             for event in events:
