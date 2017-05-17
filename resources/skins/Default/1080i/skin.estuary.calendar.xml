@@ -28,6 +28,7 @@
                     <left>0</left>
                     <top>0</top>
                     <font>font30_title</font>
+                    <textcolor>FF808080</textcolor>
                     <align>center</align>
                     <aligny>center</aligny>
                     <label>$ADDON[service.calendar 30132]</label>
@@ -38,6 +39,7 @@
                     <height>50</height>
                     <left>125</left>
                     <font>font30_title</font>
+                    <textcolor>FF808080</textcolor>
                     <align>center</align>
                     <aligny>center</aligny>
                     <label>$ADDON[service.calendar 30133]</label>
@@ -48,6 +50,7 @@
                     <height>50</height>
                     <left>245</left>
                     <font>font30_title</font>
+                    <textcolor>FF808080</textcolor>
                     <align>center</align>
                     <aligny>center</aligny>
                     <label>$ADDON[service.calendar 30134]</label>
@@ -58,6 +61,7 @@
                     <height>50</height>
                     <left>365</left>
                     <font>font30_title</font>
+                    <textcolor>FF808080</textcolor>
                     <align>center</align>
                     <aligny>center</aligny>
                     <label>$ADDON[service.calendar 30135]</label>
@@ -68,6 +72,7 @@
                     <height>50</height>
                     <left>485</left>
                     <font>font30_title</font>
+                    <textcolor>FF808080</textcolor>
                     <align>center</align>
                     <aligny>center</aligny>
                     <label>$ADDON[service.calendar 30136]</label>
@@ -78,6 +83,7 @@
                     <height>50</height>
                     <left>605</left>
                     <font>font30_title</font>
+                    <textcolor>FF808080</textcolor>
                     <align>center</align>
                     <aligny>center</aligny>
                     <label>$ADDON[service.calendar 30137]</label>
@@ -88,6 +94,7 @@
                     <height>50</height>
                     <left>725</left>
                     <font>font30_title</font>
+                    <textcolor>FF808080</textcolor>
                     <align>center</align>
                     <aligny>center</aligny>
                     <label>$ADDON[service.calendar 30138]</label>
@@ -164,7 +171,7 @@
                             <height>85</height>
                             <left>5</left>
                             <top>30</top>
-                            <font>font30_title</font>
+                            <font>font36_title</font>
                             <align>center</align>
                             <aligny>center</aligny>
                             <label>$INFO[ListItem.Label]</label>
@@ -236,7 +243,7 @@
                             <height>85</height>
                             <left>5</left>
                             <top>30</top>
-                            <font>font30_title</font>
+                            <font>font36_title</font>
                             <align>center</align>
                             <aligny>center</aligny>
                             <label>$INFO[ListItem.Label]</label>
@@ -260,6 +267,7 @@
                     <width>485</width>
                     <height>50</height>
                     <font>font30_title</font>
+                    <textcolor>FF808080</textcolor>
                     <align>center</align>
                     <aligny>center</aligny>
                     <label>$ADDON[service.calendar 30110]</label>
@@ -312,7 +320,7 @@
                         <height>30</height>
                         <top>80</top>
                         <left>5</left>
-                        <textcolor>FFBFBFBF</textcolor>
+                        <textcolor>FF808080</textcolor>
                         <font>font_flag</font>
                         <label>$INFO[ListItem.Property(description)]</label>
                     </control>
@@ -358,7 +366,7 @@
                         <height>30</height>
                         <top>80</top>
                         <left>5</left>
-                        <textcolor>FFBFBFBF</textcolor>
+                        <textcolor>FF808080</textcolor>
                         <font>font_flag</font>
                         <label>$INFO[ListItem.Property(description)]</label>
                     </control>

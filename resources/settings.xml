@@ -11,4 +11,5 @@
         <setting type="sep" />
 		<setting id="checksettings" type="action" label="30054" option="close" action="RunScript(service.calendar,action=check_mailsettings)" default="" />
 		<setting id="requireauthkey" type="action" label="30080" option="close" action="RunScript(service.calendar,action=require_oauth_key)" default="" />
+		<setting id="reenterauthkey" type="action" label="30084" option="close" action="RunScript(service.calendar,action=reenter_oauth_key)" default="" />
 </settings>

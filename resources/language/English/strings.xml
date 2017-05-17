@@ -8,7 +8,7 @@
     <string id="30045">Email of Recipient</string>
     <string id="30048">Charset</string>
     <string id="30049">Encryption</string>
-    <string id="30054">Check Email Settings (send mail)</string>
+    <string id="30054">Check Email Settings</string>
     <string id="30070">Keyfile missing, Reinstallation required</string>
     <string id="30071">Authentication process incomplete</string>
     <string id="30072">Keyfile invalid, require new one in addon settings</string>
@@ -22,10 +22,11 @@
     <string id="30081">An authentication key is missing, incomplete or invalid.</string>
     <string id="30082">Do You want to request a new key by email now?</string>
     <string id="30083">Check your email account, follow the instructions within the received email and put in the generated authentication key here.</string>
+    <string id="30084">Re-enter authentication code</string>
     <string id="30100">%s: Request for authentication</string>
     <string id="30101">An application requests for an authentication code. Please visit the link below, confirm the request on that page and type in the received key sequence in your application.\n\nThis is the link for confirmation: %s</string>
     <string id="30102">Enter authentication code</string>
-    <string id="30103">The authentication code is invalid. Please request a new authentication code from the addon's setup!</string>
+    <string id="30103">The authentication code is invalid. Please request a new authentication code from the addon's setup or re-enter the authentication code from the setup.</string>
 
     <string id="30110">next Events</string>
     <string id="30111">full time</string>
@@ -44,7 +45,7 @@
     <string id="30131">December</string>
 
     <string id="30132">Mon</string>
-    <string id="30133">Thu</string>
+    <string id="30133">Tue</string>
     <string id="30134">Wed</string>
     <string id="30135">Thu</string>
     <string id="30136">Fri</string>

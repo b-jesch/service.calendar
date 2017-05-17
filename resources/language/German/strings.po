@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XBMC-Addons\n"
 "Report-Msgid-Bugs-To: alanwww1@xbmc.org\n"
-"POT-Creation-Date: 2017-05-17 16:46+0000\n"
+"POT-Creation-Date: 2017-05-17 20:51+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -50,8 +50,8 @@ msgid "Encryption"
 msgstr "Verschlüsselung"
 
 msgctxt "#30054"
-msgid "Check Email Settings (send mail)"
-msgstr "Einstellungen für Email-Benachrichtigungen testen (Mail senden)"
+msgid "Check Email Settings"
+msgstr "Einstellungen für Mail-Konto testen"
 
 msgctxt "#30070"
 msgid "Keyfile missing, Reinstallation required"
@@ -87,7 +87,7 @@ msgstr "Ein Fehler ist während des Versands einer Mail an %s aufgetreten. Über
 
 msgctxt "#30078"
 msgid "Mail settings invalid or incomplete"
-msgstr "Einstellungen für den Email-Versand sind fehlerhaft oder unvollständig."
+msgstr "Einstellungen für Ihr Mail-Konto sind fehlerhaft oder unvollständig."
 
 msgctxt "#30080"
 msgid "Require Authentication Key"
@@ -103,7 +103,11 @@ msgstr "Möchten Sie jetzt einen neuen Schlüssel per Email anfordern?"
 
 msgctxt "#30083"
 msgid "Check your email account, follow the instructions within the received email and put in the generated authentication key here."
-msgstr "Überprüfen Sie Ihr E-Mail-Konto, folgen Sie den Anweisungen in der empfangenen E-Mail und geben Sie den neu generierten Authentifizierungsschlüssel hier ein."
+msgstr "Überprüfen Sie den Posteingang Ihres Mail-Kontos, folgen Sie den Anweisungen in der empfangenen E-Mail und geben Sie den neuen Authentifizierungscode hier ein."
+
+msgctxt "#30084"
+msgid "Re-enter authentication code"
+msgstr "Authentifizierungschlüssel erneut eingeben"
 
 msgctxt "#30100"
 msgid "%s: Request for authentication"
@@ -115,11 +119,11 @@ msgstr "Eine Applikation fordert einen Authentifizierungscode an. Besuchen Sie d
 
 msgctxt "#30102"
 msgid "Enter authentication code"
-msgstr "Authentifizierungscode eingeben"
+msgstr "Authentifizierungsschlüssel eingeben"
 
 msgctxt "#30103"
-msgid "The authentication code is invalid. Please request a new authentication code from the addon's setup!"
-msgstr "Der eingegebene Authentifizierungscode ist ungültig! Fordern Sie einen neuen Authentifizierungscode über das Setup des Addons an!"
+msgid "The authentication code is invalid. Please request a new authentication code from the addon's setup or re-enter the authentication code from the setup."
+msgstr "Der eingegebene Authentifizierungsschlüssel ist ungültig! Fordern Sie einen neuen Schlüssel über das Setup des Addons an oder geben Sie den Authentifizierungsschlüssel erneut im Setup ein."
 
 msgctxt "#30110"
 msgid "next Events"
@@ -182,7 +186,7 @@ msgid "Mon"
 msgstr "Mo"
 
 msgctxt "#30133"
-msgid "Thu"
+msgid "Tue"
 msgstr "Di"
 
 msgctxt "#30134"

@@ -15,12 +15,12 @@
   </extension>
   <extension point="xbmc.addon.metadata">
     <platform>all</platform>
-    <summary lang="en_GB">View your appointments of current month from Google Calendar</summary>
+    <summary lang="en_GB">View your appointments of the current month from Google Calendar</summary>
     <summary lang="de_DE">Zeigt Dir Termine des aktuellen Monats aus Deinem Google Kalender</summary>
-    <description lang="en_GB">See all appointments of the actual month in one view of a calendar sheet. Reminds you with a separate feed about the most important events.</description>
-    <description lang="de_DE">Finde alle Termine eines Monats auf einem Kalenderblatt. Lasse Dich in einem separaten Feed über die wichtigsten Ereignisse informieren.</description>
-    <disclaimer lang="en_GB">Use at your own risk. Check your origin calendar regularly.</disclaimer>
-    <disclaimer lang="de_DE">Benutzung auf eigene Gefahr. Überprüfe regelmäßig Deinen Kalender.</disclaimer>
+    <description lang="en_GB">Take an overview about all appointments of the actual month in one view of a calendar sheet. Let remind you with a separate feed about the most important events.</description>
+    <description lang="de_DE">Verschaffe Dir einen Überblick über alle Termine des aktuellen Monats auf einem Kalenderblatt. Lasse Dich in einem separaten Feed über die wichtigsten Ereignisse informieren.</description>
+    <disclaimer lang="en_GB">Use at your own risk. Check your origin Google calendar regularly.</disclaimer>
+    <disclaimer lang="de_DE">Benutzung auf eigene Gefahr. Überprüfe regelmäßig Deinen Kalender mit der offiziellen Google-App</disclaimer>
     <license>GNU GENERAL PUBLIC LICENSE. Version 3, June 2007</license>
     <forum></forum>
     <website></website>

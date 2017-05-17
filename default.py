@@ -30,7 +30,12 @@ TEMP_STORAGE = os.path.join(xbmc.translatePath(__profiles__), 'calendar.json')
 def main(mode=None, handle=None, content=None):
 
     if mode == 'require_oauth_key':
-        Calendar().require_credentials(Calendar().CLIENT_CREDENTIALS, True)
+        Calendar().require_credentials(Calendar().CLIENT_CREDENTIALS, require_from_setup=True, reenter=False)
+        tools.writeLog('new credentials successfull received and stored', xbmc.LOGDEBUG)
+        tools.Notify().notify(__LS__(30010), __LS__(30073))
+
+    elif mode == 'reenter_oauth_key':
+        Calendar().require_credentials(Calendar().CLIENT_CREDENTIALS, require_from_setup=True, reenter=True)
         tools.writeLog('new credentials successfull received and stored', xbmc.LOGDEBUG)
         tools.Notify().notify(__LS__(30010), __LS__(30073))
 

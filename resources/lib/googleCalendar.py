@@ -9,8 +9,7 @@ from resources.lib.simplemail import SMTPMail
 import resources.lib.tools as tools
 
 import calendar
-import time
-from datetime import datetime, timedelta
+from datetime import datetime
 from dateutil import parser, relativedelta
 
 import xbmc
@@ -76,28 +75,30 @@ class Calendar(object):
         credentials = storage.get()
 
         if not credentials or credentials.invalid:
-            credentials = self.require_credentials(storage)
+            credentials = self.require_credentials(self.CLIENT_CREDENTIALS)
 
         return credentials
 
-    def require_credentials(self, storage, require_from_setup=False):
+    def require_credentials(self, storage_path, require_from_setup=False, reenter=False):
+        storage = Storage(storage_path)
         try:
             flow = client.flow_from_clientsecrets(self.CLIENT_SECRET_FILE, self.SCOPES, redirect_uri='urn:ietf:wg:oauth:2.0:oob')
             flow.user_agent = self.APPLICATION_NAME
 
-            auth_uri = tinyurl.create_one(flow.step1_get_authorize_url())
+            if not reenter:
+                auth_uri = tinyurl.create_one(flow.step1_get_authorize_url())
 
-            if require_from_setup:
-                _dialog = __LS__(30082)
-            else:
-                _dialog = '%s %s' % (__LS__(30081), __LS__(30082))
+                if require_from_setup:
+                    _dialog = __LS__(30082)
+                else:
+                    _dialog = '%s %s' % (__LS__(30081), __LS__(30082))
 
-            if not tools.dialogYesNo(__LS__(30080), _dialog):
-                raise self.oAuthIncomplete('oAuth2 flow aborted by user')
-            tools.dialogOK(__LS__(30080), __LS__(30083))
+                if not tools.dialogYesNo(__LS__(30080), _dialog):
+                    raise self.oAuthIncomplete('oAuth2 flow aborted by user')
+                tools.dialogOK(__LS__(30080), __LS__(30083))
 
-            mail.checkproperties()
-            mail.sendmail(__LS__(30100) % (__addonname__), __LS__(30101) % (auth_uri))
+                mail.checkproperties()
+                mail.sendmail(__LS__(30100) % (__addonname__), __LS__(30101) % (auth_uri))
 
             auth_code = tools.dialogKeyboard(__LS__(30102))
             if auth_code == '':
