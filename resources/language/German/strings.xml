@@ -17,6 +17,7 @@
     <string id="30075">Mit dieser Mail werden die korrekten Einstellungen im Setup des Kodi Notizkalenders für den Versand von Emails bestätigt. Der Kodi Notizkalender wird diese Einstellungen für den künftigen Versand von Emails benutzen.\n\nBitte antworten Sie nicht auf diese Mail, diese wurde automatisch generiert.\n</string>
     <string id="30076">Mail wurde erfolgreich an %s versendet. Ihre Einstellungen im Setup des Kodi Notizkalenders scheinen korrekt zu sein.</string>
     <string id="30077">Ein Fehler ist während des Versands einer Mail an %s aufgetreten. Überprüfen Sie Ihre Einstellungen im Addon sowie die Logdatei auf Fehler.</string>
+    <string id="30078">Einstellungen für den Email-Versand sind fehlerhaft oder unvollständig.</string>
     <string id="30080">Authentifizierungsschlüssel anfordern</string>
     <string id="30081">Ihr Authentifizierungsschlüssel fehlt, ist unvollständig oder ungültig.</string>
     <string id="30082">Möchten Sie jetzt einen neuen Schlüssel per Email anfordern?</string>
@@ -24,6 +25,9 @@
     <string id="30100">%s: Authentifizierungsanforderung</string>
     <string id="30101">Eine Applikation fordert einen Authentifizierungscode an. Besuchen Sie den folgenden Link, bestätigen Sie die Anforderung auf dieser Seite und geben Sie den erhaltenen Schlüssel in die Applikation ein.\n\nNachfolgend der Link für die Anforderungsbestätigung: %s</string>
     <string id="30102">Authentifizierungscode eingeben</string>
+    <string id="30103">Der eingegebene Authentifizierungscode ist ungültig! Fordern Sie einen neuen Authentifizierungscode über das Setup des Addons an!</string>
+
+    <string id="30110">nächste Termine</string>
 
     <string id="30120">Januar</string>
     <string id="30121">Februar</string>

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XBMC-Addons\n"
 "Report-Msgid-Bugs-To: alanwww1@xbmc.org\n"
-"POT-Creation-Date: 2017-05-16 19:18+0000\n"
+"POT-Creation-Date: 2017-05-17 09:36+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -94,7 +94,11 @@ msgctxt "#30077"
 msgid "An error occured while delivering mail to %s. Check your settings and your logfile for errors and try again."
 msgstr ""
 
-#empty strings from id 30078 to 30079
+msgctxt "#30078"
+msgid "Mail settings invalid or incomplete"
+msgstr ""
+
+#empty string with id 30079
 
 msgctxt "#30080"
 msgid "Require Authentication Key"
@@ -126,7 +130,17 @@ msgctxt "#30102"
 msgid "Enter authentication code"
 msgstr ""
 
-#empty strings from id 30103 to 30119
+msgctxt "#30103"
+msgid "The authentication code is invalid. Please request a new authentication code from the addon's setup!"
+msgstr ""
+
+#empty strings from id 30104 to 30109
+
+msgctxt "#30110"
+msgid "next Events"
+msgstr ""
+
+#empty strings from id 30111 to 30119
 
 msgctxt "#30120"
 msgid "January"

@@ -11,177 +11,130 @@
                 <param name="header_id" value="1" />
             </include>
             <control type="group">
+                <description>header calendar sheet</description>
                 <width>840</width>
                 <height>50</height>
                 <left>5</left>
                 <top>75</top>
                 <control type="image">
-                    <width>120</width>
+                    <width>840</width>
                     <height>50</height>
-                    <texture>sheet_bg.png</texture>
+                    <texture>sheet_bg_wd.png</texture>
                 </control>
                 <control type="label">
-                    <description>sheet_bg</description>
+                    <description>Monday</description>
                     <width>120</width>
                     <height>50</height>
+                    <left>0</left>
+                    <top>0</top>
                     <font>font30_title</font>
                     <align>center</align>
                     <aligny>center</aligny>
                     <label>$ADDON[service.calendar 30132]</label>
                 </control>
-            </control>
-            <control type="group">
-                <width>120</width>
-                <height>50</height>
-                <left>125</left>
-                <top>75</top>
-                <control type="image">
-                    <width>120</width>
-                    <height>50</height>
-                    <texture>sheet_bg.png</texture>
-                </control>
                 <control type="label">
-                    <description>sheet_bg</description>
+                    <description>Tuesday</description>
                     <width>120</width>
                     <height>50</height>
+                    <left>125</left>
                     <font>font30_title</font>
                     <align>center</align>
                     <aligny>center</aligny>
                     <label>$ADDON[service.calendar 30133]</label>
                 </control>
-            </control>
-            <control type="group">
-                <width>120</width>
-                <height>50</height>
-                <left>245</left>
-                <top>75</top>
-                <control type="image">
-                    <width>120</width>
-                    <height>50</height>
-                    <texture>sheet_bg.png</texture>
-                </control>
                 <control type="label">
-                    <description>sheet_bg</description>
+                    <description>Wednesday</description>
                     <width>120</width>
                     <height>50</height>
+                    <left>245</left>
                     <font>font30_title</font>
                     <align>center</align>
                     <aligny>center</aligny>
                     <label>$ADDON[service.calendar 30134]</label>
                 </control>
-            </control>
-            <control type="group">
-                <width>120</width>
-                <height>50</height>
-                <left>365</left>
-                <top>75</top>
-                <control type="image">
-                    <width>120</width>
-                    <height>50</height>
-                    <texture>sheet_bg.png</texture>
-                </control>
                 <control type="label">
-                    <description>sheet_bg</description>
+                    <description>Thursday</description>
                     <width>120</width>
                     <height>50</height>
+                    <left>365</left>
                     <font>font30_title</font>
                     <align>center</align>
                     <aligny>center</aligny>
                     <label>$ADDON[service.calendar 30135]</label>
                 </control>
-            </control>
-            <control type="group">
-                <width>120</width>
-                <height>50</height>
-                <left>485</left>
-                <top>75</top>
-                <control type="image">
-                    <width>120</width>
-                    <height>50</height>
-                    <texture>sheet_bg.png</texture>
-                </control>
                 <control type="label">
-                    <description>sheet_bg</description>
+                    <description>Friday</description>
                     <width>120</width>
                     <height>50</height>
+                    <left>485</left>
                     <font>font30_title</font>
                     <align>center</align>
                     <aligny>center</aligny>
                     <label>$ADDON[service.calendar 30136]</label>
                 </control>
-            </control>
-            <control type="group">
-                <width>120</width>
-                <height>50</height>
-                <left>605</left>
-                <top>75</top>
-                <control type="image">
-                    <width>120</width>
-                    <height>50</height>
-                    <texture>sheet_bg.png</texture>
-                </control>
                 <control type="label">
-                    <description>sheet_bg</description>
+                    <description>Saturday</description>
                     <width>120</width>
                     <height>50</height>
+                    <left>605</left>
                     <font>font30_title</font>
                     <align>center</align>
                     <aligny>center</aligny>
                     <label>$ADDON[service.calendar 30137]</label>
                 </control>
-            </control>
-            <control type="group">
-                <width>120</width>
-                <height>50</height>
-                <left>725</left>
-                <top>75</top>
-                <control type="image">
-                    <width>120</width>
-                    <height>50</height>
-                    <texture>sheet_bg.png</texture>
-                </control>
                 <control type="label">
-                    <description>sheet_bg</description>
+                    <description>Sunday</description>
                     <width>120</width>
                     <height>50</height>
+                    <left>725</left>
                     <font>font30_title</font>
                     <align>center</align>
                     <aligny>center</aligny>
                     <label>$ADDON[service.calendar 30138]</label>
                 </control>
             </control>
-            <control type="panel" id="30007">
+            <control type="panel" id="30008">
                 <left>5</left>
                 <top>125</top>
                 <width>840</width>
                 <height>720</height>
                 <itemlayout width="120" height="120">
                     <control type="group">
-                        <visible>String.IsEqual(ListItem.Property(valid),1)</visible>
                         <control type="image">
                             <width>120</width>
                             <height>120</height>
                             <texture>sheet_bg.png</texture>
                         </control>
-                        <control type="image">
+                        <control type="group">
+                            <description>event marker</description>
                             <width>40</width>
                             <height>40</height>
                             <left>75</left>
                             <top>5</top>
-                            <texture>eventmarker.png</texture>
-                            <visible>!String.IsEqual(ListItem.Label2,0)</visible>
-                        </control>
-                        <control type="label">
-                            <description>number of events</description>
-                            <width>30</width>
-                            <height>30</height>
-                            <left>80</left>
-                            <top>10</top>
-                            <font>font10</font>
-                            <align>center</align>
-                            <aligny>center</aligny>
-                            <label>$INFO[ListItem.Label2]</label>
-                            <visible>!String.IsEqual(ListItem.Label2,0)</visible>
+                            <visible>String.isEqual(ListItem.Property(valid),1 + !String.IsEqual(listItem.Label2,0)</visible>
+                            <control type="image">
+                                <width>40</width>
+                                <height>40</height>
+                                <texture>eventmarker_1.png</texture>
+                                <visible>String.IsEqual(ListItem.Property(allday),0</visible>
+                            </control>
+                            <control type="image">
+                                <width>40</width>
+                                <height>40</height>
+                                <texture>eventmarker_2.png</texture>
+                                <visible>String.IsEqual(ListItem.Property(allday),1</visible>
+                            </control>
+                            <control type="label">
+                                <description>number of events</description>
+                                <width>30</width>
+                                <height>30</height>
+                                <left>5</left>
+                                <top>5</top>
+                                <font>font10</font>
+                                <align>center</align>
+                                <aligny>center</aligny>
+                                <label>$INFO[ListItem.Label2]</label>
+                            </control>
                         </control>
                         <control type="image">
                             <width>114</width>
@@ -192,7 +145,21 @@
                             <visible>String.IsEqual(ListItem.Property(today),1)</visible>
                         </control>
                         <control type="label">
-                            <description>day number (DOM)</description>
+                            <description>day number (DOM) outside actual sheet</description>
+                            <visible>String.IsEqual(ListItem.Property(valid),0)</visible>
+                            <width>85</width>
+                            <height>85</height>
+                            <left>5</left>
+                            <top>30</top>
+                            <font>font12</font>
+                            <textcolor>FF606060</textcolor>
+                            <align>center</align>
+                            <aligny>center</aligny>
+                            <label>$INFO[ListItem.Label]</label>
+                        </control>
+                        <control type="label">
+                            <description>day number (DOM) inside actual sheet</description>
+                            <visible>String.IsEqual(ListItem.Property(valid),1)</visible>
                             <width>85</width>
                             <height>85</height>
                             <left>5</left>
@@ -211,25 +178,36 @@
                             <height>120</height>
                             <texture>sheet_bg.png</texture>
                         </control>
-                        <control type="image">
+                        <control type="group">
+                            <description>event marker</description>
                             <width>40</width>
                             <height>40</height>
                             <left>75</left>
                             <top>5</top>
-                            <texture>eventmarker.png</texture>
-                            <visible>!String.IsEqual(ListItem.Label2,0)</visible>
-                        </control>
-                        <control type="label">
-                            <description>number of events</description>
-                            <width>30</width>
-                            <height>30</height>
-                            <left>80</left>
-                            <top>10</top>
-                            <font>font10</font>
-                            <align>center</align>
-                            <aligny>center</aligny>
-                            <label>$INFO[ListItem.Label2]</label>
-                            <visible>!String.IsEqual(ListItem.Label2,0)</visible>
+                            <visible>String.isEqual(ListItem.Property(valid),1 + !String.IsEqual(listItem.Label2,0)</visible>
+                            <control type="image">
+                                <width>40</width>
+                                <height>40</height>
+                                <texture>eventmarker_1.png</texture>
+                                <visible>String.IsEqual(ListItem.Property(allday),0</visible>
+                            </control>
+                            <control type="image">
+                                <width>40</width>
+                                <height>40</height>
+                                <texture>eventmarker_2.png</texture>
+                                <visible>String.IsEqual(ListItem.Property(allday),1</visible>
+                            </control>
+                            <control type="label">
+                                <description>number of events</description>
+                                <width>30</width>
+                                <height>30</height>
+                                <left>5</left>
+                                <top>5</top>
+                                <font>font10</font>
+                                <align>center</align>
+                                <aligny>center</aligny>
+                                <label>$INFO[ListItem.Label2]</label>
+                            </control>
                         </control>
                         <control type="image">
                             <width>114</width>
@@ -239,18 +217,111 @@
                             <texture>todaymarker.png</texture>
                         </control>
                         <control type="label">
-                            <description>day number (DOM)</description>
+                            <description>day number (DOM) outside actual sheet</description>
+                            <visible>String.IsEqual(ListItem.Property(valid),0)</visible>
                             <width>85</width>
                             <height>85</height>
                             <left>5</left>
                             <top>30</top>
+                            <font>font12</font>
+                            <textcolor>FF606060</textcolor>
+                            <align>center</align>
+                            <aligny>center</aligny>
+                            <label>$INFO[ListItem.Label]</label>
+                        </control>
+                        <control type="label">
+                            <description>day number (DOM) inside actual sheet</description>
+                            <visible>String.IsEqual(ListItem.Property(valid),1)</visible>
+                            <width>85</width>
+                            <height>85</height>
+                            <left>5</left>
+                            <top>30</top>
+                            <font>font30_title</font>
                             <align>center</align>
                             <aligny>center</aligny>
                             <label>$INFO[ListItem.Label]</label>
                         </control>
                     </control>
                 </focusedlayout>
-                <content>plugin://service.calendar?action=getcontent</content>
+                <content>plugin://service.calendar?action=getcontent&amp;content=sheet</content>
+            </control>
+            <control type="group">
+                <description>header event list</description>
+                <width>485</width>
+                <height>50</height>
+                <left>850</left>
+                <top>75</top>
+                <control type="image">
+                    <width>485</width>
+                    <height>50</height>
+                    <texture>sheet_bg_wd.png</texture>
+                </control>
+                <control type="label">
+                    <width>485</width>
+                    <height>50</height>
+                    <font>font30_title</font>
+                    <align>center</align>
+                    <aligny>center</aligny>
+                    <label>$ADDON[service.calendar 30110]</label>
+                </control>
+            </control>
+            <control type="list" id="30009">
+                <description>event list</description>
+                <width>485</width>
+                <height>720</height>
+                <top>125</top>
+                <left>850</left>
+                <itemlayout width="485" height="120">
+                    <control type="image">
+                        <width>485</width>
+                        <height>120</height>
+                        <border>3</border>
+                        <texture>eventlist_bg.png</texture>
+                    </control>
+                    <control type="label">
+                        <description>date of event</description>
+                        <width>475</width>
+                        <height>30</height>
+                        <top>5</top>
+                        <left>5</left>
+                        <label>$INFO[ListItem.Label]</label>
+                    </control>
+                    <control type="label">
+                        <description>date of event</description>
+                        <width>475</width>
+                        <height>30</height>
+                        <top>45</top>
+                        <left>5</left>
+                        <font>font12</font>
+                        <label>$INFO[ListItem.Label2]</label>
+                    </control>
+                </itemlayout>
+                <focusedlayout width="485" height="120">
+                    <control type="image">
+                        <width>485</width>
+                        <height>120</height>
+                        <border>3</border>
+                        <texture>eventlist_bg.png</texture>
+                    </control>
+                    <control type="label">
+                        <description>date of event</description>
+                        <width>475</width>
+                        <height>30</height>
+                        <top>5</top>
+                        <left>5</left>
+                        <label>$INFO[ListItem.Label]</label>
+                    </control>
+                    <control type="label">
+                        <description>date of event</description>
+                        <width>475</width>
+                        <height>30</height>
+                        <top>45</top>
+                        <left>5</left>
+                        <font>font12</font>
+                        <label>$INFO[ListItem.Label2]</label>
+                    </control>
+                </focusedlayout>
+                <content>plugin://service.calendar?action=getcontent&amp;content=eventlist</content>
             </control>
         </control>
     </controls>

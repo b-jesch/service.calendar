@@ -16,6 +16,7 @@
     <string id="30075">This mail indicates that you have created your setup for delivering mails successfully. Calendar Reminder will use these settings for future notifications.\n\nDo not answer to this mail, as this is generated automatically.\n</string>
     <string id="30076">Mail was successfully delivered to %s. Your setup seems to be ok for further notifications.</string>
     <string id="30077">An error occured while delivering mail to %s. Check your settings and your logfile for errors and try again.</string>
+    <string id="30078">Mail settings invalid or incomplete</string>
     <string id="30080">Require Authentication Key</string>
     <string id="30081">An authentication key is missing, incomplete or invalid.</string>
     <string id="30082">Do You want to request a new key by email now?</string>
@@ -23,6 +24,9 @@
     <string id="30100">%s: Request for authentication</string>
     <string id="30101">An application requests for an authentication code. Please visit the link below, confirm the request on that page and type in the received key sequence in your application.\n\nThis is the link for confirmation: %s</string>
     <string id="30102">Enter authentication code</string>
+    <string id="30103">The authentication code is invalid. Please request a new authentication code from the addon's setup!</string>
+
+    <string id="30110">next Events</string>
 
     <string id="30120">January</string>
     <string id="30121">February</string>

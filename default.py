@@ -1,9 +1,11 @@
 # -*- encoding: utf-8 -*-
 from __future__ import print_function
-import datetime
+from datetime import datetime
+import time
 
 import sys
 import os
+import json
 
 import resources.lib.tools as tools
 from resources.lib.googleCalendar import Calendar
@@ -22,7 +24,10 @@ __LS__ = __addon__.getLocalizedString
 
 __xml__ = xbmc.translatePath('special://skin').split(os.sep)[-2] + '.calendar.xml'
 
-def main(mode=None, handle=None):
+if not os.path.exists(xbmc.translatePath(__profiles__)): os.makedirs(xbmc.translatePath(__profiles__))
+TEMP_STORAGE = os.path.join(xbmc.translatePath(__profiles__), 'calendar.json')
+
+def main(mode=None, handle=None, content=None):
 
     if mode == 'require_oauth_key':
         Calendar().require_credentials(Calendar().CLIENT_CREDENTIALS, True)
@@ -31,17 +36,11 @@ def main(mode=None, handle=None):
 
     elif mode == 'check_mailsettings':
         mail = SMTPMail()
-        try:
-            mail.checkproperties()
-            mail.sendmail(__LS__(30074) % (__LS__(30010), tools.release().hostname), __LS__(30075))
-            tools.writeLog('mail delivered', xbmc.LOGNOTICE)
-            tools.dialogOK(__LS__(30010), __LS__(30076) % (mail.smtp_client['recipient']))
-        except mail.SMPTMailInvalidOrMissingParameterException, e:
-            tools.writeLog('mail could not delivered, check your addon settings: %s' % (e.message), xbmc.LOGERROR)
-            tools.dialogOK(__LS__(30010), __LS__(30077) % (mail.smtp_client['recipient']))
-        except mail.SMTPMailNotDeliveredException, e:
-            tools.writeLog('mail could not delivered, check your addon settings: $s' % (e.message), xbmc.LOGERROR)
-            tools.dialogOK(__LS__(30010), __LS__(30077) % (mail.smtp_client['recipient']))
+        mail.checkproperties()
+        mail.sendmail(__LS__(30074) % (__LS__(30010), tools.release().hostname), __LS__(30075))
+        tools.writeLog('mail delivered', xbmc.LOGNOTICE)
+        tools.dialogOK(__LS__(30010), __LS__(30076) % (mail.smtp_client['recipient']))
+
 
     elif mode == 'guitest':
         Popup = xbmcgui.WindowXMLDialog(__xml__, __path__)
@@ -56,14 +55,19 @@ def main(mode=None, handle=None):
         10 events on the user's calendar.
         """
         cal = Calendar()
+        if  int(time.time()) - os.path.getmtime(TEMP_STORAGE) > 300:
 
-        now = datetime.datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
-        print('Getting the upcoming 10 events')
-        eventsResult = cal.service.events().list(
-            calendarId='primary', timeMin=now, maxResults=30, singleEvents=True,
-            orderBy='startTime').execute()
-        events = eventsResult.get('items', [])
-        cal.build_sheet(events, handle)
+            # temporary calendar storage last modification is older then 300 secs
+            # refresh calendar and store
+            tools.writeLog('establish online connection to google calendar')
+            now = datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
+            cal.establish()
+            eventsResult = cal.service.events().list(calendarId='primary', timeMin=now, maxResults=30, singleEvents=True, orderBy='startTime').execute()
+            events = eventsResult.get('items', [])
+            with open(TEMP_STORAGE, 'w') as filehandle:  json.dump(events, filehandle)
+
+        with open(TEMP_STORAGE, 'r') as filehandle: events = json.load(filehandle)
+        cal.build_sheet(handle, events, content)
 
     else:
         pass
@@ -71,6 +75,7 @@ def main(mode=None, handle=None):
 if __name__ == '__main__':
 
     action = None
+    content = None
     _addonHandle = None
 
     arguments = sys.argv
@@ -82,13 +87,20 @@ if __name__ == '__main__':
 
         params = tools.ParamsToDict(arguments[1])
         action = params.get('action', '')
+        content = params.get('content', '')
 
     try:
         if action is not None:
-            main(mode=action, handle=_addonHandle)
+            main(mode=action, handle=_addonHandle, content=content)
         else:
             main(mode='guitest')
 
+    except SMTPMail.SMPTMailInvalidOrMissingParameterException, e:
+        tools.writeLog(e.message, xbmc.LOGERROR)
+        tools.dialogOK(__LS__(30010), __LS__(30078))
+    except SMTPMail.SMTPMailNotDeliveredException, e:
+        tools.writeLog(e.message, xbmc.LOGERROR)
+        tools.dialogOK(__LS__(30010), __LS__(30077) % (SMTPMail.smtp_client['recipient']))
     except Calendar.oAuthMissingSecretFile, e:
         tools.writeLog(e.message, xbmc.LOGERROR)
         tools.Notify().notify(__LS__(30010), __LS__(30070), icon=xbmcgui.NOTIFICATION_ERROR, repeat=True)
@@ -98,3 +110,6 @@ if __name__ == '__main__':
     except Calendar.oAuthIncomplete, e:
         tools.writeLog(e.message, xbmc.LOGERROR)
         tools.Notify().notify(__LS__(30010), __LS__(30071), icon=xbmcgui.NOTIFICATION_ERROR, repeat=True)
+    except Calendar.oAuthFlowExchangeError, e:
+        tools.writeLog(e.message, xbmc.LOGERROR)
+        tools.dialogOK(__LS__(30010), __LS__(30103))

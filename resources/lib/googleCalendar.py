@@ -10,7 +10,7 @@ import resources.lib.tools as tools
 
 import calendar
 import time
-import datetime
+from datetime import datetime, timedelta
 from dateutil import parser
 
 import xbmc
@@ -49,14 +49,15 @@ class Calendar(object):
     APPLICATION_NAME = 'service.calendar'
 
     def __init__(self):
+        pass
+
+    def establish(self):
         credentials = self.get_credentials()
         http = credentials.authorize(httplib2.Http())
-
-        # establish service
         self.service = discovery.build('calendar', 'v3', http=http)
 
         # get colors from google service and store them local
-        self.get_colors()
+        # self.get_colors()
 
     def get_credentials(self):
         """
@@ -125,7 +126,7 @@ class Calendar(object):
         """
         return self.colors.get(scope, 'calendar').get(id, {u'foreground': u'#ffffff', u'background': u'#000000'})
 
-    def build_sheet(self, events, handle, sheet_y=None, sheet_m=None):
+    def build_sheet(self, handle, events, content, sheet_y=None, sheet_m=None):
         """
         Building a month calendar sheet and filling days (dom) with events 
         :param events:      event list
@@ -133,45 +134,74 @@ class Calendar(object):
         :param sheet_m:     month of the calender sheet
         :return:            None
         """
-        self.sheet_dom = []
+        self.sheet = []
         dom = 1
 
         # calculate current month/year if not given
-        if sheet_m is None: sheet_m = datetime.datetime.today().month
-        if sheet_y is None: sheet_y = datetime.datetime.today().year
+        if sheet_m is None: sheet_m = datetime.today().month
+        if sheet_y is None: sheet_y = datetime.today().year
 
         _today = None
-        if sheet_m == datetime.datetime.today().month and sheet_y == datetime.datetime.today().year:
-            _today = datetime.datetime.today().day
+        if sheet_m == datetime.today().month and sheet_y == datetime.today().year:
+            _today = datetime.today().day
 
         _header = '%s %s' % (__LS__(30119 + sheet_m), sheet_y)
         xbmcgui.Window(10000).setProperty('calendar_header', _header)
 
         start, sheets = calendar.monthrange(sheet_y, sheet_m)
+        epilog = 1
+        try:
+            prolog = (datetime.strptime('%s/%s' % (sheet_m, sheet_y), '%m/%Y') - timedelta(days=start)).day
+        except TypeError:
+            prolog = (datetime(*(time.strptime('%s/%s' % (sheet_m, sheet_y), '%m/%Y')[0:6])) - timedelta(days=start)).day
 
         for cid in xrange(0, 43):
             if cid < start or cid >= start + sheets:
 
-                # dayly sheets outside of actual month, set these to valid:0
-                self.sheet_dom.append({'cid': cid, 'valid': 0})
+                # daily sheets outside of actual month, set these to valid:0
+                self.sheet.append({'cid': str(cid), 'valid': '0'})
+                if cid < start:
+                    self.sheet[cid].update(dom=str(prolog))
+                    prolog += 1
+                else:
+                    self.sheet[cid].update(dom=str(epilog))
+                    epilog += 1
                 continue
+
             event_list = []
+            allday = '0'
+
             for event in events:
-                _start = event['start'].get('dateTime', event['start'].get('date'))
+                _start = event['start'].get('date', event['start'].get('dateTime'))
                 dt = parser.parse(_start)
 
                 if dt.day == dom and dt.month == sheet_m and dt.year == sheet_y:
                     event_list.append(event)
+                    if event['start'].get('date'): allday = '1'
 
-            self.sheet_dom.append({'cid': cid, 'valid': 1, 'dom': dom, 'num_events': len(event_list),'events': event_list})
+            self.sheet.append({'cid': cid, 'valid': '1', 'dom': str(dom)})
+            if len(event_list) > 0: self.sheet[cid].update(num_events=str(len(event_list)), allday=allday, events=event_list)
+            if _today == int(self.sheet[cid].get('dom')): self.sheet[cid].update(today='1')
             dom += 1
+        # xbmcplugin.endOfDirectory(handle,updateListing=True)
 
-        if handle is not None:
+        if content == 'sheet':
             for cid in range(0, 43):
-                wid = xbmcgui.ListItem(label=str(self.sheet_dom[cid].get('dom')), label2=str(self.sheet_dom[cid].get('num_events')))
-                wid.setProperty('valid', str(self.sheet_dom[cid].get('valid')))
-                if _today is not None and _today == self.sheet_dom[cid].get('dom'):
-                    wid.setProperty('today','1')
-                xbmcplugin.addDirectoryItem(handle, url='', listitem=wid)
-            xbmcplugin.endOfDirectory(handle, updateListing=True)
+                cal_sheet = xbmcgui.ListItem(label=self.sheet[cid].get('dom'), label2=self.sheet[cid].get('num_events', '0'))
+                cal_sheet.setProperty('valid', self.sheet[cid].get('valid', '0'))
+                cal_sheet.setProperty('allday', self.sheet[cid].get('allday', '0'))
+                cal_sheet.setProperty('today', self.sheet[cid].get('today', '0'))
 
+                xbmcplugin.addDirectoryItem(handle, url='', listitem=cal_sheet)
+        elif content == 'eventlist':
+            for event in events:
+                _start = event['start'].get('date', event['start'].get('dateTime'))
+                _dt = parser.parse(_start)
+                dtdate = _dt.strftime('%d.%m')
+
+                if _dt.month == sheet_m and _dt.year == sheet_y:
+                    li = xbmcgui.ListItem(label=dtdate, label2=event['summary'])
+                    if event['start'].get('date'): li.setProperty('allday','1')
+                    xbmcplugin.addDirectoryItem(handle, url='', listitem=li)
+
+        xbmcplugin.endOfDirectory(handle, updateListing=True)
