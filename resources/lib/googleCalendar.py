@@ -11,7 +11,7 @@ import resources.lib.tools as tools
 import calendar
 import time
 from datetime import datetime, timedelta
-from dateutil import parser
+from dateutil import parser, relativedelta
 
 import xbmc
 import xbmcaddon
@@ -149,11 +149,8 @@ class Calendar(object):
         xbmcgui.Window(10000).setProperty('calendar_header', _header)
 
         start, sheets = calendar.monthrange(sheet_y, sheet_m)
+        prolog = (parser.parse('%s/1/%s' % (sheet_m, sheet_y)) - relativedelta.relativedelta(days=start)).day
         epilog = 1
-        try:
-            prolog = (datetime.strptime('%s/%s' % (sheet_m, sheet_y), '%m/%Y') - timedelta(days=start)).day
-        except TypeError:
-            prolog = (datetime(*(time.strptime('%s/%s' % (sheet_m, sheet_y), '%m/%Y')[0:6])) - timedelta(days=start)).day
 
         for cid in xrange(0, 43):
             if cid < start or cid >= start + sheets:
@@ -198,19 +195,23 @@ class Calendar(object):
                 _start = event['start'].get('date', event['start'].get('dateTime'))
                 _dt = parser.parse(_start)
 
-                dtdate = _dt.strftime('%d.%m')
-                try:
-                    dtstart = parser.parse(event['start'].get('dateTime', ''))
-                    dtend =  parser.parse(event['end'].get('dateTime', ''))
-                except ValueError:
-                    pass
-
                 if _dt.month == sheet_m and _dt.year == sheet_y:
-                    li = xbmcgui.ListItem(label=dtdate, label2=event['summary'])
+                    li = xbmcgui.ListItem(label=_dt.strftime('%d.%m'), label2=event['summary'])
                     if event['start'].get('date'):
-                        li.setProperty('range', 'ganztags')
+                        li.setProperty('range', __LS__(30111))
                     else:
-                        li.setProperty('range', dtstart.strftime('%H:%M') + ' - ' + dtend.strftime('%H:%M'))
+                        dtstart = parser.parse(event['start'].get('dateTime', ''))
+                        dtend = parser.parse(event['end'].get('dateTime', ''))
+                        if dtstart != dtend:
+                            li.setProperty('range', dtstart.strftime('%H:%M') + ' - ' + dtend.strftime('%H:%M'))
+                        else:
+                            li.setProperty('range', dtstart.strftime('%H:%M'))
+
+                    try:
+                        li.setProperty('description', event['description'])
+                    except KeyError:
+                        pass
+
                     xbmcplugin.addDirectoryItem(handle, url='', listitem=li)
 
         xbmcplugin.endOfDirectory(handle, updateListing=True)

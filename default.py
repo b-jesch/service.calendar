@@ -55,9 +55,9 @@ def main(mode=None, handle=None, content=None):
         10 events on the user's calendar.
         """
         cal = Calendar()
-        if  int(time.time()) - os.path.getmtime(TEMP_STORAGE) > 300:
+        if  not os.path.exists(TEMP_STORAGE) or int(time.time()) - os.path.getmtime(TEMP_STORAGE) > 300:
 
-            # temporary calendar storage last modification is older then 300 secs
+            # temporary calendar storage not exists or last modification is older then 300 secs
             # refresh calendar and store
             tools.writeLog('establish online connection to google calendar')
             now = datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
@@ -65,6 +65,8 @@ def main(mode=None, handle=None, content=None):
             eventsResult = cal.service.events().list(calendarId='primary', timeMin=now, maxResults=30, singleEvents=True, orderBy='startTime').execute()
             events = eventsResult.get('items', [])
             with open(TEMP_STORAGE, 'w') as filehandle:  json.dump(events, filehandle)
+        else:
+            tools.writeLog('getting calendar events from local store')
 
         with open(TEMP_STORAGE, 'r') as filehandle: events = json.load(filehandle)
         cal.build_sheet(handle, events, content)

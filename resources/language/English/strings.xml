@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <strings>
     <string id="30010">KN Calendar Reminder</string>
     <string id="30041">SMTP-Mailserver</string>
@@ -27,6 +28,7 @@
     <string id="30103">The authentication code is invalid. Please request a new authentication code from the addon's setup!</string>
 
     <string id="30110">next Events</string>
+    <string id="30111">full time</string>
 
     <string id="30120">January</string>
     <string id="30121">February</string>

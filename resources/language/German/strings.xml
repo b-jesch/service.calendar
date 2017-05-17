@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <strings>
     <string id="30010">KN Notizkalender</string>
     <string id="30041">SMTP-Mailserver</string>
@@ -28,6 +29,7 @@
     <string id="30103">Der eingegebene Authentifizierungscode ist ungültig! Fordern Sie einen neuen Authentifizierungscode über das Setup des Addons an!</string>
 
     <string id="30110">nächste Termine</string>
+    <string id="30111">ganztägig</string>
 
     <string id="30120">Januar</string>
     <string id="30121">Februar</string>

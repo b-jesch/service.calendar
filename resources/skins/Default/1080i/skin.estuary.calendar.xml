@@ -294,17 +294,27 @@
                         <top>5</top>
                         <left>270</left>
                         <align>right</align>
-                        <font>font12</font>
+                        <font>font25_title</font>
                         <label>$INFO[ListItem.Property(range)]</label>
                     </control>
                     <control type="label">
                         <description>event</description>
                         <width>475</width>
                         <height>30</height>
-                        <top>45</top>
+                        <top>40</top>
                         <left>5</left>
-                        <font>font12</font>
+                        <font>font13</font>
                         <label>$INFO[ListItem.Label2]</label>
+                    </control>
+                    <control type="label">
+                        <description>description</description>
+                        <width>475</width>
+                        <height>30</height>
+                        <top>80</top>
+                        <left>5</left>
+                        <textcolor>FFBFBFBF</textcolor>
+                        <font>font_flag</font>
+                        <label>$INFO[ListItem.Property(description)]</label>
                     </control>
                 </itemlayout>
                 <focusedlayout width="485" height="120">
@@ -330,17 +340,27 @@
                         <top>5</top>
                         <left>270</left>
                         <align>right</align>
-                        <font>font12</font>
+                        <font>font25_title</font>
                         <label>$INFO[ListItem.Property(range)]</label>
                     </control>
                     <control type="label">
                         <description>event</description>
                         <width>475</width>
                         <height>30</height>
-                        <top>45</top>
+                        <top>40</top>
                         <left>5</left>
-                        <font>font12</font>
+                        <font>font13</font>
                         <label>$INFO[ListItem.Label2]</label>
+                    </control>
+                    <control type="label">
+                        <description>description</description>
+                        <width>475</width>
+                        <height>30</height>
+                        <top>80</top>
+                        <left>5</left>
+                        <textcolor>FFBFBFBF</textcolor>
+                        <font>font_flag</font>
+                        <label>$INFO[ListItem.Property(description)]</label>
                     </control>
                 </focusedlayout>
                 <content>plugin://service.calendar?action=getcontent&amp;content=eventlist</content>
