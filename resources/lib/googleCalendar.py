@@ -197,11 +197,20 @@ class Calendar(object):
             for event in events:
                 _start = event['start'].get('date', event['start'].get('dateTime'))
                 _dt = parser.parse(_start)
+
                 dtdate = _dt.strftime('%d.%m')
+                try:
+                    dtstart = parser.parse(event['start'].get('dateTime', ''))
+                    dtend =  parser.parse(event['end'].get('dateTime', ''))
+                except ValueError:
+                    pass
 
                 if _dt.month == sheet_m and _dt.year == sheet_y:
                     li = xbmcgui.ListItem(label=dtdate, label2=event['summary'])
-                    if event['start'].get('date'): li.setProperty('allday','1')
+                    if event['start'].get('date'):
+                        li.setProperty('range', 'ganztags')
+                    else:
+                        li.setProperty('range', dtstart.strftime('%H:%M') + ' - ' + dtend.strftime('%H:%M'))
                     xbmcplugin.addDirectoryItem(handle, url='', listitem=li)
 
         xbmcplugin.endOfDirectory(handle, updateListing=True)

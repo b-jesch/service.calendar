@@ -280,14 +280,25 @@
                     </control>
                     <control type="label">
                         <description>date of event</description>
-                        <width>475</width>
+                        <width>275</width>
                         <height>30</height>
                         <top>5</top>
                         <left>5</left>
+                        <font>font25_title</font>
                         <label>$INFO[ListItem.Label]</label>
                     </control>
                     <control type="label">
-                        <description>date of event</description>
+                        <description>time of event</description>
+                        <width>200</width>
+                        <height>30</height>
+                        <top>5</top>
+                        <left>270</left>
+                        <align>right</align>
+                        <font>font12</font>
+                        <label>$INFO[ListItem.Property(range)]</label>
+                    </control>
+                    <control type="label">
+                        <description>event</description>
                         <width>475</width>
                         <height>30</height>
                         <top>45</top>
@@ -305,14 +316,25 @@
                     </control>
                     <control type="label">
                         <description>date of event</description>
-                        <width>475</width>
+                        <width>375</width>
                         <height>30</height>
                         <top>5</top>
                         <left>5</left>
+                        <font>font25_title</font>
                         <label>$INFO[ListItem.Label]</label>
                     </control>
                     <control type="label">
-                        <description>date of event</description>
+                        <description>time of event</description>
+                        <width>200</width>
+                        <height>30</height>
+                        <top>5</top>
+                        <left>270</left>
+                        <align>right</align>
+                        <font>font12</font>
+                        <label>$INFO[ListItem.Property(range)]</label>
+                    </control>
+                    <control type="label">
+                        <description>event</description>
                         <width>475</width>
                         <height>30</height>
                         <top>45</top>
