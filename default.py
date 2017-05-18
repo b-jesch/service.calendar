@@ -25,7 +25,10 @@ __LS__ = __addon__.getLocalizedString
 __xml__ = xbmc.translatePath('special://skin').split(os.sep)[-2] + '.calendar.xml'
 
 if not os.path.exists(xbmc.translatePath(__profiles__)): os.makedirs(xbmc.translatePath(__profiles__))
-TEMP_STORAGE = os.path.join(xbmc.translatePath(__profiles__), 'calendar.json')
+
+TEMP_STORAGE_EVENTS = os.path.join(xbmc.translatePath(__profiles__), 'events.json')
+TEMP_STORAGE_CALENDARS = os.path.join(xbmc.translatePath(__profiles__), 'calendars.json')
+TEMP_STORAGE_COLORS = os.path.join(xbmc.translatePath(__profiles__), 'colors.json')
 
 def main(mode=None, handle=None, content=None):
 
@@ -59,22 +62,28 @@ def main(mode=None, handle=None, content=None):
         Creates a Google Calendar API service object and outputs a list of the next
         10 events on the user's calendar.
         """
-        cal = Calendar()
-        if  not os.path.exists(TEMP_STORAGE) or int(time.time()) - os.path.getmtime(TEMP_STORAGE) > 300:
+        googlecal = Calendar()
+        if  not os.path.exists(TEMP_STORAGE_EVENTS) or (int(time.time()) - os.path.getmtime(TEMP_STORAGE_EVENTS) > 60):
 
             # temporary calendar storage not exists or last modification is older then 300 secs
             # refresh calendar and store
             tools.writeLog('establish online connection to google calendar')
             now = datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
-            cal.establish()
-            eventsResult = cal.service.events().list(calendarId='primary', timeMin=now, maxResults=30, singleEvents=True, orderBy='startTime').execute()
-            events = eventsResult.get('items', [])
-            with open(TEMP_STORAGE, 'w') as filehandle:  json.dump(events, filehandle)
+            googlecal.establish()
+
+            cal_list = googlecal.service.calendarList().list().execute()
+            cals = cal_list.get('items', [])
+            with open(TEMP_STORAGE_CALENDARS, 'w') as filehandle: json.dump(cals, filehandle)
+
+            cal_events = googlecal.service.events().list(calendarId='primary', timeMin=now, maxResults=30, singleEvents=True, orderBy='startTime').execute()
+            events = cal_events.get('items', [])
+
+            with open(TEMP_STORAGE_EVENTS, 'w') as filehandle:  json.dump(events, filehandle)
         else:
             tools.writeLog('getting calendar events from local store')
 
-        with open(TEMP_STORAGE, 'r') as filehandle: events = json.load(filehandle)
-        cal.build_sheet(handle, events, content)
+        with open(TEMP_STORAGE_EVENTS, 'r') as filehandle: events = json.load(filehandle)
+        googlecal.build_sheet(handle, events, content)
 
     else:
         pass

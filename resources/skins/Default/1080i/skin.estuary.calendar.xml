@@ -118,18 +118,18 @@
                             <height>40</height>
                             <left>75</left>
                             <top>5</top>
-                            <visible>String.isEqual(ListItem.Property(valid),1 + !String.IsEqual(listItem.Label2,0)</visible>
+                            <visible>String.isEqual(ListItem.Property(valid),1) + !String.IsEqual(listItem.Label2,0)</visible>
                             <control type="image">
                                 <width>40</width>
                                 <height>40</height>
                                 <texture>eventmarker_1.png</texture>
-                                <visible>String.IsEqual(ListItem.Property(allday),0</visible>
+                                <visible>String.IsEqual(ListItem.Property(allday),0)</visible>
                             </control>
                             <control type="image">
                                 <width>40</width>
                                 <height>40</height>
                                 <texture>eventmarker_2.png</texture>
-                                <visible>String.IsEqual(ListItem.Property(allday),1</visible>
+                                <visible>String.IsEqual(ListItem.Property(allday),1)</visible>
                             </control>
                             <control type="label">
                                 <description>number of events</description>
@@ -191,18 +191,18 @@
                             <height>40</height>
                             <left>75</left>
                             <top>5</top>
-                            <visible>String.isEqual(ListItem.Property(valid),1 + !String.IsEqual(listItem.Label2,0)</visible>
+                            <visible>String.isEqual(ListItem.Property(valid),1) + !String.IsEqual(listItem.Label2,0)</visible>
                             <control type="image">
                                 <width>40</width>
                                 <height>40</height>
                                 <texture>eventmarker_1.png</texture>
-                                <visible>String.IsEqual(ListItem.Property(allday),0</visible>
+                                <visible>String.IsEqual(ListItem.Property(allday),0)</visible>
                             </control>
                             <control type="image">
                                 <width>40</width>
                                 <height>40</height>
                                 <texture>eventmarker_2.png</texture>
-                                <visible>String.IsEqual(ListItem.Property(allday),1</visible>
+                                <visible>String.IsEqual(ListItem.Property(allday),1)</visible>
                             </control>
                             <control type="label">
                                 <description>number of events</description>
@@ -283,8 +283,14 @@
                     <control type="image">
                         <width>485</width>
                         <height>120</height>
-                        <border>3</border>
-                        <texture>eventlist_bg.png</texture>
+                        <texture>eventlist_bg_1.png</texture>
+                        <visible>!String.IsEqual(ListItem.Property(allday),1)</visible>
+                    </control>
+                    <control type="image">
+                        <width>485</width>
+                        <height>120</height>
+                        <texture>eventlist_bg_2.png</texture>
+                        <visible>String.IsEqual(ListItem.Property(allday),1)</visible>
                     </control>
                     <control type="label">
                         <description>date of event</description>
@@ -300,9 +306,10 @@
                         <width>200</width>
                         <height>30</height>
                         <top>5</top>
-                        <left>270</left>
+                        <left>260</left>
                         <align>right</align>
-                        <font>font25_title</font>
+                        <font>font20_title</font>
+                        <textcolor>FF808080</textcolor>
                         <label>$INFO[ListItem.Property(range)]</label>
                     </control>
                     <control type="label">
@@ -329,8 +336,14 @@
                     <control type="image">
                         <width>485</width>
                         <height>120</height>
-                        <border>3</border>
-                        <texture>eventlist_bg.png</texture>
+                        <texture>eventlist_bg_1.png</texture>
+                        <visible>!String.IsEqual(ListItem.Property(allday),1)</visible>
+                    </control>
+                    <control type="image">
+                        <width>485</width>
+                        <height>120</height>
+                        <texture>eventlist_bg_2.png</texture>
+                        <visible>String.IsEqual(ListItem.Property(allday),1)</visible>
                     </control>
                     <control type="label">
                         <description>date of event</description>
@@ -346,9 +359,10 @@
                         <width>200</width>
                         <height>30</height>
                         <top>5</top>
-                        <left>270</left>
+                        <left>260</left>
                         <align>right</align>
-                        <font>font25_title</font>
+                        <font>font20_title</font>
+                        <textcolor>FF808080</textcolor>
                         <label>$INFO[ListItem.Property(range)]</label>
                     </control>
                     <control type="label">

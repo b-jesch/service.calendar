@@ -181,7 +181,6 @@ class Calendar(object):
             if len(event_list) > 0: self.sheet[cid].update(num_events=str(len(event_list)), allday=allday, events=event_list)
             if _today == int(self.sheet[cid].get('dom')): self.sheet[cid].update(today='1')
             dom += 1
-        # xbmcplugin.endOfDirectory(handle,updateListing=True)
 
         if content == 'sheet':
             for cid in range(0, 43):
@@ -200,6 +199,7 @@ class Calendar(object):
                     li = xbmcgui.ListItem(label=_dt.strftime('%d.%m'), label2=event['summary'])
                     if event['start'].get('date'):
                         li.setProperty('range', __LS__(30111))
+                        li.setProperty('allday','1')
                     else:
                         dtstart = parser.parse(event['start'].get('dateTime', ''))
                         dtend = parser.parse(event['end'].get('dateTime', ''))
@@ -207,7 +207,6 @@ class Calendar(object):
                             li.setProperty('range', dtstart.strftime('%H:%M') + ' - ' + dtend.strftime('%H:%M'))
                         else:
                             li.setProperty('range', dtstart.strftime('%H:%M'))
-
                     try:
                         li.setProperty('description', event['description'])
                     except KeyError:
