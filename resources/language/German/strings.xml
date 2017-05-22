@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <strings>
     <string id="30010">KN Notizkalender</string>
+    <string id="30020">Einstellungen</string>
+    <string id="30021">Mail</string>
+    <string id="30022">Google Kalender API</string>
+
+    <string id="30030">zusätzliche Zeitangaben</string>
+
     <string id="30041">SMTP-Mailserver</string>
     <string id="30042">Nutzername</string>
     <string id="30043">Passwort</string>
@@ -15,8 +21,8 @@
     <string id="30073">Schlüssel erfolgreich erneuert</string>
     <string id="30074">%s: Nachricht von %s</string>
 
-    <string id="30075">Mit dieser Mail werden die korrekten Einstellungen im Setup des Kodi Notizkalenders für den Versand von Emails bestätigt. Der Kodi Notizkalender wird diese Einstellungen für den künftigen Versand von Emails benutzen.\n\nBitte antworten Sie nicht auf diese Mail, diese wurde automatisch generiert.\n</string>
-    <string id="30076">Mail wurde erfolgreich an %s versendet. Ihre Einstellungen im Setup des Kodi Notizkalenders scheinen korrekt zu sein.</string>
+    <string id="30075">Mit dieser Mail werden die korrekten Einstellungen im Setup des KN Notizkalenders für den Versand von Emails bestätigt. Der KN Notizkalender wird diese Einstellungen für den künftigen Versand von Emails benutzen.\n\nBitte antworten Sie nicht auf diese Mail, diese wurde automatisch generiert.\n</string>
+    <string id="30076">Mail wurde erfolgreich an %s versendet. Ihre Einstellungen im Setup des KN Notizkalenders scheinen korrekt zu sein.</string>
     <string id="30077">Ein Fehler ist während des Versands einer Mail an %s aufgetreten. Überprüfen Sie Ihre Einstellungen im Addon sowie die Logdatei auf Fehler.</string>
     <string id="30078">Einstellungen für Ihr Mail-Konto sind fehlerhaft oder unvollständig.</string>
     <string id="30080">Authentifizierungsschlüssel anfordern</string>

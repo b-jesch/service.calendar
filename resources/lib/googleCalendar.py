@@ -48,7 +48,8 @@ class Calendar(object):
     APPLICATION_NAME = 'service.calendar'
 
     def __init__(self):
-        pass
+        self.addtimestamps = tools.getAddonSetting('additional_timestamps', sType=tools.BOOL)
+        print self.addtimestamps
 
     def establish(self):
         credentials = self.get_credentials()
@@ -196,26 +197,32 @@ class Calendar(object):
             for event in events:
                 _start = event['start'].get('date', event['start'].get('dateTime'))
                 _dt = parser.parse(_start)
-                _daydiff = relativedelta.relativedelta(_dt.date(), _now.date()).days
-
-                # calculate acronyms
-                if _daydiff == 1:
-                    acr = __LS__(30140)
-                elif _daydiff == 2:
-                    acr = __LS__(30141)
-                elif 3 <= _daydiff <= 6:
-                    acr = __LS__(30142) % (_daydiff)
-                elif _daydiff / 7 == 1:
-                    acr = __LS__(30143)
-                else:
-                    acr = __LS__(30144) % (_daydiff / 7)
 
                 if _dt.month >= sheet_m and _dt.year >= sheet_y:
-                    li = xbmcgui.ListItem(label=_dt.strftime('%d.%m') + ' - ' + acr, label2=event['summary'])
-                    # li = xbmcgui.ListItem(label=acr, label2=event['summary'])
+
+                    # calculate additional date synonyms
+
+                    if self.addtimestamps:
+                        tools.writeLog('calculate additional timestamps')
+                        _daydiff = relativedelta.relativedelta(_dt.date(), _now.date()).days
+                        if _daydiff == 1:
+                            acr = __LS__(30140)
+                        elif _daydiff == 2:
+                            acr = __LS__(30141)
+                        elif 3 <= _daydiff <= 6:
+                            acr = __LS__(30142) % (_daydiff)
+                        elif _daydiff / 7 == 1:
+                            acr = __LS__(30143)
+                        else:
+                            acr = __LS__(30144) % (_daydiff / 7)
+
+                        li = xbmcgui.ListItem(label=_dt.strftime('%d.%m') + ' - ' + acr, label2=event['summary'])
+                    else:
+                        li = xbmcgui.ListItem(label=_dt.strftime('%d.%m'), label2=event['summary'])
+
                     if event['start'].get('date'):
                         li.setProperty('range', __LS__(30111))
-                        li.setProperty('allday','1')
+                        li.setProperty('allday', '1')
                     else:
                         dtstart = parser.parse(event['start'].get('dateTime', ''))
                         dtend = parser.parse(event['end'].get('dateTime', ''))

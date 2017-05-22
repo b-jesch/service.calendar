@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window id="30005">
+    <defaultcontrol always="true">22002</defaultcontrol>
     <controls>
         <control type="group" id="30006">
             <left>290</left>
@@ -9,6 +10,7 @@
                 <param name="height" value="850" />
                 <param name="header_label" value="$ADDON[service.calendar 30010] - $INFO[Window(Home).Property(calendar_header)]" />
                 <param name="header_id" value="1" />
+                <param name="ondown" value="30008" />
             </include>
             <control type="group">
                 <description>header calendar sheet</description>
@@ -226,6 +228,7 @@
                             <left>3</left>
                             <top>3</top>
                             <texture>todaymarker.png</texture>
+                            <visible>String.IsEqual(ListItem.Property(today),1)</visible>
                         </control>
                         <control type="label">
                             <description>day number (DOM) outside actual sheet</description>
@@ -388,7 +391,7 @@
                         <height>30</height>
                         <top>80</top>
                         <left>5</left>
-                        <textcolor>FF808080</textcolor>
+                        <textcolor>FFFFFFFF</textcolor>
                         <font>font_flag</font>
                         <label>$INFO[ListItem.Property(description)]</label>
                     </control>
