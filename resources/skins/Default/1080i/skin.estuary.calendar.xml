@@ -105,6 +105,10 @@
                 <top>125</top>
                 <width>840</width>
                 <height>720</height>
+                <onleft>30009</onleft>
+                <onright>30009</onright>
+                <onup>30008</onup>
+                <ondown>30008</ondown>
                 <itemlayout width="120" height="120">
                     <control type="group">
                         <control type="image">
@@ -183,7 +187,7 @@
                         <control type="image">
                             <width>120</width>
                             <height>120</height>
-                            <texture>sheet_bg.png</texture>
+                            <texture colordiffuse="button_focus">sheet_bg_selected.png</texture>
                         </control>
                         <control type="group">
                             <description>event marker</description>
@@ -251,6 +255,7 @@
                     </control>
                 </focusedlayout>
                 <content>plugin://service.calendar?action=getcontent&amp;content=sheet</content>
+                <onclick>noop</onclick>
             </control>
             <control type="group">
                 <description>header event list</description>
@@ -279,6 +284,9 @@
                 <height>720</height>
                 <top>125</top>
                 <left>850</left>
+                <onup>30006</onup>
+                <onleft>30008</onleft>
+                <onright>30008</onright>
                 <itemlayout width="485" height="120">
                     <control type="image">
                         <width>485</width>
@@ -336,13 +344,13 @@
                     <control type="image">
                         <width>485</width>
                         <height>120</height>
-                        <texture>eventlist_bg_1.png</texture>
+                        <texture colordiffuse="button_focus">eventlist_bg_1_selected.png</texture>
                         <visible>!String.IsEqual(ListItem.Property(allday),1)</visible>
                     </control>
                     <control type="image">
                         <width>485</width>
                         <height>120</height>
-                        <texture>eventlist_bg_2.png</texture>
+                        <texture colordiffuse="button_focus">eventlist_bg_2_selected.png</texture>
                         <visible>String.IsEqual(ListItem.Property(allday),1)</visible>
                     </control>
                     <control type="label">
@@ -362,7 +370,7 @@
                         <left>260</left>
                         <align>right</align>
                         <font>font20_title</font>
-                        <textcolor>FF808080</textcolor>
+                        <textcolor>FFFFFFFF</textcolor>
                         <label>$INFO[ListItem.Property(range)]</label>
                     </control>
                     <control type="label">
@@ -386,6 +394,7 @@
                     </control>
                 </focusedlayout>
                 <content>plugin://service.calendar?action=getcontent&amp;content=eventlist</content>
+                <onclick>noop</onclick>
             </control>
         </control>
     </controls>

@@ -52,4 +52,10 @@
     <string id="30136">Fr</string>
     <string id="30137">Sa</string>
     <string id="30138">So</string>
+
+    <string id="30140">morgen</string>
+    <string id="30141">übermorgen</string>
+    <string id="30142">in %s Tagen</string>
+    <string id="30143">nächste Woche</string>
+    <string id="30144">in %s Wochen</string>
 </strings>

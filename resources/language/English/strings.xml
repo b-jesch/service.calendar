@@ -51,4 +51,10 @@
     <string id="30136">Fri</string>
     <string id="30137">Sat</string>
     <string id="30138">Sun</string>
+
+    <string id="30140">tomorrow</string>
+    <string id="30141">day after tomorrow</string>
+    <string id="30142">in %s days</string>
+    <string id="30143">next week</string>
+    <string id="30144">in %s weeks</string>
 </strings>

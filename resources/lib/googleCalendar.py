@@ -153,7 +153,7 @@ class Calendar(object):
         prolog = (parser.parse('%s/1/%s' % (sheet_m, sheet_y)) - relativedelta.relativedelta(days=start)).day
         epilog = 1
 
-        for cid in xrange(0, 43):
+        for cid in xrange(0, 42):
             if cid < start or cid >= start + sheets:
 
                 # daily sheets outside of actual month, set these to valid:0
@@ -183,20 +183,36 @@ class Calendar(object):
             dom += 1
 
         if content == 'sheet':
-            for cid in range(0, 43):
+            for cid in range(0, 42):
                 cal_sheet = xbmcgui.ListItem(label=self.sheet[cid].get('dom'), label2=self.sheet[cid].get('num_events', '0'))
                 cal_sheet.setProperty('valid', self.sheet[cid].get('valid', '0'))
                 cal_sheet.setProperty('allday', self.sheet[cid].get('allday', '0'))
                 cal_sheet.setProperty('today', self.sheet[cid].get('today', '0'))
 
                 xbmcplugin.addDirectoryItem(handle, url='', listitem=cal_sheet)
+
         elif content == 'eventlist':
+            _now = datetime.now()
             for event in events:
                 _start = event['start'].get('date', event['start'].get('dateTime'))
                 _dt = parser.parse(_start)
+                _daydiff = relativedelta.relativedelta(_dt.date(), _now.date()).days
 
-                if _dt.month == sheet_m and _dt.year == sheet_y:
-                    li = xbmcgui.ListItem(label=_dt.strftime('%d.%m'), label2=event['summary'])
+                # calculate acronyms
+                if _daydiff == 1:
+                    acr = __LS__(30140)
+                elif _daydiff == 2:
+                    acr = __LS__(30141)
+                elif 3 <= _daydiff <= 6:
+                    acr = __LS__(30142) % (_daydiff)
+                elif _daydiff / 7 == 1:
+                    acr = __LS__(30143)
+                else:
+                    acr = __LS__(30144) % (_daydiff / 7)
+
+                if _dt.month >= sheet_m and _dt.year >= sheet_y:
+                    li = xbmcgui.ListItem(label=_dt.strftime('%d.%m') + ' - ' + acr, label2=event['summary'])
+                    # li = xbmcgui.ListItem(label=acr, label2=event['summary'])
                     if event['start'].get('date'):
                         li.setProperty('range', __LS__(30111))
                         li.setProperty('allday','1')
