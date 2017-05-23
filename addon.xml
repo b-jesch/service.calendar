@@ -7,12 +7,8 @@
     <import addon="script.module.httplib2" version="0.8.0"/>
     <import addon="script.module.dateutil" version="2.5.3"/>
   </requires>
-  <extension point="xbmc.service" library="default.py" start="startup|login">
-    <provides>executable</provides>
-  </extension>
-   <extension point="xbmc.python.script" library="default.py">
-    <provides>executable</provides>
-  </extension>
+  <extension point="xbmc.python.script" library="default.py" />
+  <extension point="xbmc.service" library="service.py" start="startup|login" />
   <extension point="xbmc.addon.metadata">
     <platform>all</platform>
     <summary lang="en_GB">View your appointments of the current month from Google Calendar</summary>

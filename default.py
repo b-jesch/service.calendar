@@ -97,7 +97,7 @@ def main(mode=None, handle=None, content=None):
 
             with open(TEMP_STORAGE_EVENTS, 'w') as filehandle:  json.dump(events, filehandle)
         else:
-            tools.writeLog('getting calendar events from local store')
+            tools.writeLog('getting calendar events from local storage')
 
         with open(TEMP_STORAGE_EVENTS, 'r') as filehandle: events = json.load(filehandle)
         googlecal.build_sheet(handle, events, content)
