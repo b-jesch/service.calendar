@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XBMC-Addons\n"
 "Report-Msgid-Bugs-To: alanwww1@xbmc.org\n"
-"POT-Creation-Date: 2017-05-22 18:03+0000\n"
+"POT-Creation-Date: 2017-05-23 14:43+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -39,10 +39,36 @@ msgstr ""
 #empty strings from id 30023 to 30029
 
 msgctxt "#30030"
-msgid "additional Timestamps"
+msgid "additional Time Remarks"
 msgstr ""
 
-#empty strings from id 30031 to 30040
+msgctxt "#30031"
+msgid "Show Calendar on Start"
+msgstr ""
+
+msgctxt "#30032"
+msgid "Duration"
+msgstr ""
+
+#empty strings from id 30033 to 30034
+
+msgctxt "#30035"
+msgid "10 sec"
+msgstr ""
+
+msgctxt "#30036"
+msgid "15 sec"
+msgstr ""
+
+msgctxt "#30037"
+msgid "20 sec"
+msgstr ""
+
+msgctxt "#30038"
+msgid "30 sec"
+msgstr ""
+
+#empty strings from id 30039 to 30040
 
 msgctxt "#30041"
 msgid "SMTP-Mailserver"
@@ -133,21 +159,33 @@ msgid "Do You want to request a new key by email now?"
 msgstr ""
 
 msgctxt "#30083"
-msgid "Check your email account, follow the instructions within the received email and put in the generated authentication key here."
+msgid "Check your email account, follow the instructions within the received email and put in the generated authentication key here. Alternatively, you can save the code to a file and load it from the setup."
 msgstr ""
 
 msgctxt "#30084"
 msgid "Re-enter authentication code"
 msgstr ""
 
-#empty strings from id 30085 to 30099
+msgctxt "#30085"
+msgid "Load authentication code from file"
+msgstr ""
+
+msgctxt "#30086"
+msgid "File with authentication code"
+msgstr ""
+
+msgctxt "#30087"
+msgid "Would You enter the authentification code now?"
+msgstr ""
+
+#empty strings from id 30088 to 30099
 
 msgctxt "#30100"
 msgid "%s: Request for authentication"
 msgstr ""
 
 msgctxt "#30101"
-msgid "An application requests for an authentication code. Please visit the link below, confirm the request on that page and type in the received key sequence in your application.\n\nThis is the link for confirmation: %s"
+msgid "An application requests for an authentication code. Please visit the link below, confirm the request on that page and type in the received key sequence in your application. Alternatively, you can store the key in a file and load it from the setup of the addon.\n\nThis is the link for confirmation: %s"
 msgstr ""
 
 msgctxt "#30102"
@@ -246,7 +284,9 @@ msgctxt "#30138"
 msgid "Sun"
 msgstr ""
 
-#empty string with id 30139
+msgctxt "#30139"
+msgid "today"
+msgstr ""
 
 msgctxt "#30140"
 msgid "tomorrow"

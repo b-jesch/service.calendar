@@ -6,6 +6,12 @@
     <string id="30022">Google Kalender API</string>
 
     <string id="30030">zusätzliche Zeitangaben</string>
+    <string id="30031">Kalender nach dem Start von Kodi anzeigen</string>
+    <string id="30032">Anzeigedauer</string>
+    <string id="30035">10 Sek</string>
+    <string id="30036">15 Sek</string>
+    <string id="30037">20 Sek</string>
+    <string id="30038">30 Sek</string>
 
     <string id="30041">SMTP-Mailserver</string>
     <string id="30042">Nutzername</string>
@@ -28,10 +34,13 @@
     <string id="30080">Authentifizierungsschlüssel anfordern</string>
     <string id="30081">Ihr Authentifizierungsschlüssel fehlt, ist unvollständig oder ungültig.</string>
     <string id="30082">Möchten Sie jetzt einen neuen Schlüssel per Email anfordern?</string>
-    <string id="30083">Überprüfen Sie den Posteingang Ihres Mail-Kontos, folgen Sie den Anweisungen in der empfangenen E-Mail und geben Sie den neuen Authentifizierungscode hier ein.</string>
-    <string id="30084">Authentifizierungschlüssel erneut eingeben</string>
+    <string id="30083">Überprüfen Sie den Posteingang Ihres Mail-Kontos, folgen Sie den Anweisungen in der E-Mail und geben Sie den Authentifizierungscode hier ein. Alternativ können Sie den Code auch in einer Datei speichern und über das Setup laden.</string>
+    <string id="30084">Authentifizierungsschlüssel eingeben</string>
+    <string id="30085">Authentifizierungsschlüssel aus Datei laden</string>
+    <string id="30086">Datei mit Authentifizierungschlüssel</string>
+    <string id="30087">Möchten Sie den Authentifizierungsschlüssel jetzt eingeben?</string>
     <string id="30100">%s: Authentifizierungsanforderung</string>
-    <string id="30101">Eine Applikation fordert einen Authentifizierungscode an. Besuchen Sie den folgenden Link, bestätigen Sie die Anforderung auf dieser Seite und geben Sie den erhaltenen Schlüssel in die Applikation ein.\n\nNachfolgend der Link für die Anforderungsbestätigung: %s</string>
+    <string id="30101">Eine Kodi Addon fordert einen Authentifizierungscode an. Besuchen Sie den folgenden Link, bestätigen Sie die Anforderung auf dieser Seite und geben Sie den erhaltenen Schlüssel in die Applikation ein. Alternativ können Sie den Schlüssel auch in einer Datei speichern und diesen über das Setup des Addons laden.\n\nNachfolgend der Link für die Anforderungsbestätigung: %s</string>
     <string id="30102">Authentifizierungsschlüssel eingeben</string>
     <string id="30103">Der eingegebene Authentifizierungsschlüssel ist ungültig! Fordern Sie einen neuen Schlüssel über das Setup des Addons an oder geben Sie den Authentifizierungsschlüssel erneut im Setup ein.</string>
 
@@ -58,7 +67,7 @@
     <string id="30136">Fr</string>
     <string id="30137">Sa</string>
     <string id="30138">So</string>
-
+    <string id="30139">heute</string>
     <string id="30140">morgen</string>
     <string id="30141">übermorgen</string>
     <string id="30142">in %s Tagen</string>

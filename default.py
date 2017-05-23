@@ -33,12 +33,17 @@ TEMP_STORAGE_COLORS = os.path.join(xbmc.translatePath(__profiles__), 'colors.jso
 def main(mode=None, handle=None, content=None):
 
     if mode == 'require_oauth_key':
-        Calendar().require_credentials(Calendar().CLIENT_CREDENTIALS, require_from_setup=True, reenter=False)
+        Calendar().require_credentials(Calendar().CLIENT_CREDENTIALS, require_from_setup=True)
         tools.writeLog('new credentials successfull received and stored', xbmc.LOGDEBUG)
         tools.Notify().notify(__LS__(30010), __LS__(30073))
 
     elif mode == 'reenter_oauth_key':
-        Calendar().require_credentials(Calendar().CLIENT_CREDENTIALS, require_from_setup=True, reenter=True)
+        Calendar().require_credentials(Calendar().CLIENT_CREDENTIALS, require_from_setup=True, reenter='kb')
+        tools.writeLog('new credentials successfull received and stored', xbmc.LOGDEBUG)
+        tools.Notify().notify(__LS__(30010), __LS__(30073))
+
+    elif mode == 'load_oauth_key':
+        Calendar().require_credentials(Calendar().CLIENT_CREDENTIALS, require_from_setup=True, reenter='file')
         tools.writeLog('new credentials successfull received and stored', xbmc.LOGDEBUG)
         tools.Notify().notify(__LS__(30010), __LS__(30073))
 
@@ -50,7 +55,19 @@ def main(mode=None, handle=None, content=None):
         tools.dialogOK(__LS__(30010), __LS__(30076) % (mail.smtp_client['recipient']))
 
 
-    elif mode == 'guitest':
+    elif mode == 'service':
+        Popup = xbmcgui.WindowXMLDialog(__xml__, __path__)
+        if tools.getAddonSetting('show_onstart', sType=tools.BOOL):
+            _st = tools.getAddonSetting('showtime', sType=tools.NUM)
+            tools.writeLog('show calendar for %s seconds' % (_st), xbmc.LOGNOTICE)
+            Popup.show()
+            xbmc.Monitor().waitForAbort(_st)
+            Popup.close()
+        else:
+            Popup.doModal()
+        del Popup
+
+    elif mode == 'gui':
         Popup = xbmcgui.WindowXMLDialog(__xml__, __path__)
         Popup.doModal()
         del Popup
@@ -63,7 +80,7 @@ def main(mode=None, handle=None, content=None):
         10 events on the user's calendar.
         """
         googlecal = Calendar()
-        if  not os.path.exists(TEMP_STORAGE_EVENTS) or (int(time.time()) - os.path.getmtime(TEMP_STORAGE_EVENTS) > 60):
+        if  not os.path.exists(TEMP_STORAGE_EVENTS) or (int(time.time()) - os.path.getmtime(TEMP_STORAGE_EVENTS) > 300):
 
             # temporary calendar storage not exists or last modification is older then 300 secs
             # refresh calendar and store
@@ -105,11 +122,12 @@ if __name__ == '__main__':
         action = params.get('action', '')
         content = params.get('content', '')
 
+    tools.writeLog('action is %s' % (action), xbmc.LOGNOTICE)
     try:
         if action is not None:
             main(mode=action, handle=_addonHandle, content=content)
         else:
-            main(mode='guitest')
+            main(mode='gui')
 
     except SMTPMail.SMPTMailInvalidOrMissingParameterException, e:
         tools.writeLog(e.message, xbmc.LOGERROR)

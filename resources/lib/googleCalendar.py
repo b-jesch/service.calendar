@@ -49,7 +49,6 @@ class Calendar(object):
 
     def __init__(self):
         self.addtimestamps = tools.getAddonSetting('additional_timestamps', sType=tools.BOOL)
-        print self.addtimestamps
 
     def establish(self):
         credentials = self.get_credentials()
@@ -80,13 +79,13 @@ class Calendar(object):
 
         return credentials
 
-    def require_credentials(self, storage_path, require_from_setup=False, reenter=False):
+    def require_credentials(self, storage_path, require_from_setup=False, reenter=None):
         storage = Storage(storage_path)
         try:
             flow = client.flow_from_clientsecrets(self.CLIENT_SECRET_FILE, self.SCOPES, redirect_uri='urn:ietf:wg:oauth:2.0:oob')
             flow.user_agent = self.APPLICATION_NAME
 
-            if not reenter:
+            if reenter is None:
                 auth_uri = tinyurl.create_one(flow.step1_get_authorize_url())
 
                 if require_from_setup:
@@ -100,8 +99,15 @@ class Calendar(object):
 
                 mail.checkproperties()
                 mail.sendmail(__LS__(30100) % (__addonname__), __LS__(30101) % (auth_uri))
+                if not tools.dialogYesNo(__LS__(30080), __LS__(30087)):
+                    raise self.oAuthIncomplete('oAuth2 flow aborted by user')
+                reenter = 'kb'
 
-            auth_code = tools.dialogKeyboard(__LS__(30102))
+            if reenter == 'kb':
+                auth_code = tools.dialogKeyboard(__LS__(30102))
+            elif reenter == 'file':
+                auth_code = tools.dialogFile(__LS__(30086))
+
             if auth_code == '':
                 raise self.oAuthIncomplete('no key provided')
 
@@ -205,7 +211,9 @@ class Calendar(object):
                     if self.addtimestamps:
                         tools.writeLog('calculate additional timestamps')
                         _daydiff = relativedelta.relativedelta(_dt.date(), _now.date()).days
-                        if _daydiff == 1:
+                        if _daydiff == 0:
+                            acr = __LS__(30139)
+                        elif _daydiff == 1:
                             acr = __LS__(30140)
                         elif _daydiff == 2:
                             acr = __LS__(30141)

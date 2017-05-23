@@ -6,6 +6,13 @@
     <string id="30022">Google Calendar API</string>
 
     <string id="30030">additional Time Remarks</string>
+    <string id="30031">Show Calendar on Start</string>
+    <string id="30032">Duration</string>
+
+    <string id="30035">10 sec</string>
+    <string id="30036">15 sec</string>
+    <string id="30037">20 sec</string>
+    <string id="30038">30 sec</string>
 
     <string id="30041">SMTP-Mailserver</string>
     <string id="30042">Username</string>
@@ -27,10 +34,13 @@
     <string id="30080">Require Authentication Key</string>
     <string id="30081">An authentication key is missing, incomplete or invalid.</string>
     <string id="30082">Do You want to request a new key by email now?</string>
-    <string id="30083">Check your email account, follow the instructions within the received email and put in the generated authentication key here.</string>
+    <string id="30083">Check your email account, follow the instructions within the received email and put in the generated authentication key here. Alternatively, you can save the code to a file and load it from the setup.</string>
     <string id="30084">Re-enter authentication code</string>
+    <string id="30085">Load authentication code from file</string>
+    <string id="30086">File with authentication code</string>
+    <string id="30087">Would You enter the authentification code now?</string>
     <string id="30100">%s: Request for authentication</string>
-    <string id="30101">An application requests for an authentication code. Please visit the link below, confirm the request on that page and type in the received key sequence in your application.\n\nThis is the link for confirmation: %s</string>
+    <string id="30101">An application requests for an authentication code. Please visit the link below, confirm the request on that page and type in the received key sequence in your application. Alternatively, you can store the key in a file and load it from the setup of the addon.\n\nThis is the link for confirmation: %s</string>
     <string id="30102">Enter authentication code</string>
     <string id="30103">The authentication code is invalid. Please request a new authentication code from the addon's setup or re-enter the authentication code from the setup.</string>
 
@@ -57,7 +67,7 @@
     <string id="30136">Fri</string>
     <string id="30137">Sat</string>
     <string id="30138">Sun</string>
-
+    <string id="30139">today</string>
     <string id="30140">tomorrow</string>
     <string id="30141">day after tomorrow</string>
     <string id="30142">in %s days</string>

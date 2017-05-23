@@ -60,6 +60,12 @@ def dialogYesNo(header, message):
 def dialogKeyboard(header, type=xbmcgui.INPUT_ALPHANUM):
     return xbmcgui.Dialog().input(header.encode('utf-8'), type=type)
 
+def dialogFile(header, type=1):
+    _file = xbmcgui.Dialog().browse(type, header, 'files', '', False, False, '', False)
+    if _file:
+        with open(_file, 'r') as filehandle: return filehandle.read().rstrip()
+    return ''
+
 def jsonrpc(query):
     querystring = {"jsonrpc": "2.0", "id": 1}
     querystring.update(query)
