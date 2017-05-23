@@ -24,7 +24,7 @@
     <string id="30070">Schlüsseldatei fehlt oder defekt, Neuinstallation erforderlich</string>
     <string id="30071">Authentifizierungsprozess unvollständig</string>
     <string id="30072">Schlüssel defekt, neuen Schlüssel über Addon-Settings anfordern</string>
-    <string id="30073">Schlüssel erfolgreich erneuert</string>
+    <string id="30073">Schlüssel erfolgreich installiert</string>
     <string id="30074">%s: Nachricht von %s</string>
 
     <string id="30075">Mit dieser Mail werden die korrekten Einstellungen im Setup des KN Notizkalenders für den Versand von Emails bestätigt. Der KN Notizkalender wird diese Einstellungen für den künftigen Versand von Emails benutzen.\n\nBitte antworten Sie nicht auf diese Mail, diese wurde automatisch generiert.\n</string>

@@ -25,7 +25,7 @@
     <string id="30070">Keyfile missing, Reinstallation required</string>
     <string id="30071">Authentication process incomplete</string>
     <string id="30072">Keyfile invalid, require new one in addon settings</string>
-    <string id="30073">Keyfile succesfully renewed</string>
+    <string id="30073">Keyfile succesfully installed</string>
     <string id="30074">%s: Message from %s</string>
     <string id="30075">This mail indicates that you have created your setup for delivering mails successfully. KN Calendar Reminder will use these settings for future notifications.\n\nDo not answer to this mail, as this is generated automatically.\n</string>
     <string id="30076">Mail was successfully delivered to %s. Your setup seems to be ok for further notifications.</string>
