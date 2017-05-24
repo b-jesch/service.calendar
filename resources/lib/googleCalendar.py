@@ -241,7 +241,7 @@ class Calendar(object):
             allday = '0'
 
             for event in events:
-                _ev = self.prepare_events(event, _now, False)
+                _ev = self.prepare_events(event, _now, optTimeStamps=False)
                 _start = event['start'].get('date', event['start'].get('dateTime'))
                 dt = parser.parse(_start)
 
@@ -260,13 +260,11 @@ class Calendar(object):
                 cal_sheet.setProperty('valid', self.sheet[cid].get('valid', '0'))
                 cal_sheet.setProperty('allday', self.sheet[cid].get('allday', '0'))
                 cal_sheet.setProperty('today', self.sheet[cid].get('today', '0'))
-
                 xbmcplugin.addDirectoryItem(handle, url='', listitem=cal_sheet)
 
         elif content == 'eventlist':
-
             for event in events:
-                _ev = self.prepare_events(event, _now, self.addtimestamps)
+                _ev = self.prepare_events(event, _now, optTimeStamps=self.addtimestamps)
                 if _ev['date'].month >= sheet_m and _ev['date'].year >= sheet_y:
                     if self.addtimestamps:
                         li = xbmcgui.ListItem(label=_ev['shortdate'] + ' - ' + _ev['timestamps'], label2=_ev['summary'])
@@ -275,7 +273,6 @@ class Calendar(object):
                     li.setProperty('range', _ev['range'])
                     li.setProperty('allday', _ev['allday'])
                     li.setProperty('description', _ev['description'])
-
                     xbmcplugin.addDirectoryItem(handle, url='', listitem=li)
 
         xbmcplugin.endOfDirectory(handle, updateListing=True)
