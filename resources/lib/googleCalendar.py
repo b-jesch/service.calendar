@@ -11,6 +11,7 @@ import resources.lib.tools as tools
 import calendar
 from datetime import datetime
 from dateutil import parser, relativedelta
+import json
 
 import xbmc
 import xbmcaddon
@@ -85,6 +86,7 @@ class Calendar(object):
             flow = client.flow_from_clientsecrets(self.CLIENT_SECRET_FILE, self.SCOPES, redirect_uri='urn:ietf:wg:oauth:2.0:oob')
             flow.user_agent = self.APPLICATION_NAME
 
+            auth_code = ''
             if reenter is None:
                 auth_uri = tinyurl.create_one(flow.step1_get_authorize_url())
 
@@ -104,7 +106,7 @@ class Calendar(object):
                 reenter = 'kb'
 
             if reenter == 'kb':
-                auth_code = tools.dialogKeyboard(__LS__(30102))
+                auth_code = tools.dialogKeyboard(__LS__(30084))
             elif reenter == 'file':
                 auth_code = tools.dialogFile(__LS__(30086))
 
@@ -117,6 +119,64 @@ class Calendar(object):
             raise self.oAuthFlowExchangeError(e.message)
 
         return credentials
+
+    def get_events(self, storage, timeMin, maxResult=30):
+        cal_events = self.service.events().list(calendarId='primary', timeMin=timeMin, maxResults=maxResult,
+                                                     singleEvents=True, orderBy='startTime').execute()
+        events = cal_events.get('items', [])
+        with open(storage, 'w') as filehandle:  json.dump(events, filehandle)
+
+    def prepare_events(self, event, timebase=datetime.now(), optTimeStamps=True):
+
+        ev_item = {}
+
+        _start = event['start'].get('date', event['start'].get('dateTime'))
+        _dt = parser.parse(_start)
+        ev_item.update({'date': _dt})
+        ev_item.update({'shortdate': _dt.strftime('%d.%m')})
+
+
+        if event['start'].get('date'):
+            _allday = '1'
+            ev_item.update({'range': __LS__(30111)})
+        else:
+            _allday = '0'
+            _end = parser.parse(event['end'].get('dateTime', ''))
+            if _dt != _end:
+                ev_item.update({'range': _dt.strftime('%H:%M') + ' - ' + _end.strftime('%H:%M')})
+            else:
+                ev_item.update({'range': _dt.strftime('%H:%M')})
+
+        ev_item.update({'allday': _allday})
+        ev_item.update({'summary': event['summary']})
+
+        if optTimeStamps:
+            tools.writeLog('calculate additional timestamps')
+            _daydiff = relativedelta.relativedelta(_dt.date(), timebase.date()).days
+            if _daydiff == 0:
+                acr = __LS__(30139)
+            elif _daydiff == 1:
+                acr = __LS__(30140)
+            elif _daydiff == 2:
+                acr = __LS__(30141)
+            elif 3 <= _daydiff <= 6:
+                acr = __LS__(30142) % (_daydiff)
+            elif _daydiff / 7 == 1:
+                acr = __LS__(30143)
+            else:
+                acr = __LS__(30144) % (_daydiff / 7)
+            ev_item.update({'timestamps': acr})
+
+        try:
+            ev_item.update({'description': event['description']})
+        except KeyError:
+            ev_item.update({'description': ''})
+        return ev_item
+
+    def get_calendars(self, storage):
+        cal_list = self.service.calendarList().list().execute()
+        cals = cal_list.get('items', [])
+        with open(storage, 'w') as filehandle: json.dump(cals, filehandle)
 
     def get_colors(self):
         """
@@ -134,16 +194,19 @@ class Calendar(object):
         """
         return self.colors.get(scope, 'calendar').get(id, {u'foreground': u'#ffffff', u'background': u'#000000'})
 
-    def build_sheet(self, handle, events, content, sheet_y=None, sheet_m=None):
+    def build_sheet(self, handle, storage, content, sheet_y=None, sheet_m=None):
         """
         Building a month calendar sheet and filling days (dom) with events 
-        :param events:      event list
+        :param handle:      plugin handle
+        :param storage:     local storage path
+        :param content:     calendar content (sheet/event list)
         :param sheet_y:     year of the calendar sheet
         :param sheet_m:     month of the calender sheet
         :return:            None
         """
         self.sheet = []
         dom = 1
+        with open(storage, 'r') as filehandle: events = json.load(filehandle)
 
         # calculate current month/year if not given
         if sheet_m is None: sheet_m = datetime.today().month
@@ -201,47 +264,15 @@ class Calendar(object):
         elif content == 'eventlist':
             _now = datetime.now()
             for event in events:
-                _start = event['start'].get('date', event['start'].get('dateTime'))
-                _dt = parser.parse(_start)
-
-                if _dt.month >= sheet_m and _dt.year >= sheet_y:
-
-                    # calculate additional date synonyms
-
+                _ev = self.prepare_events(event, _now, self.addtimestamps)
+                if _ev['date'].month >= sheet_m and _ev['date'].year >= sheet_y:
                     if self.addtimestamps:
-                        tools.writeLog('calculate additional timestamps')
-                        _daydiff = relativedelta.relativedelta(_dt.date(), _now.date()).days
-                        if _daydiff == 0:
-                            acr = __LS__(30139)
-                        elif _daydiff == 1:
-                            acr = __LS__(30140)
-                        elif _daydiff == 2:
-                            acr = __LS__(30141)
-                        elif 3 <= _daydiff <= 6:
-                            acr = __LS__(30142) % (_daydiff)
-                        elif _daydiff / 7 == 1:
-                            acr = __LS__(30143)
-                        else:
-                            acr = __LS__(30144) % (_daydiff / 7)
-
-                        li = xbmcgui.ListItem(label=_dt.strftime('%d.%m') + ' - ' + acr, label2=event['summary'])
+                        li = xbmcgui.ListItem(label=_ev['shortdate'] + ' - ' + _ev['timestamps'], label2=_ev['summary'])
                     else:
-                        li = xbmcgui.ListItem(label=_dt.strftime('%d.%m'), label2=event['summary'])
-
-                    if event['start'].get('date'):
-                        li.setProperty('range', __LS__(30111))
-                        li.setProperty('allday', '1')
-                    else:
-                        dtstart = parser.parse(event['start'].get('dateTime', ''))
-                        dtend = parser.parse(event['end'].get('dateTime', ''))
-                        if dtstart != dtend:
-                            li.setProperty('range', dtstart.strftime('%H:%M') + ' - ' + dtend.strftime('%H:%M'))
-                        else:
-                            li.setProperty('range', dtstart.strftime('%H:%M'))
-                    try:
-                        li.setProperty('description', event['description'])
-                    except KeyError:
-                        pass
+                        li = xbmcgui.ListItem(label=_ev['shortdate'], label2=_ev['summary'])
+                    li.setProperty('range', _ev['range'])
+                    li.setProperty('allday', _ev['allday'])
+                    li.setProperty('description', _ev['description'])
 
                     xbmcplugin.addDirectoryItem(handle, url='', listitem=li)
 

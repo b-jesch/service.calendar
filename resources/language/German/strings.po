@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XBMC-Addons\n"
 "Report-Msgid-Bugs-To: alanwww1@xbmc.org\n"
-"POT-Creation-Date: 2017-05-23 14:57+0000\n"
+"POT-Creation-Date: 2017-05-24 08:05+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -129,9 +129,13 @@ msgctxt "#30078"
 msgid "Mail settings invalid or incomplete"
 msgstr "Einstellungen für Ihr Mail-Konto sind fehlerhaft oder unvollständig."
 
+msgctxt "#30079"
+msgid "GUI file of calendar not found"
+msgstr "GUI Datei des Kalenders nicht gefunden"
+
 msgctxt "#30080"
 msgid "Require Authentication Key"
-msgstr "Authentifizierungsschlüssel anfordern"
+msgstr "neuen Authentifizierungsschlüssel anfordern"
 
 msgctxt "#30081"
 msgid "An authentication key is missing, incomplete or invalid."
@@ -146,7 +150,7 @@ msgid "Check your email account, follow the instructions within the received ema
 msgstr "Überprüfen Sie den Posteingang Ihres Mail-Kontos, folgen Sie den Anweisungen in der E-Mail und geben Sie den Authentifizierungscode hier ein. Alternativ können Sie den Code auch in einer Datei speichern und über das Setup laden."
 
 msgctxt "#30084"
-msgid "Re-enter authentication code"
+msgid "Enter authentication code"
 msgstr "Authentifizierungsschlüssel eingeben"
 
 msgctxt "#30085"
@@ -168,10 +172,6 @@ msgstr "%s: Authentifizierungsanforderung"
 msgctxt "#30101"
 msgid "An application requests for an authentication code. Please visit the link below, confirm the request on that page and type in the received key sequence in your application. Alternatively, you can store the key in a file and load it from the setup of the addon.\n\nThis is the link for confirmation: %s"
 msgstr "Eine Kodi Addon fordert einen Authentifizierungscode an. Besuchen Sie den folgenden Link, bestätigen Sie die Anforderung auf dieser Seite und geben Sie den erhaltenen Schlüssel in die Applikation ein. Alternativ können Sie den Schlüssel auch in einer Datei speichern und diesen über das Setup des Addons laden.\n\nNachfolgend der Link für die Anforderungsbestätigung: %s"
-
-msgctxt "#30102"
-msgid "Enter authentication code"
-msgstr "Authentifizierungsschlüssel eingeben"
 
 msgctxt "#30103"
 msgid "The authentication code is invalid. Please request a new authentication code from the addon's setup or re-enter the authentication code from the setup."

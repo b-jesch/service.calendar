@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<window>
+    <defaultcontrol></defaultcontrol>
+    <controls>
+        <control type="group">
+            <width>1920</width>
+            <height>35</height>
+            <control type="image">
+                <description>ticker background image</description>
+                <width>1920</width>
+                <height>35</height>
+                <texture>weekdays.png</texture>
+            </control>
+            <control type="label">
+                <left>20</left>
+                <top>5</top>
+                <width>1800</width>
+                <height>25</height>
+                <font>font25_title</font>
+                <label>Tralala</label>
+            </control>
+            <control type="button">
+                <left>1830</left>
+                <top>5</top>
+                <width>70</width>
+                <height>25</height>
+            </control>
+        </control>
+    </controls>
+</window>

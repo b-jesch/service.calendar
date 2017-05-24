@@ -3,10 +3,10 @@
     <defaultcontrol always="true">22002</defaultcontrol>
     <controls>
         <control type="group" id="30006">
-            <left>290</left>
+            <left>285</left>
             <top>110</top>
             <include content="DialogBackgroundCommons">
-                <param name="width" value="1340" />
+                <param name="width" value="1350" />
                 <param name="height" value="850" />
                 <param name="header_label" value="$ADDON[service.calendar 30010] - $INFO[Window(Home).Property(calendar_header)]" />
                 <param name="header_id" value="1" />
@@ -264,7 +264,7 @@
                 <description>header event list</description>
                 <width>485</width>
                 <height>50</height>
-                <left>850</left>
+                <left>860</left>
                 <top>75</top>
                 <control type="image">
                     <width>485</width>
@@ -286,7 +286,7 @@
                 <width>485</width>
                 <height>720</height>
                 <top>125</top>
-                <left>850</left>
+                <left>860</left>
                 <onup>30006</onup>
                 <onleft>30008</onleft>
                 <onright>30008</onright>

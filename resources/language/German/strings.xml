@@ -31,7 +31,8 @@
     <string id="30076">Mail wurde erfolgreich an %s versendet. Ihre Einstellungen im Setup des KN Notizkalenders scheinen korrekt zu sein.</string>
     <string id="30077">Ein Fehler ist während des Versands einer Mail an %s aufgetreten. Überprüfen Sie Ihre Einstellungen im Addon sowie die Logdatei auf Fehler.</string>
     <string id="30078">Einstellungen für Ihr Mail-Konto sind fehlerhaft oder unvollständig.</string>
-    <string id="30080">Authentifizierungsschlüssel anfordern</string>
+    <string id="30079">GUI Datei des Kalenders nicht gefunden</string>
+    <string id="30080">neuen Authentifizierungsschlüssel anfordern</string>
     <string id="30081">Ihr Authentifizierungsschlüssel fehlt, ist unvollständig oder ungültig.</string>
     <string id="30082">Möchten Sie jetzt einen neuen Schlüssel per Email anfordern?</string>
     <string id="30083">Überprüfen Sie den Posteingang Ihres Mail-Kontos, folgen Sie den Anweisungen in der E-Mail und geben Sie den Authentifizierungscode hier ein. Alternativ können Sie den Code auch in einer Datei speichern und über das Setup laden.</string>
@@ -41,7 +42,6 @@
     <string id="30087">Möchten Sie den Authentifizierungsschlüssel jetzt eingeben?</string>
     <string id="30100">%s: Authentifizierungsanforderung</string>
     <string id="30101">Eine Kodi Addon fordert einen Authentifizierungscode an. Besuchen Sie den folgenden Link, bestätigen Sie die Anforderung auf dieser Seite und geben Sie den erhaltenen Schlüssel in die Applikation ein. Alternativ können Sie den Schlüssel auch in einer Datei speichern und diesen über das Setup des Addons laden.\n\nNachfolgend der Link für die Anforderungsbestätigung: %s</string>
-    <string id="30102">Authentifizierungsschlüssel eingeben</string>
     <string id="30103">Der eingegebene Authentifizierungsschlüssel ist ungültig! Fordern Sie einen neuen Schlüssel über das Setup des Addons an oder geben Sie den Authentifizierungsschlüssel erneut im Setup ein.</string>
 
     <string id="30110">nächste Termine</string>
