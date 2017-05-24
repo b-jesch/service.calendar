@@ -237,15 +237,17 @@ class Calendar(object):
                 continue
 
             event_list = []
+            _now = datetime.now()
             allday = '0'
 
             for event in events:
+                _ev = self.prepare_events(event, _now, False)
                 _start = event['start'].get('date', event['start'].get('dateTime'))
                 dt = parser.parse(_start)
 
-                if dt.day == dom and dt.month == sheet_m and dt.year == sheet_y:
-                    event_list.append(event)
-                    if event['start'].get('date'): allday = '1'
+                if _ev['date'].day == dom and _ev['date'].month == sheet_m and _ev['date'].year == sheet_y:
+                    event_list.append(_ev)
+                    if _ev['allday'] == '1': allday = '1'
 
             self.sheet.append({'cid': cid, 'valid': '1', 'dom': str(dom)})
             if len(event_list) > 0: self.sheet[cid].update(num_events=str(len(event_list)), allday=allday, events=event_list)
@@ -262,7 +264,7 @@ class Calendar(object):
                 xbmcplugin.addDirectoryItem(handle, url='', listitem=cal_sheet)
 
         elif content == 'eventlist':
-            _now = datetime.now()
+
             for event in events:
                 _ev = self.prepare_events(event, _now, self.addtimestamps)
                 if _ev['date'].month >= sheet_m and _ev['date'].year >= sheet_y:
