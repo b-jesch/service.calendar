@@ -21,16 +21,17 @@ class SMTPMail(object):
         pass
 
 
-    def __init__(self):
+    smtp_client = dict(
+        host = tools.getAddonSetting('host'),
+        user = tools.getAddonSetting('user'),
+        passwd = tools.getAddonSetting('passwd'),
+        enc = tools.getAddonSetting('enc'),
+        sender = tools.getAddonSetting('sender'),
+        recipient = tools.getAddonSetting('recipient'),
+        charset = tools.getAddonSetting('charset'))
 
-        self.smtp_client = dict(
-            host = tools.getAddonSetting('host'),
-            user = tools.getAddonSetting('user'),
-            passwd = tools.getAddonSetting('passwd'),
-            enc = tools.getAddonSetting('enc'),
-            sender = tools.getAddonSetting('sender'),
-            recipient = tools.getAddonSetting('recipient'),
-            charset = tools.getAddonSetting('charset'))
+    def __init__(self):
+        pass
 
     def setproperty(self, **param):
 

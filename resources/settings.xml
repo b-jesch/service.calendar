@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <settings>
-	<category label="30020">
-		<setting id="show_onstart" type="bool" label="30031" default="true" />
-		<setting id="showtime" type="labelenum" label="30032" lvalues="30035|30036|30037|30038" enable="eq(-1,true)" />
-		<setting id="additional_timestamps" type="bool" label="30030" default="true" />
+	<category label="30011">
+		<setting id="show_onstart" type="bool" label="30015" default="true" />
+		<setting id="numreminders" type="labelenum" label="30016" values="1|2|3|4|5" enable="eq(-1,true)" default="3" />
+		<setting id="interval" type="labelenum" label="30017" lvalues="30030|30031|30032" enable="eq(-2,true)" />
+		<setting type="sep" />
+		<setting id="abort_notification" type="action" label="30018" option="close" action="RunScript(service.calendar,action=abort_reminders)" />
+		<setting id="additional_timestamps" type="bool" label="30020" default="true" />
 	</category>
-	<category label="30021">
+	<category label="30012">
 		<setting id="host" type="text" label="30041" default="" />
 		<setting id="user" type="text" label="30042" default="" />
 		<setting id="passwd" type="text" option="hidden" label="30043" default="" />
@@ -17,9 +20,9 @@
         <setting type="sep" />
 		<setting id="checksettings" type="action" label="30054" option="close" action="RunScript(service.calendar,action=check_mailsettings)" default="" />
 	</category>
-	<category label="30022">
-		<setting id="requireauthkey" type="action" label="30080" option="close" action="RunScript(service.calendar,action=require_oauth_key)" default="" />
-		<setting id="reenterauthkey" type="action" label="30084" option="close" action="RunScript(service.calendar,action=reenter_oauth_key)" default="" />
-		<setting id="loadoauthkey" type="action" label="30085" option="close" action="RunScript(service.calendar,action=load_oauth_key)" default="" />
+	<category label="30013">
+		<setting id="requireauthkey" type="action" label="30080" option="close" action="RunScript(service.calendar,action=require_oauth_key)" />
+		<setting id="reenterauthkey" type="action" label="30084" option="close" action="RunScript(service.calendar,action=reenter_oauth_key)" />
+		<setting id="loadoauthkey" type="action" label="30085" option="close" action="RunScript(service.calendar,action=load_oauth_key)" />
 	</category>
 </settings>

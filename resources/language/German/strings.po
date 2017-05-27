@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XBMC-Addons\n"
 "Report-Msgid-Bugs-To: alanwww1@xbmc.org\n"
-"POT-Creation-Date: 2017-05-24 08:05+0000\n"
+"POT-Creation-Date: 2017-05-27 08:21+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -21,45 +21,53 @@ msgctxt "#30010"
 msgid "KN Calendar Reminder"
 msgstr "KN Notizkalender"
 
-msgctxt "#30020"
+msgctxt "#30011"
 msgid "Settings"
 msgstr "Einstellungen"
 
-msgctxt "#30021"
+msgctxt "#30012"
 msgid "Mail"
 msgstr "Mail"
 
-msgctxt "#30022"
+msgctxt "#30013"
 msgid "Google Calendar API"
 msgstr "Google Kalender API"
 
-msgctxt "#30030"
+msgctxt "#30015"
+msgid "Show Reminders on Start"
+msgstr "Erinnerung nach dem Start von Kodi anzeigen"
+
+msgctxt "#30016"
+msgid "max Count of Reminders"
+msgstr "maximale Anzahl Erinnerungen"
+
+msgctxt "#30017"
+msgid "Repeat after"
+msgstr "Wiederholen nach"
+
+msgctxt "#30018"
+msgid "Abort Notification of Reminders now"
+msgstr "Anzeige der Erinnerungen jetzt beenden"
+
+msgctxt "#30019"
+msgid "Press any Key"
+msgstr "beliebige Taste drücken"
+
+msgctxt "#30020"
 msgid "additional Time Remarks"
-msgstr "zusätzliche Zeitangaben"
+msgstr "zusätzliche Zeitangaben anzeigen"
+
+msgctxt "#30030"
+msgid "2 min"
+msgstr "2 Min"
 
 msgctxt "#30031"
-msgid "Show Calendar on Start"
-msgstr "Kalender nach dem Start von Kodi anzeigen"
+msgid "5 min"
+msgstr "5 Min"
 
 msgctxt "#30032"
-msgid "Duration"
-msgstr "Anzeigedauer"
-
-msgctxt "#30035"
-msgid "10 sec"
-msgstr "10 Sek"
-
-msgctxt "#30036"
-msgid "15 sec"
-msgstr "15 Sek"
-
-msgctxt "#30037"
-msgid "20 sec"
-msgstr "20 Sek"
-
-msgctxt "#30038"
-msgid "30 sec"
-msgstr "30 Sek"
+msgid "10 min"
+msgstr "10 Min"
 
 msgctxt "#30041"
 msgid "SMTP-Mailserver"
@@ -126,8 +134,8 @@ msgid "An error occured while delivering mail to %s. Check your settings and you
 msgstr "Ein Fehler ist während des Versands einer Mail an %s aufgetreten. Überprüfen Sie Ihre Einstellungen im Addon sowie die Logdatei auf Fehler."
 
 msgctxt "#30078"
-msgid "Mail settings invalid or incomplete"
-msgstr "Einstellungen für Ihr Mail-Konto sind fehlerhaft oder unvollständig."
+msgid "You mail settings are invalid or incomplete"
+msgstr "Die Einstellungen für Ihr Mail-Konto sind fehlerhaft oder unvollständig."
 
 msgctxt "#30079"
 msgid "GUI file of calendar not found"
@@ -135,7 +143,7 @@ msgstr "GUI Datei des Kalenders nicht gefunden"
 
 msgctxt "#30080"
 msgid "Require Authentication Key"
-msgstr "neuen Authentifizierungsschlüssel anfordern"
+msgstr "Authentifizierungsschlüssel anfordern"
 
 msgctxt "#30081"
 msgid "An authentication key is missing, incomplete or invalid."
@@ -284,3 +292,7 @@ msgstr "nächste Woche"
 msgctxt "#30144"
 msgid "in %s weeks"
 msgstr "in %s Wochen"
+
+msgctxt "#30145"
+msgid "at"
+msgstr "am"

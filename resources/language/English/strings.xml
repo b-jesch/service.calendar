@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <strings>
     <string id="30010">KN Calendar Reminder</string>
-    <string id="30020">Settings</string>
-    <string id="30021">Mail</string>
-    <string id="30022">Google Calendar API</string>
+    <string id="30011">Settings</string>
+    <string id="30012">Mail</string>
+    <string id="30013">Google Calendar API</string>
 
-    <string id="30030">additional Time Remarks</string>
-    <string id="30031">Show Calendar on Start</string>
-    <string id="30032">Duration</string>
+    <string id="30015">Show Reminders on Start</string>
+    <string id="30016">max Count of Reminders</string>
+    <string id="30017">Repeat after</string>
+    <string id="30018">Abort Notification of Reminders now</string>
+    <string id="30019">Press any Key</string>
+    <string id="30020">additional Time Remarks</string>
 
-    <string id="30035">10 sec</string>
-    <string id="30036">15 sec</string>
-    <string id="30037">20 sec</string>
-    <string id="30038">30 sec</string>
+    <string id="30030">2 min</string>
+    <string id="30031">5 min</string>
+    <string id="30032">10 min</string>
 
     <string id="30041">SMTP-Mailserver</string>
     <string id="30042">Username</string>
@@ -30,7 +32,7 @@
     <string id="30075">This mail indicates that you have created your setup for delivering mails successfully. KN Calendar Reminder will use these settings for future notifications.\n\nDo not answer to this mail, as this is generated automatically.\n</string>
     <string id="30076">Mail was successfully delivered to %s. Your setup seems to be ok for further notifications.</string>
     <string id="30077">An error occured while delivering mail to %s. Check your settings and your logfile for errors and try again.</string>
-    <string id="30078">Mail settings invalid or incomplete</string>
+    <string id="30078">You mail settings are invalid or incomplete</string>
     <string id="30079">GUI file of calendar not found</string>
     <string id="30080">Require Authentication Key</string>
     <string id="30081">An authentication key is missing, incomplete or invalid.</string>
@@ -73,4 +75,6 @@
     <string id="30142">in %s days</string>
     <string id="30143">next week</string>
     <string id="30144">in %s weeks</string>
+    <string id="30145">at</string>
+
 </strings>

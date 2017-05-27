@@ -58,21 +58,9 @@ def main(mode=None, handle=None, content=None):
         tools.dialogOK(__LS__(30010), __LS__(30076) % (mail.smtp_client['recipient']))
 
 
-    elif mode == 'service':
-        try:
-            Popup = xbmcgui.WindowXMLDialog(__xml__, __path__)
-        except RuntimeError, e:
-            raise FileNotFoundException(e)
-
-        if tools.getAddonSetting('show_onstart', sType=tools.BOOL):
-            _st = tools.getAddonSetting('showtime', sType=tools.NUM)
-            tools.writeLog('show calendar for %s seconds' % (_st), xbmc.LOGNOTICE)
-            Popup.show()
-            xbmc.Monitor().waitForAbort(_st)
-            Popup.close()
-        else:
-            Popup.doModal()
-        del Popup
+    elif mode == 'abort_reminders':
+        tools.writeLog('abort notification service by setup', xbmc.LOGNOTICE)
+        xbmcgui.Window(10000).setProperty('reminders', '0')
 
     elif mode == 'gui':
         try:
