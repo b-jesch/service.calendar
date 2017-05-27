@@ -18,9 +18,9 @@
     <disclaimer lang="en_GB">Use at your own risk. Check your origin Google calendar regularly.</disclaimer>
     <disclaimer lang="de_DE">Benutzung auf eigene Gefahr. Überprüfe regelmäßig Deinen Kalender mit der offiziellen Google-App</disclaimer>
     <license>GNU GENERAL PUBLIC LICENSE. Version 3, June 2007</license>
-    <forum></forum>
+    <forum>https://www.kodinerds.net/index.php/Thread/56444-WIP-Google-Kalender/</forum>
     <website></website>
-    <email></email>
-    <source></source>
+    <email>birger.jesch@gmail.com</email>
+    <source>https://github.com/b-jesch/service.calendar</source>
   </extension>
 </addon>
