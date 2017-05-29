@@ -7,7 +7,7 @@ import httplib2
 import os
 from resources.lib import tinyurl
 from resources.lib.simplemail import SMTPMail
-import tools
+import resources.lib.tools as t
 
 import calendar
 from datetime import datetime
@@ -50,7 +50,7 @@ class Calendar(object):
     APPLICATION_NAME = 'service.calendar'
 
     def __init__(self):
-        self.addtimestamps = tools.getAddonSetting('additional_timestamps', sType=tools.BOOL)
+        self.addtimestamps = t.getAddonSetting('additional_timestamps', sType=t.BOOL)
 
     def establish(self):
         credentials = self.get_credentials()
@@ -96,20 +96,20 @@ class Calendar(object):
                 else:
                     _dialog = '%s %s' % (__LS__(30081), __LS__(30082))
 
-                if not tools.dialogYesNo(__LS__(30080), _dialog):
+                if not t.dialogYesNo(__LS__(30080), _dialog):
                     raise self.oAuthIncomplete('oAuth2 flow aborted by user')
-                tools.dialogOK(__LS__(30080), __LS__(30083))
+                t.dialogOK(__LS__(30080), __LS__(30083))
 
                 mail.checkproperties()
                 mail.sendmail(__LS__(30100) % (__addonname__), __LS__(30101) % (auth_uri))
-                if not tools.dialogYesNo(__LS__(30080), __LS__(30087)):
+                if not t.dialogYesNo(__LS__(30080), __LS__(30087)):
                     raise self.oAuthIncomplete('oAuth2 flow aborted by user')
                 reenter = 'kb'
 
             if reenter == 'kb':
-                auth_code = tools.dialogKeyboard(__LS__(30084))
+                auth_code = t.dialogKeyboard(__LS__(30084))
             elif reenter == 'file':
-                auth_code = tools.dialogFile(__LS__(30086))
+                auth_code = t.dialogFile(__LS__(30086))
 
             if auth_code == '':
                 raise self.oAuthIncomplete('no key provided')
@@ -153,7 +153,7 @@ class Calendar(object):
         ev_item.update({'summary': event['summary']})
 
         if optTimeStamps:
-            tools.writeLog('calculate additional timestamps')
+            t.writeLog('calculate additional timestamps')
             _daydiff = relativedelta.relativedelta(_dt.date(), timebase.date()).days
             if _daydiff == 0:
                 acr = __LS__(30139)
