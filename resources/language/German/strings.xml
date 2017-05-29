@@ -16,7 +16,7 @@
     <string id="30031">5 Min</string>
     <string id="30032">10 Min</string>
 
-    <string id="30041">SMTP-Mailserver</string>
+    <string id="30041">SMTP-Mailserver (Postausgang)</string>
     <string id="30042">Nutzername</string>
     <string id="30043">Passwort</string>
     <string id="30044">Email-Adresse des Absenders</string>

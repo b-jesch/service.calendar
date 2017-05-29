@@ -40,16 +40,16 @@ class release(object):
     def __init__(self):
         self.platform = platform.system()
         self.hostname = platform.node()
+        item = {}
         if self.platform == 'Linux':
             with open('/etc/os-release', 'r') as _file:
-                item = {}
                 for _line in _file:
                     parameter, value = _line.split('=')
                     item[parameter] = value
 
-        self.osname = item.get('NAME')
-        self.osid = item.get('ID')
-        self.osversion = item.get('VERSION_ID')
+        self.osname = item.get('NAME', '')
+        self.osid = item.get('ID', '')
+        self.osversion = item.get('VERSION_ID', '')
 
 def dialogOK(header, message):
     xbmcgui.Dialog().ok(header.encode('utf-8'), message.encode('utf-8'))
