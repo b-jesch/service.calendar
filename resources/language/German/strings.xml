@@ -9,12 +9,15 @@
     <string id="30016">maximale Anzahl Erinnerungen</string>
     <string id="30017">Wiederholen nach</string>
     <string id="30018">Anzeige der Erinnerungen jetzt beenden</string>
-    <string id="30019">beliebige Taste drücken</string>
+    <string id="30019">Info-Taste drücken</string>
     <string id="30020">zusätzliche Zeitangaben anzeigen</string>
 
-    <string id="30030">2 Min</string>
-    <string id="30031">5 Min</string>
-    <string id="30032">10 Min</string>
+    <string id="30030">1 Min</string>
+    <string id="30031">2 Min</string>
+    <string id="30032">5 Min</string>
+    <string id="30033">10 Min</string>
+    <string id="30034">15 Min</string>
+    <string id="30035">30 Min</string>
 
     <string id="30041">SMTP-Mailserver (Postausgang)</string>
     <string id="30042">Nutzername</string>

@@ -5,7 +5,6 @@ import time
 
 import sys
 import os
-import json
 
 import resources.lib.tools as tools
 from resources.lib.googleCalendar import Calendar

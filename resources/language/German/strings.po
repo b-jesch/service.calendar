@@ -1,13 +1,13 @@
 # XBMC Media Center language file
 # Addon Name: KN Calendar Reminder
 # Addon id: service.calendar
-# Addon version: 0.0.1
+# Addon version: 0.0.2
 # Addon Provider: Birger Jesch
 msgid ""
 msgstr ""
 "Project-Id-Version: XBMC-Addons\n"
 "Report-Msgid-Bugs-To: alanwww1@xbmc.org\n"
-"POT-Creation-Date: 2017-05-29 08:29+0000\n"
+"POT-Creation-Date: 2017-05-29 13:20+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -50,24 +50,36 @@ msgid "Abort Notification of Reminders now"
 msgstr "Anzeige der Erinnerungen jetzt beenden"
 
 msgctxt "#30019"
-msgid "Press any Key"
-msgstr "beliebige Taste drücken"
+msgid "Press Info Key"
+msgstr "Info-Taste drücken"
 
 msgctxt "#30020"
 msgid "additional Time Remarks"
 msgstr "zusätzliche Zeitangaben anzeigen"
 
 msgctxt "#30030"
+msgid "1 min"
+msgstr "1 Min"
+
+msgctxt "#30031"
 msgid "2 min"
 msgstr "2 Min"
 
-msgctxt "#30031"
+msgctxt "#30032"
 msgid "5 min"
 msgstr "5 Min"
 
-msgctxt "#30032"
+msgctxt "#30033"
 msgid "10 min"
 msgstr "10 Min"
+
+msgctxt "#30034"
+msgid "15 min"
+msgstr "15 Min"
+
+msgctxt "#30035"
+msgid "30 min"
+msgstr "30 Min"
 
 msgctxt "#30041"
 msgid "SMTP-Mailserver (Outbox)"

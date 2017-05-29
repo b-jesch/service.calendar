@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 import xbmc
 import xbmcgui
 import xbmcaddon

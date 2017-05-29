@@ -1,13 +1,13 @@
 # XBMC Media Center language file
 # Addon Name: KN Calendar Reminder
 # Addon id: service.calendar
-# Addon version: 0.0.1
+# Addon version: 0.0.2
 # Addon Provider: Birger Jesch
 msgid ""
 msgstr ""
 "Project-Id-Version: XBMC-Addons\n"
 "Report-Msgid-Bugs-To: alanwww1@xbmc.org\n"
-"POT-Creation-Date: 2017-05-29 08:29+0000\n"
+"POT-Creation-Date: 2017-05-29 13:20+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -53,7 +53,7 @@ msgid "Abort Notification of Reminders now"
 msgstr ""
 
 msgctxt "#30019"
-msgid "Press any Key"
+msgid "Press Info Key"
 msgstr ""
 
 msgctxt "#30020"
@@ -63,18 +63,30 @@ msgstr ""
 #empty strings from id 30021 to 30029
 
 msgctxt "#30030"
-msgid "2 min"
+msgid "1 min"
 msgstr ""
 
 msgctxt "#30031"
-msgid "5 min"
+msgid "2 min"
 msgstr ""
 
 msgctxt "#30032"
+msgid "5 min"
+msgstr ""
+
+msgctxt "#30033"
 msgid "10 min"
 msgstr ""
 
-#empty strings from id 30033 to 30040
+msgctxt "#30034"
+msgid "15 min"
+msgstr ""
+
+msgctxt "#30035"
+msgid "30 min"
+msgstr ""
+
+#empty strings from id 30036 to 30040
 
 msgctxt "#30041"
 msgid "SMTP-Mailserver (Outbox)"

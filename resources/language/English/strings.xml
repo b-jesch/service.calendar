@@ -9,12 +9,15 @@
     <string id="30016">max Count of Reminders</string>
     <string id="30017">Repeat after</string>
     <string id="30018">Abort Notification of Reminders now</string>
-    <string id="30019">Press any Key</string>
+    <string id="30019">Press Info Key</string>
     <string id="30020">additional Time Remarks</string>
 
-    <string id="30030">2 min</string>
-    <string id="30031">5 min</string>
-    <string id="30032">10 min</string>
+    <string id="30030">1 min</string>
+    <string id="30031">2 min</string>
+    <string id="30032">5 min</string>
+    <string id="30033">10 min</string>
+    <string id="30034">15 min</string>
+    <string id="30035">30 min</string>
 
     <string id="30041">SMTP-Mailserver (Outbox)</string>
     <string id="30042">Username</string>

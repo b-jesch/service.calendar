@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 import smtplib
 from email.message import Message
 import tools

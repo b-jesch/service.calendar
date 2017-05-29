@@ -1,5 +1,4 @@
 # -*- encoding: utf-8 -*-
-
 from datetime import datetime
 import json
 import os
@@ -12,6 +11,7 @@ import xbmcgui
 from resources.lib.googleCalendar import Calendar
 from resources.lib.simplemail import SMTPMail
 import resources.lib.tools as tools
+import resources.lib.notification as DKT
 
 __addon__ = xbmcaddon.Addon()
 __path__ = __addon__.getAddonInfo('path')
@@ -54,37 +54,13 @@ try:
             if _ev_count > tools.getAddonSetting('numreminders', sType=tools.NUM) or xbmcgui.Window(10000).getProperty('reminders') != '1': break
 
         if events and _cycle > 0:
-
-            _counter = 5
-            _percent = 0
-            _bar = 0
-            _idleTime = xbmc.getGlobalIdleTime()
-            _aborted = False
-
-            pb = xbmcgui.DialogProgressBG()
-            pb.create(__LS__(30019), __LS__(30018))
-            pb.update(_percent)
-
-            # actualize progressbar
-
-            while _bar <= _counter:
-                _percent = int(_bar * 100 / _counter)
-                pb.update(_percent, __LS__(30019), __LS__(30018))
-
-                if _idleTime > xbmc.getGlobalIdleTime():
-                    tools.writeLog('Progress notification aborted by user', level=xbmc.LOGNOTICE)
-                    pb.close()
-                    _aborted = True
-                    break
-
-                xbmc.Monitor().waitForAbort(1)
-                _idleTime += 1
-                _bar +=1
-
-            pb.close()
-            if _aborted:
-                xbmcgui.Window(10000).setProperty('reminders', '0')
-                break
+            DialogKT = DKT.DialogKaiToast.createDialogKaiToast()
+            DialogKT.label_1 = __LS__(30019)
+            DialogKT.label_2 = __LS__(30018)
+            DialogKT.icon = __icon2__
+            DialogKT.show()
+            xbmc.Monitor().waitForAbort(5)
+            DialogKT.close()
 
         xbmc.Monitor().waitForAbort(tools.getAddonSetting('interval', sType=tools.NUM, multiplicator=60))
         _cycle += 1
