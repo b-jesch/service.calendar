@@ -71,12 +71,6 @@ def main(mode=None, handle=None, content=None):
         del Popup
 
     elif mode == 'getcontent':
-        """
-        Shows basic usage of the Google Calendar API.
-
-        Creates a Google Calendar API service object and outputs a list of the next
-        10 events on the user's calendar.
-        """
         googlecal = Calendar()
         if  not os.path.exists(TEMP_STORAGE_EVENTS) or (int(time.time()) - os.path.getmtime(TEMP_STORAGE_EVENTS) > 300):
 

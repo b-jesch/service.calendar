@@ -5,13 +5,13 @@ import tools
 
 class SMTPMail(object):
     """
-    Send a simple text mail with smtp over 
+    Send a simple text mail with smtp over
         port 25 (no encryption)
         port 465 (SSL/TLS) or
         port 587 (STARTTLS).
     Only support text, no other MIME or attachments.
-    All properties of smtp_client dict must be valid/not empty, 
-    otherwise an exception is raised. 
+    All properties of smtp_client dict must be valid/not empty,
+    otherwise an exception is raised.
     """
 
     class SMTPMailNotDeliveredException(Exception):

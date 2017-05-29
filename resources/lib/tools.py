@@ -85,7 +85,7 @@ def getAddonSetting(setting, sType=STRING, multiplicator=1):
 
 def setAddonSetting(setting, value):
     xbmcaddon.Addon().setSetting(setting, value)
-    
+
 def ParamsToDict(args):
     p_Dict = {}
     if args:

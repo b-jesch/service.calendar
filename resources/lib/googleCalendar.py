@@ -7,7 +7,7 @@ import httplib2
 import os
 from resources.lib import tinyurl
 from resources.lib.simplemail import SMTPMail
-import resources.lib.tools as tools
+import tools
 
 import calendar
 from datetime import datetime
@@ -127,7 +127,8 @@ class Calendar(object):
         events = cal_events.get('items', [])
         with open(storage, 'w') as filehandle:  json.dump(events, filehandle)
 
-    def prepare_events(self, event, timebase=datetime.now(), optTimeStamps=True):
+    @classmethod
+    def prepare_events(cls, event, timebase=datetime.now(), optTimeStamps=True):
 
         ev_item = {}
 
@@ -186,18 +187,18 @@ class Calendar(object):
         """
         self.colors = self.service.colors().get().execute()
 
-    def get_color(self, id, scope='calendar'):
+    def get_color(self, color_id, scope='calendar'):
         """
         Getting color attributes (foreground, background) for a named color id
         :param id:          color id
         :param scope:       'calendar|item'
-        :return:            dict(foreground:#RGB, background: #RGB) or fallback (white, black) 
+        :return:            dict(foreground:#RGB, background: #RGB) or fallback (white, black)
         """
-        return self.colors.get(scope, 'calendar').get(id, {u'foreground': u'#ffffff', u'background': u'#000000'})
+        return self.colors.get(scope, 'calendar').get(color_id, {u'foreground': u'#ffffff', u'background': u'#000000'})
 
     def build_sheet(self, handle, storage, content, sheet_y=None, sheet_m=None):
         """
-        Building a month calendar sheet and filling days (dom) with events 
+        Building a month calendar sheet and filling days (dom) with events
         :param handle:      plugin handle
         :param storage:     local storage path
         :param content:     calendar content (sheet/event list)
@@ -214,6 +215,7 @@ class Calendar(object):
         if sheet_y is None: sheet_y = datetime.today().year
 
         _today = None
+        _now = datetime.now()
         if sheet_m == datetime.today().month and sheet_y == datetime.today().year:
             _today = datetime.today().day
 
@@ -238,13 +240,10 @@ class Calendar(object):
                 continue
 
             event_list = []
-            _now = datetime.now()
             allday = '0'
 
             for event in events:
                 _ev = self.prepare_events(event, _now, optTimeStamps=False)
-                _start = event['start'].get('date', event['start'].get('dateTime'))
-                dt = parser.parse(_start)
 
                 if _ev['date'].day == dom and _ev['date'].month == sheet_m and _ev['date'].year == sheet_y:
                     event_list.append(_ev)

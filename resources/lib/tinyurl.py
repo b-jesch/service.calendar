@@ -23,7 +23,7 @@ in order with the given delimiter, default=%r
 """ % DELIMITER
 
 ALL_OPTIONS = (
-    (('-d', '--delimiter'), 
+    (('-d', '--delimiter'),
         dict(dest='delimiter', default=DELIMITER,
              help='delimiter for returned results')),
 )
@@ -45,8 +45,8 @@ def create_one(url):
 def create(*urls):
     for url in urls:
         yield create_one(url)
-        
-        
+
+
 def main(sysargs=sys.argv[:]):
     parser = _build_option_parser()
     opts, urls = parser.parse_args(sysargs[1:])

@@ -45,7 +45,6 @@ class DialogKaiToast(BaseWindow):
     @classmethod
     def onClick(cls, controlID):
         tools.writeLog('click received: ID %s' % (controlID))
-        pass
 
     def close(self):
         BaseWindow.close(self)
