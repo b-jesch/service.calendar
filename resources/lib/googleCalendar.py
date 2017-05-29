@@ -173,6 +173,11 @@ class Calendar(object):
             ev_item.update({'description': event['description']})
         except KeyError:
             ev_item.update({'description': ''})
+        if ev_item['description'] == '':
+            try:
+                ev_item.update({'location': event['location']})
+            except KeyError:
+                ev_item.update({'location': ''})
         return ev_item
 
     def get_calendars(self, storage):
@@ -272,7 +277,7 @@ class Calendar(object):
                         li = xbmcgui.ListItem(label=_ev['shortdate'], label2=_ev['summary'])
                     li.setProperty('range', _ev['range'])
                     li.setProperty('allday', _ev['allday'])
-                    li.setProperty('description', _ev['description'])
+                    li.setProperty('description', _ev['description'] or _ev['location'])
                     xbmcplugin.addDirectoryItem(handle, url='', listitem=li)
 
         xbmcplugin.endOfDirectory(handle, updateListing=True)
