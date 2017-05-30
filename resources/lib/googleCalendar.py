@@ -150,40 +150,31 @@ class Calendar(object):
                 ev_item.update({'range': _dt.strftime('%H:%M')})
 
         ev_item.update({'allday': _allday})
-        ev_item.update({'summary': event['summary']})
+        ev_item.update({'summary': event.get('summary', '')})
 
         if optTimeStamps:
             t.writeLog('calculate additional timestamps')
-            _daydiff = relativedelta.relativedelta(_dt.date(), timebase.date()).days
-            if _daydiff == 0:
-                acr = __LS__(30139)
-            elif _daydiff == 1:
-                acr = __LS__(30140)
-            elif _daydiff == 2:
-                acr = __LS__(30141)
-            elif 3 <= _daydiff <= 6:
-                acr = __LS__(30142) % (_daydiff)
-            elif _daydiff / 7 == 1:
-                acr = __LS__(30143)
+            _tdelta = relativedelta.relativedelta(_dt.date(), timebase.date())
+            if _tdelta.months == 0:
+                if _tdelta.days == 0: ats = __LS__(30139)
+                elif _tdelta.days == 1: ats = __LS__(30140)
+                elif _tdelta.days == 2: ats = __LS__(30141)
+                elif 3 <= _tdelta.days <= 6: ats = __LS__(30142) % (_tdelta.days)
+                elif _tdelta.weeks == 1: ats = __LS__(30143)
+                else: ats = __LS__(30144) % (_tdelta.weeks)
             else:
-                acr = __LS__(30144) % (_daydiff / 7)
-            ev_item.update({'timestamps': acr})
+                ats = __LS__(30146) % (_tdelta.months)
+            ev_item.update({'timestamps': ats})
 
-        try:
-            ev_item.update({'description': event['description']})
-        except KeyError:
-            ev_item.update({'description': ''})
-        if ev_item['description'] == '':
-            try:
-                ev_item.update({'location': event['location']})
-            except KeyError:
-                ev_item.update({'location': ''})
+        ev_item.update({'description': event.get('description', '')})
+        ev_item.update({'location': event.get('location', '')})
         return ev_item
 
     def get_calendars(self, storage):
         cal_list = self.service.calendarList().list().execute()
         cals = cal_list.get('items', [])
         with open(storage, 'w') as filehandle: json.dump(cals, filehandle)
+        return cals
 
     def get_colors(self):
         """

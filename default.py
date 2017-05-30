@@ -2,6 +2,7 @@
 from __future__ import print_function
 from datetime import datetime
 import time
+import json
 
 import sys
 import os
@@ -70,16 +71,33 @@ def main(mode=None, handle=None, content=None):
         Popup.doModal()
         del Popup
 
+    elif mode == 'require_calendars':
+        googlecal = Calendar()
+        if not os.path.exists(TEMP_STORAGE_CALENDARS) or (int(time.time()) - os.path.getmtime(TEMP_STORAGE_CALENDARS) > 300):
+            # temporary calendar storage not exists or last download is older then 300 secs
+            # refresh calendar module and store
+            tools.writeLog('establish online connection to google calendar')
+            googlecal.establish()
+            cals = googlecal.get_calendars(TEMP_STORAGE_CALENDARS)
+        else:
+            with open(TEMP_STORAGE_CALENDARS, 'r') as filehandle: cals = json.load(filehandle)
+        _list = []
+        for cal in cals:
+            _list.append(cal.get('summaryOverride', cal.get('summary', 'primary')))
+            if cal.get('primary', False): default = cal.get('summaryOverride', cal.get('summary', 'primary'))
+        dialog = xbmcgui.Dialog()
+        _idx = dialog.multiselect(__LS__(30091), _list)
+        if _idx is not None:
+            __addon__.setSetting('requirecalendars', ', '.join(_list[i] for i in _idx))
+        else:
+            __addon__.setSetting('requirecalendars', default)
+
     elif mode == 'getcontent':
         googlecal = Calendar()
         if  not os.path.exists(TEMP_STORAGE_EVENTS) or (int(time.time()) - os.path.getmtime(TEMP_STORAGE_EVENTS) > 300):
-
-            # temporary calendar storage not exists or last download is older then 300 secs
-            # refresh calendar and store
             tools.writeLog('establish online connection to google calendar')
             now = datetime.utcnow().isoformat() + 'Z'
             googlecal.establish()
-            googlecal.get_calendars(TEMP_STORAGE_CALENDARS)
             googlecal.get_events(TEMP_STORAGE_EVENTS, timeMin=now, maxResult=30)
         else:
             tools.writeLog('getting calendar events from local storage')

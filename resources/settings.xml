@@ -3,7 +3,7 @@
 	<category label="30011">
 		<setting id="show_onstart" type="bool" label="30015" default="true" />
 		<setting id="numreminders" type="labelenum" label="30016" values="1|2|3|4|5" enable="eq(-1,true)" default="3" />
-		<setting id="interval" type="labelenum" label="30017" lvalues="30030|30031|30032" enable="eq(-2,true)" />
+		<setting id="interval" type="labelenum" label="30017" lvalues="30030|30031|30032|30033|30034|30035" enable="eq(-2,true)" />
 		<setting type="sep" />
 		<setting id="abort_notification" type="action" label="30018" option="close" action="RunScript(service.calendar,action=abort_reminders)" />
 		<setting id="additional_timestamps" type="bool" label="30020" default="true" />
@@ -24,5 +24,7 @@
 		<setting id="requireauthkey" type="action" label="30080" option="close" action="RunScript(service.calendar,action=require_oauth_key)" />
 		<setting id="reenterauthkey" type="action" label="30084" option="close" action="RunScript(service.calendar,action=reenter_oauth_key)" />
 		<setting id="loadoauthkey" type="action" label="30085" option="close" action="RunScript(service.calendar,action=load_oauth_key)" />
+		<setting type="sep" />
+		<setting id="requirecalendars" type="action" label="30090" action="RunScript(service.calendar,action=require_calendars)" />
 	</category>
 </settings>

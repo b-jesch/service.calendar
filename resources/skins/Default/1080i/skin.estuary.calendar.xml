@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window id="30005">
-    <defaultcontrol always="true">22002</defaultcontrol>
+    <defaultcontrol always="true">30009</defaultcontrol>
     <controls>
         <control type="group" id="30006">
             <left>285</left>
@@ -10,7 +10,7 @@
                 <param name="height" value="850" />
                 <param name="header_label" value="$ADDON[service.calendar 30010] - $INFO[Window(Home).Property(calendar_header)]" />
                 <param name="header_id" value="1" />
-                <param name="ondown" value="30008" />
+                <!-- <param name="ondown" value="30008" /> -->
             </include>
             <control type="group">
                 <description>header calendar sheet</description>

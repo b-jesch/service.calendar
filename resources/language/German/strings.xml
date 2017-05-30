@@ -45,6 +45,8 @@
     <string id="30085">Authentifizierungsschlüssel aus Datei laden</string>
     <string id="30086">Datei mit Authentifizierungschlüssel</string>
     <string id="30087">Möchten Sie den Authentifizierungsschlüssel jetzt eingeben?</string>
+    <string id="30090">Meine Kalender</string>
+    <string id="30091">Kalender aus Liste auswählen</string>
     <string id="30100">%s: Authentifizierungsanforderung</string>
     <string id="30101">Eine Kodi Addon fordert einen Authentifizierungscode an. Besuchen Sie den folgenden Link, bestätigen Sie die Anforderung auf dieser Seite und geben Sie den erhaltenen Schlüssel in die Applikation ein. Alternativ können Sie den Schlüssel auch in einer Datei speichern und diesen über das Setup des Addons laden.\n\nNachfolgend der Link für die Anforderungsbestätigung: %s</string>
     <string id="30103">Der eingegebene Authentifizierungsschlüssel ist ungültig! Fordern Sie einen neuen Schlüssel über das Setup des Addons an oder geben Sie den Authentifizierungsschlüssel erneut im Setup ein.</string>
@@ -79,5 +81,6 @@
     <string id="30143">nächste Woche</string>
     <string id="30144">in %s Wochen</string>
     <string id="30145">am</string>
+    <string id="30146">in %s Monaten</string>
 
 </strings>
