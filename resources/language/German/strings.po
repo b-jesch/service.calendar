@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XBMC-Addons\n"
 "Report-Msgid-Bugs-To: alanwww1@xbmc.org\n"
-"POT-Creation-Date: 2017-05-30 12:39+0000\n"
+"POT-Creation-Date: 2017-05-30 16:57+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -211,7 +211,27 @@ msgstr "nächste Termine"
 
 msgctxt "#30111"
 msgid "full time"
-msgstr "ganztägig"
+msgstr "ganztags"
+
+msgctxt "#30112"
+msgid "%s days"
+msgstr "%s Tage"
+
+msgctxt "#30113"
+msgid "1 week"
+msgstr "1 Woche"
+
+msgctxt "#30114"
+msgid "%s weeks"
+msgstr "%s Wochen"
+
+msgctxt "#30115"
+msgid "1 month"
+msgstr ""
+
+msgctxt "#30116"
+msgid "%s months"
+msgstr "%s Monate"
 
 msgctxt "#30120"
 msgid "January"

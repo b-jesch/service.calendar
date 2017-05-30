@@ -132,15 +132,21 @@ class Calendar(object):
 
         ev_item = {}
 
-        _start = event['start'].get('date', event['start'].get('dateTime'))
-        _dt = parser.parse(_start)
+        _dt = parser.parse(event['start'].get('date', event['start'].get('dateTime')))
         ev_item.update({'date': _dt})
         ev_item.update({'shortdate': _dt.strftime('%d.%m')})
 
-
         if event['start'].get('date'):
             _allday = '1'
-            ev_item.update({'range': __LS__(30111)})
+            _end = parser.parse(event['end'].get('dateTime', event['end'].get('date', '')))
+            _tdelta = relativedelta.relativedelta(_end.date(), _dt.date())
+
+            if _tdelta.months == 0 and _tdelta.weeks == 0 and _tdelta.days == 1: ev_item.update({'range': __LS__(30111)})
+            elif _tdelta.months == 0 and _tdelta.weeks == 0: ev_item.update({'range': __LS__(30112) % (_tdelta.days)})
+            elif _tdelta.months == 0 and _tdelta.weeks == 1: ev_item.update({'range': __LS__(30113)})
+            elif _tdelta.months == 0: ev_item.update({'range': __LS__(30114) % (_tdelta.weeks)})
+            elif _tdelta.months == 1: ev_item.update({'range': __LS__(30115)})
+            else: ev_item.update({'range': __LS__(30116) % (_tdelta.months)})
         else:
             _allday = '0'
             _end = parser.parse(event['end'].get('dateTime', ''))

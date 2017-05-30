@@ -52,7 +52,12 @@
     <string id="30103">Der eingegebene Authentifizierungsschlüssel ist ungültig! Fordern Sie einen neuen Schlüssel über das Setup des Addons an oder geben Sie den Authentifizierungsschlüssel erneut im Setup ein.</string>
 
     <string id="30110">nächste Termine</string>
-    <string id="30111">ganztägig</string>
+    <string id="30111">ganztags</string>
+    <string id="30112">%s Tage</string>
+    <string id="30113">1 Woche</string>
+    <string id="30114">%s Wochen</string>
+    <string id="30015">1 Monat</string>
+    <string id="30116">%s Monate</string>
 
     <string id="30120">Januar</string>
     <string id="30121">Februar</string>

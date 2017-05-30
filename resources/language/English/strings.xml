@@ -53,6 +53,11 @@
 
     <string id="30110">next Events</string>
     <string id="30111">full time</string>
+    <string id="30112">%s days</string>
+    <string id="30113">1 week</string>
+    <string id="30114">%s weeks</string>
+    <string id="30115">1 month</string>
+    <string id="30116">%s months</string>
 
     <string id="30120">January</string>
     <string id="30121">February</string>
