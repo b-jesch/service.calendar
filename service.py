@@ -1,5 +1,6 @@
 # -*- encoding: utf-8 -*-
 from datetime import datetime
+from dateutil import relativedelta
 import json
 import os
 import time
@@ -10,7 +11,7 @@ import xbmcgui
 
 from resources.lib.googleCalendar import Calendar
 from resources.lib.simplemail import SMTPMail
-import resources.lib.tools as tools
+import resources.lib.tools as t
 import resources.lib.notification as DKT
 
 __addon__ = xbmcaddon.Addon()
@@ -20,9 +21,10 @@ __icon2__ = os.path.join(xbmc.translatePath(__path__), 'resources', 'skins', 'De
 __profiles__ = __addon__.getAddonInfo('profile')
 __LS__ = __addon__.getLocalizedString
 
+TEMP_STORAGE_CALENDARS = os.path.join(xbmc.translatePath(__profiles__), 'calendars.json')
 TEMP_STORAGE_EVENTS = os.path.join(xbmc.translatePath(__profiles__), 'events.json')
 
-if tools.getAddonSetting('show_onstart', sType=tools.BOOL):
+if t.getAddonSetting('show_onstart', sType=t.BOOL):
     xbmcgui.Window(10000).setProperty('reminders', '1')
 else:
     xbmcgui.Window(10000).setProperty('reminders', '0')
@@ -36,22 +38,24 @@ try:
 
             # temporary calendar storage not exists or last download is older then 300 secs
             # refresh calendar and store
-            tools.writeLog('establish online connection to google calendar')
+            t.writeLog('establish online connection to google calendar')
             now = datetime.utcnow().isoformat() + 'Z'
+            max = (datetime.utcnow() + relativedelta.relativedelta(months=t.getAddonSetting('timemax', sType=t.NUM))).isoformat() + 'Z'
             googlecal.establish()
-            googlecal.get_events(TEMP_STORAGE_EVENTS, timeMin=now, maxResult=30)
+            cals = googlecal.get_calendarIdFromSetup(TEMP_STORAGE_CALENDARS)
+            googlecal.get_events(TEMP_STORAGE_EVENTS, timeMin=now, timeMax=max, maxResult=30, calendars=cals)
         else:
-            tools.writeLog('getting calendar events from local storage')
+            t.writeLog('getting calendar events from local storage')
 
         with open(TEMP_STORAGE_EVENTS, 'r') as filehandle: events = json.load(filehandle)
 
         _ev_count = 1
         for event in events:
             _ev = googlecal.prepare_events(event)
-            tools.Notify().notify('%s %s %s' % (_ev['timestamps'], __LS__(30145), _ev['shortdate']), _ev['summary'], icon=__icon__)
+            t.Notify().notify('%s %s %s' % (_ev['timestamps'], __LS__(30145), _ev['shortdate']), _ev['summary'], icon=__icon__)
             _ev_count += 1
             xbmc.Monitor().waitForAbort(7)
-            if _ev_count > tools.getAddonSetting('numreminders', sType=tools.NUM) or xbmcgui.Window(10000).getProperty('reminders') != '1': break
+            if _ev_count > t.getAddonSetting('numreminders', sType=t.NUM) or xbmcgui.Window(10000).getProperty('reminders') != '1': break
 
         if events and _cycle > 0:
             DialogKT = DKT.DialogKaiToast.createDialogKaiToast()
@@ -59,17 +63,17 @@ try:
             DialogKT.label_2 = __LS__(30018)
             DialogKT.icon = __icon2__
             DialogKT.show()
-            xbmc.Monitor().waitForAbort(5)
+            xbmc.Monitor().waitForAbort(t.getAddonSetting('lastnoticeduration', sType=t.NUM))
             DialogKT.close()
 
-        xbmc.Monitor().waitForAbort(tools.getAddonSetting('interval', sType=tools.NUM, multiplicator=60))
+        xbmc.Monitor().waitForAbort(t.getAddonSetting('interval', sType=t.NUM, multiplicator=60))
         _cycle += 1
 
 except SMTPMail.SMPTMailInvalidOrMissingParameterException, e:
-    tools.writeLog(e.message, xbmc.LOGERROR)
-    tools.dialogOK(__LS__(30010), __LS__(30078))
+    t.writeLog(e.message, xbmc.LOGERROR)
+    t.dialogOK(__LS__(30010), __LS__(30078))
 except SMTPMail.SMTPMailNotDeliveredException, e:
-    tools.writeLog(e.message, xbmc.LOGERROR)
-    tools.dialogOK(__LS__(30010), __LS__(30077) % (SMTPMail.smtp_client['recipient']))
+    t.writeLog(e.message, xbmc.LOGERROR)
+    t.dialogOK(__LS__(30010), __LS__(30077) % (SMTPMail.smtp_client['recipient']))
 
-tools.writeLog('Notification service finished', xbmc.LOGNOTICE)
+t.writeLog('Notification service finished', xbmc.LOGNOTICE)

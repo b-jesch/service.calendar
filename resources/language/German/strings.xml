@@ -4,13 +4,21 @@
     <string id="30011">Einstellungen</string>
     <string id="30012">Mail</string>
     <string id="30013">Google Kalender API</string>
-
+    <string id="30014">Erinnerungsfenster</string>
     <string id="30015">Erinnerung nach dem Start von Kodi anzeigen</string>
-    <string id="30016">maximale Anzahl Erinnerungen</string>
+    <string id="30016">maximale Anzahl von Erinnerungen</string>
     <string id="30017">Wiederholen nach</string>
-    <string id="30018">Anzeige der Erinnerungen jetzt beenden</string>
+    <string id="30018">Hinweismeldungen jetzt beenden</string>
     <string id="30019">Info-Taste drücken</string>
     <string id="30020">zusätzliche Zeitangaben anzeigen</string>
+    <string id="30021">Anzeigedauer des Infofensters zum Abbrechen</string>
+    <string id="30022">Kalenderblatt</string>
+    <string id="30023">Vorschau für maximal</string>
+    <string id="30024">2 Monate</string>
+    <string id="30025">3 Monate</string>
+    <string id="30026">4 Monate</string>
+    <string id="30027">5 Monate</string>
+    <string id="30028">6 Monate</string>
 
     <string id="30030">1 Min</string>
     <string id="30031">2 Min</string>
@@ -18,15 +26,22 @@
     <string id="30033">10 Min</string>
     <string id="30034">15 Min</string>
     <string id="30035">30 Min</string>
+    <string id="30036">5 Sek</string>
+    <string id="30037">7 Sek</string>
+    <string id="30038">10 Sek</string>
+    <string id="30039">20 Sek</string>
 
     <string id="30041">SMTP-Mailserver (Postausgang)</string>
     <string id="30042">Nutzername</string>
     <string id="30043">Passwort</string>
     <string id="30044">Email-Adresse des Absenders</string>
     <string id="30045">Email-Adresse des Empfängers</string>
+
     <string id="30048">Zeichensatz</string>
     <string id="30049">Verschlüsselung</string>
+
     <string id="30054">Einstellungen für Mail-Konto testen</string>
+
     <string id="30070">Schlüsseldatei fehlt oder defekt, Neuinstallation erforderlich</string>
     <string id="30071">Authentifizierungsprozess unvollständig</string>
     <string id="30072">Schlüssel defekt, neuen Schlüssel über Addon-Settings anfordern</string>
@@ -45,10 +60,13 @@
     <string id="30085">Authentifizierungsschlüssel aus Datei laden</string>
     <string id="30086">Datei mit Authentifizierungschlüssel</string>
     <string id="30087">Möchten Sie den Authentifizierungsschlüssel jetzt eingeben?</string>
+
     <string id="30090">Meine Kalender</string>
     <string id="30091">Kalender aus Liste auswählen</string>
+
     <string id="30100">%s: Authentifizierungsanforderung</string>
     <string id="30101">Eine Kodi Addon fordert einen Authentifizierungscode an. Besuchen Sie den folgenden Link, bestätigen Sie die Anforderung auf dieser Seite und geben Sie den erhaltenen Schlüssel in die Applikation ein. Alternativ können Sie den Schlüssel auch in einer Datei speichern und diesen über das Setup des Addons laden.\n\nNachfolgend der Link für die Anforderungsbestätigung: %s</string>
+
     <string id="30103">Der eingegebene Authentifizierungsschlüssel ist ungültig! Fordern Sie einen neuen Schlüssel über das Setup des Addons an oder geben Sie den Authentifizierungsschlüssel erneut im Setup ein.</string>
 
     <string id="30110">nächste Termine</string>
@@ -56,7 +74,7 @@
     <string id="30112">%s Tage</string>
     <string id="30113">1 Woche</string>
     <string id="30114">%s Wochen</string>
-    <string id="30015">1 Monat</string>
+    <string id="30115">1 Monat</string>
     <string id="30116">%s Monate</string>
 
     <string id="30120">Januar</string>
@@ -71,7 +89,6 @@
     <string id="30129">Oktober</string>
     <string id="30130">November</string>
     <string id="30131">Dezember</string>
-
     <string id="30132">Mo</string>
     <string id="30133">Di</string>
     <string id="30134">Mi</string>
@@ -86,6 +103,6 @@
     <string id="30143">nächste Woche</string>
     <string id="30144">in %s Wochen</string>
     <string id="30145">am</string>
-    <string id="30146">in %s Monaten</string>
-
+    <string id="30146">1 Monat</string>
+    <string id="30147">in %s Monaten</string>
 </strings>

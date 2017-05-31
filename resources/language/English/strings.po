@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XBMC-Addons\n"
 "Report-Msgid-Bugs-To: alanwww1@xbmc.org\n"
-"POT-Creation-Date: 2017-05-30 16:57+0000\n"
+"POT-Creation-Date: 2017-05-31 12:47+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -34,7 +34,9 @@ msgctxt "#30013"
 msgid "Google Calendar API"
 msgstr ""
 
-#empty string with id 30014
+msgctxt "#30014"
+msgid "Reminder Notifications"
+msgstr ""
 
 msgctxt "#30015"
 msgid "Show Reminders on Start"
@@ -60,7 +62,39 @@ msgctxt "#30020"
 msgid "additional Time Remarks"
 msgstr ""
 
-#empty strings from id 30021 to 30029
+msgctxt "#30021"
+msgid "Duration of notification for abort message"
+msgstr ""
+
+msgctxt "#30022"
+msgid "Calendar Sheet"
+msgstr ""
+
+msgctxt "#30023"
+msgid "max Preview"
+msgstr ""
+
+msgctxt "#30024"
+msgid "2 months"
+msgstr ""
+
+msgctxt "#30025"
+msgid "3 months"
+msgstr ""
+
+msgctxt "#30026"
+msgid "4 months"
+msgstr ""
+
+msgctxt "#30027"
+msgid "5 months"
+msgstr ""
+
+msgctxt "#30028"
+msgid "6 months"
+msgstr ""
+
+#empty string with id 30029
 
 msgctxt "#30030"
 msgid "1 min"
@@ -86,7 +120,23 @@ msgctxt "#30035"
 msgid "30 min"
 msgstr ""
 
-#empty strings from id 30036 to 30040
+msgctxt "#30036"
+msgid "5 sec"
+msgstr ""
+
+msgctxt "#30037"
+msgid "7 sec"
+msgstr ""
+
+msgctxt "#30038"
+msgid "10 sec"
+msgstr ""
+
+msgctxt "#30039"
+msgid "20 sec"
+msgstr ""
+
+#empty string with id 30040
 
 msgctxt "#30041"
 msgid "SMTP-Mailserver (Outbox)"
@@ -361,5 +411,9 @@ msgid "at"
 msgstr ""
 
 msgctxt "#30146"
+msgid "1 month"
+msgstr ""
+
+msgctxt "#30147"
 msgid "in %s months"
 msgstr ""

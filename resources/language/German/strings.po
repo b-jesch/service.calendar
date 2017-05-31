@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XBMC-Addons\n"
 "Report-Msgid-Bugs-To: alanwww1@xbmc.org\n"
-"POT-Creation-Date: 2017-05-30 16:57+0000\n"
+"POT-Creation-Date: 2017-05-31 12:47+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -33,13 +33,17 @@ msgctxt "#30013"
 msgid "Google Calendar API"
 msgstr "Google Kalender API"
 
+msgctxt "#30014"
+msgid "Reminder Notifications"
+msgstr "Erinnerungsfenster"
+
 msgctxt "#30015"
 msgid "Show Reminders on Start"
 msgstr "Erinnerung nach dem Start von Kodi anzeigen"
 
 msgctxt "#30016"
 msgid "max Count of Reminders"
-msgstr "maximale Anzahl Erinnerungen"
+msgstr "maximale Anzahl von Erinnerungen"
 
 msgctxt "#30017"
 msgid "Repeat after"
@@ -47,7 +51,7 @@ msgstr "Wiederholen nach"
 
 msgctxt "#30018"
 msgid "Abort Notification of Reminders now"
-msgstr "Anzeige der Erinnerungen jetzt beenden"
+msgstr "Hinweismeldungen jetzt beenden"
 
 msgctxt "#30019"
 msgid "Press Info Key"
@@ -56,6 +60,38 @@ msgstr "Info-Taste drücken"
 msgctxt "#30020"
 msgid "additional Time Remarks"
 msgstr "zusätzliche Zeitangaben anzeigen"
+
+msgctxt "#30021"
+msgid "Duration of notification for abort message"
+msgstr "Anzeigedauer des Infofensters zum Abbrechen"
+
+msgctxt "#30022"
+msgid "Calendar Sheet"
+msgstr "Kalenderblatt"
+
+msgctxt "#30023"
+msgid "max Preview"
+msgstr "Vorschau für maximal"
+
+msgctxt "#30024"
+msgid "2 months"
+msgstr "2 Monate"
+
+msgctxt "#30025"
+msgid "3 months"
+msgstr "3 Monate"
+
+msgctxt "#30026"
+msgid "4 months"
+msgstr "4 Monate"
+
+msgctxt "#30027"
+msgid "5 months"
+msgstr "5 Monate"
+
+msgctxt "#30028"
+msgid "6 months"
+msgstr "6 Monate"
 
 msgctxt "#30030"
 msgid "1 min"
@@ -80,6 +116,22 @@ msgstr "15 Min"
 msgctxt "#30035"
 msgid "30 min"
 msgstr "30 Min"
+
+msgctxt "#30036"
+msgid "5 sec"
+msgstr "5 Sek"
+
+msgctxt "#30037"
+msgid "7 sec"
+msgstr "7 Sek"
+
+msgctxt "#30038"
+msgid "10 sec"
+msgstr "10 Sek"
+
+msgctxt "#30039"
+msgid "20 sec"
+msgstr "20 Sek"
 
 msgctxt "#30041"
 msgid "SMTP-Mailserver (Outbox)"
@@ -227,7 +279,7 @@ msgstr "%s Wochen"
 
 msgctxt "#30115"
 msgid "1 month"
-msgstr ""
+msgstr "1 Monat"
 
 msgctxt "#30116"
 msgid "%s months"
@@ -338,5 +390,9 @@ msgid "at"
 msgstr "am"
 
 msgctxt "#30146"
+msgid "1 month"
+msgstr "1 Monat"
+
+msgctxt "#30147"
 msgid "in %s months"
 msgstr "in %s Monaten"

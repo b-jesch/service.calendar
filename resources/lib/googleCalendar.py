@@ -1,14 +1,16 @@
 # -*- encoding: utf-8 -*-
 from apiclient import discovery
-from oauth2client import client, tools
+from oauth2client import client
 from oauth2client.file import Storage
 
 import httplib2
 import os
+import operator
 from resources.lib import tinyurl
 from resources.lib.simplemail import SMTPMail
 import resources.lib.tools as t
 
+import time
 import calendar
 from datetime import datetime
 from dateutil import parser, relativedelta
@@ -30,6 +32,9 @@ class Calendar(object):
         pass
 
     class oAuthMissingCredentialsFile(Exception):
+        pass
+
+    class MissingStorageFile(Exception):
         pass
 
     class oAuthIncomplete(Exception):
@@ -121,10 +126,18 @@ class Calendar(object):
 
         return credentials
 
-    def get_events(self, storage, timeMin, maxResult=30):
-        cal_events = self.service.events().list(calendarId='primary', timeMin=timeMin, maxResults=maxResult,
-                                                     singleEvents=True, orderBy='startTime').execute()
-        events = cal_events.get('items', [])
+    def get_events(self, storage, timeMin, timeMax, maxResult=30, calendars=['primary']):
+        events = []
+        for cal in calendars:
+            cal_events = self.service.events().list(calendarId=cal, timeMin=timeMin, timeMax=timeMax, maxResults=maxResult,
+                                                         singleEvents=True, orderBy='startTime').execute()
+            _evs = cal_events.get('items', [])
+            for _ev in _evs:
+                _ts = parser.parse(_ev['start'].get('dateTime', _ev['start'].get('date', ''))).timetuple()
+                _ev.update({'timestamp': int(time.mktime(_ts))})
+            events.extend(_evs)
+
+        events.sort(key=operator.itemgetter('timestamp'))
         with open(storage, 'w') as filehandle:  json.dump(events, filehandle)
 
     @classmethod
@@ -138,22 +151,25 @@ class Calendar(object):
 
         if event['start'].get('date'):
             _allday = '1'
-            _end = parser.parse(event['end'].get('dateTime', event['end'].get('date', '')))
-            _tdelta = relativedelta.relativedelta(_end.date(), _dt.date())
-
-            if _tdelta.months == 0 and _tdelta.weeks == 0 and _tdelta.days == 1: ev_item.update({'range': __LS__(30111)})
-            elif _tdelta.months == 0 and _tdelta.weeks == 0: ev_item.update({'range': __LS__(30112) % (_tdelta.days)})
-            elif _tdelta.months == 0 and _tdelta.weeks == 1: ev_item.update({'range': __LS__(30113)})
-            elif _tdelta.months == 0: ev_item.update({'range': __LS__(30114) % (_tdelta.weeks)})
-            elif _tdelta.months == 1: ev_item.update({'range': __LS__(30115)})
-            else: ev_item.update({'range': __LS__(30116) % (_tdelta.months)})
         else:
             _allday = '0'
-            _end = parser.parse(event['end'].get('dateTime', ''))
-            if _dt != _end:
-                ev_item.update({'range': _dt.strftime('%H:%M') + ' - ' + _end.strftime('%H:%M')})
+        if optTimeStamps:
+            if _allday == '1':
+                _end = parser.parse(event['end'].get('dateTime', event['end'].get('date', '')))
+                _tdelta = relativedelta.relativedelta(_end.date(), _dt.date())
+
+                if _tdelta.months == 0 and _tdelta.weeks == 0 and _tdelta.days == 1: ev_item.update({'range': __LS__(30111)})
+                elif _tdelta.months == 0 and _tdelta.weeks == 0: ev_item.update({'range': __LS__(30112) % (_tdelta.days)})
+                elif _tdelta.months == 0 and _tdelta.weeks == 1: ev_item.update({'range': __LS__(30113)})
+                elif _tdelta.months == 0: ev_item.update({'range': __LS__(30114) % (_tdelta.weeks)})
+                elif _tdelta.months == 1: ev_item.update({'range': __LS__(30115)})
+                else: ev_item.update({'range': __LS__(30116) % (_tdelta.months)})
             else:
-                ev_item.update({'range': _dt.strftime('%H:%M')})
+                _end = parser.parse(event['end'].get('dateTime', ''))
+                if _dt != _end:
+                    ev_item.update({'range': _dt.strftime('%H:%M') + ' - ' + _end.strftime('%H:%M')})
+                else:
+                    ev_item.update({'range': _dt.strftime('%H:%M')})
 
         ev_item.update({'allday': _allday})
         ev_item.update({'summary': event.get('summary', '')})
@@ -161,6 +177,7 @@ class Calendar(object):
         if optTimeStamps:
             t.writeLog('calculate additional timestamps')
             _tdelta = relativedelta.relativedelta(_dt.date(), timebase.date())
+
             if _tdelta.months == 0:
                 if _tdelta.days == 0: ats = __LS__(30139)
                 elif _tdelta.days == 1: ats = __LS__(30140)
@@ -168,19 +185,33 @@ class Calendar(object):
                 elif 3 <= _tdelta.days <= 6: ats = __LS__(30142) % (_tdelta.days)
                 elif _tdelta.weeks == 1: ats = __LS__(30143)
                 else: ats = __LS__(30144) % (_tdelta.weeks)
-            else:
-                ats = __LS__(30146) % (_tdelta.months)
+            elif _tdelta.months == 1: ats = __LS__(30146)
+            else: ats = __LS__(30147) % (_tdelta.months)
+
             ev_item.update({'timestamps': ats})
 
         ev_item.update({'description': event.get('description', '')})
         ev_item.update({'location': event.get('location', '')})
         return ev_item
 
-    def get_calendars(self, storage):
+    def set_calendars(self, storage):
         cal_list = self.service.calendarList().list().execute()
         cals = cal_list.get('items', [])
         with open(storage, 'w') as filehandle: json.dump(cals, filehandle)
-        return cals
+
+    def get_calendars(self, storage):
+        if not os.path.exists(storage):
+            raise self.MissingStorageFile('missing %s' % (storage))
+        with open(storage, 'r') as filehandle: return json.load(filehandle)
+
+    def get_calendarIdFromSetup(self, storage):
+        _cals = t.getAddonSetting('calendars').split(', ')
+        if len(_cals) == 1 and _cals[0] == 'primary': return _cals
+        calId = []
+        cals = self.get_calendars(storage)
+        for cal in cals:
+            if cal.get('summaryOverride', cal.get('summary', 'primary')) in _cals: calId.append(cal.get('id'))
+        return calId
 
     def get_colors(self):
         """

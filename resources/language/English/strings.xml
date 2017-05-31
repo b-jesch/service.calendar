@@ -4,13 +4,21 @@
     <string id="30011">Settings</string>
     <string id="30012">Mail</string>
     <string id="30013">Google Calendar API</string>
-
+    <string id="30014">Reminder Notifications</string>
     <string id="30015">Show Reminders on Start</string>
     <string id="30016">max Count of Reminders</string>
     <string id="30017">Repeat after</string>
     <string id="30018">Abort Notification of Reminders now</string>
     <string id="30019">Press Info Key</string>
     <string id="30020">additional Time Remarks</string>
+    <string id="30021">Duration of notification for abort message</string>
+    <string id="30022">Calendar Sheet</string>
+    <string id="30023">max Preview</string>
+    <string id="30024">2 months</string>
+    <string id="30025">3 months</string>
+    <string id="30026">4 months</string>
+    <string id="30027">5 months</string>
+    <string id="30028">6 months</string>
 
     <string id="30030">1 min</string>
     <string id="30031">2 min</string>
@@ -18,15 +26,22 @@
     <string id="30033">10 min</string>
     <string id="30034">15 min</string>
     <string id="30035">30 min</string>
+    <string id="30036">5 sec</string>
+    <string id="30037">7 sec</string>
+    <string id="30038">10 sec</string>
+    <string id="30039">20 sec</string>
 
     <string id="30041">SMTP-Mailserver (Outbox)</string>
     <string id="30042">Username</string>
     <string id="30043">Password</string>
     <string id="30044">Email of Sender</string>
     <string id="30045">Email of Recipient</string>
+
     <string id="30048">Charset</string>
     <string id="30049">Encryption</string>
+
     <string id="30054">Check Email Settings</string>
+
     <string id="30070">Keyfile missing, Reinstallation required</string>
     <string id="30071">Authentication process incomplete</string>
     <string id="30072">Keyfile invalid, require new one in addon settings</string>
@@ -45,10 +60,13 @@
     <string id="30085">Load authentication code from file</string>
     <string id="30086">File with authentication code</string>
     <string id="30087">Would You enter the authentification code now?</string>
+
     <string id="30090">My calendars</string>
     <string id="30091">Choose calendars from list</string>
+
     <string id="30100">%s: Request for authentication</string>
     <string id="30101">An application requests for an authentication code. Please visit the link below, confirm the request on that page and type in the received key sequence in your application. Alternatively, you can store the key in a file and load it from the setup of the addon.\n\nThis is the link for confirmation: %s</string>
+
     <string id="30103">The authentication code is invalid. Please request a new authentication code from the addon's setup or re-enter the authentication code from the setup.</string>
 
     <string id="30110">next Events</string>
@@ -71,7 +89,6 @@
     <string id="30129">October</string>
     <string id="30130">November</string>
     <string id="30131">December</string>
-
     <string id="30132">Mon</string>
     <string id="30133">Tue</string>
     <string id="30134">Wed</string>
@@ -86,5 +103,6 @@
     <string id="30143">next week</string>
     <string id="30144">in %s weeks</string>
     <string id="30145">at</string>
-    <string id="30146">in %s months</string>
+    <string id="30146">1 month</string>
+    <string id="30147">in %s months</string>
 </strings>
