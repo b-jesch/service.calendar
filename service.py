@@ -40,10 +40,10 @@ try:
             # refresh calendar and store
             t.writeLog('establish online connection to google calendar')
             now = datetime.utcnow().isoformat() + 'Z'
-            max = (datetime.utcnow() + relativedelta.relativedelta(months=t.getAddonSetting('timemax', sType=t.NUM))).isoformat() + 'Z'
+            timemax = (datetime.utcnow() + relativedelta.relativedelta(months=t.getAddonSetting('timemax', sType=t.NUM))).isoformat() + 'Z'
             googlecal.establish()
             cals = googlecal.get_calendarIdFromSetup(TEMP_STORAGE_CALENDARS)
-            googlecal.get_events(TEMP_STORAGE_EVENTS, timeMin=now, timeMax=max, maxResult=30, calendars=cals)
+            googlecal.get_events(TEMP_STORAGE_EVENTS, TEMP_STORAGE_CALENDARS, now, timemax, maxResult=30, calendars=cals)
         else:
             t.writeLog('getting calendar events from local storage')
 

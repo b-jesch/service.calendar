@@ -29,6 +29,6 @@
 		<setting id="reenterauthkey" type="action" label="30084" option="close" action="RunScript(service.calendar,action=reenter_oauth_key)" />
 		<setting id="loadoauthkey" type="action" label="30085" option="close" action="RunScript(service.calendar,action=load_oauth_key)" />
 		<setting type="sep" />
-		<setting id="calendars" type="action" label="30090" action="RunScript(service.calendar,action=set_calendars)" default="primary" />
+		<setting id="calendars" type="action" label="30090" option="close" action="RunScript(service.calendar,action=set_calendars)" default="primary" />
 	</category>
 </settings>

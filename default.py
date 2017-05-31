@@ -34,6 +34,8 @@ class FileNotFoundException(Exception):
     pass
 
 def main(mode=None, handle=None, content=None):
+    now = datetime.utcnow().isoformat() + 'Z'
+    timemax = (datetime.utcnow() + relativedelta.relativedelta(months=tools.getAddonSetting('timemax', sType=tools.NUM))).isoformat() + 'Z'
 
     if mode == 'require_oauth_key':
         Calendar().require_credentials(Calendar().CLIENT_CREDENTIALS, require_from_setup=True)
@@ -73,35 +75,29 @@ def main(mode=None, handle=None, content=None):
 
     elif mode == 'set_calendars':
         googlecal = Calendar()
-        if not os.path.exists(TEMP_STORAGE_CALENDARS) or (int(time.time()) - os.path.getmtime(TEMP_STORAGE_CALENDARS) > 300):
-            # temporary calendar storage not exists or last download is older then 300 secs
-            # refresh calendar module and store
-            tools.writeLog('establish online connection to google calendar')
-            googlecal.establish()
-            googlecal.set_calendars(TEMP_STORAGE_CALENDARS)
+        tools.writeLog('establish online connection to google calendar')
+        googlecal.establish()
+        cals = googlecal.set_calendars(TEMP_STORAGE_CALENDARS)
 
-        cals = googlecal.get_calendars(TEMP_STORAGE_CALENDARS)
         _list = []
         for cal in cals:
             _list.append(cal.get('summaryOverride', cal.get('summary', 'primary')))
-            # set primary calendar as default calendar
-            if cal.get('primary', False): default = cal.get('summaryOverride', cal.get('summary', 'primary'))
         dialog = xbmcgui.Dialog()
         _idx = dialog.multiselect(__LS__(30091), _list)
         if _idx is not None:
             __addon__.setSetting('calendars', ', '.join(_list[i] for i in _idx))
-        else:
-            __addon__.setSetting('calendars', default)
+
+        cals = googlecal.get_calendarIdFromSetup(TEMP_STORAGE_CALENDARS)
+        googlecal.get_events(TEMP_STORAGE_EVENTS, TEMP_STORAGE_CALENDARS, now, timemax, maxResult=30, calendars=cals)
 
     elif mode == 'getcontent':
         googlecal = Calendar()
         if  not os.path.exists(TEMP_STORAGE_EVENTS) or (int(time.time()) - os.path.getmtime(TEMP_STORAGE_EVENTS) > 300):
+            # content is older than 300 secs, getting it online and store into local storage
             tools.writeLog('establish online connection to google calendar')
-            now = datetime.utcnow().isoformat() + 'Z'
-            max = (datetime.utcnow() + relativedelta.relativedelta(months=tools.getAddonSetting('timemax', sType=tools.NUM))).isoformat() + 'Z'
             googlecal.establish()
             cals = googlecal.get_calendarIdFromSetup(TEMP_STORAGE_CALENDARS)
-            googlecal.get_events(TEMP_STORAGE_EVENTS, timeMin=now, timeMax=max, maxResult=30, calendars=cals)
+            googlecal.get_events(TEMP_STORAGE_EVENTS, TEMP_STORAGE_CALENDARS, now, timemax, maxResult=30, calendars=cals)
         else:
             tools.writeLog('getting calendar content from local storage')
 
