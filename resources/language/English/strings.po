@@ -1,13 +1,13 @@
 # XBMC Media Center language file
 # Addon Name: KN Calendar Reminder
 # Addon id: service.calendar
-# Addon version: 0.0.3
+# Addon version: 0.0.4
 # Addon Provider: Birger Jesch
 msgid ""
 msgstr ""
 "Project-Id-Version: XBMC-Addons\n"
 "Report-Msgid-Bugs-To: alanwww1@xbmc.org\n"
-"POT-Creation-Date: 2017-05-31 12:47+0000\n"
+"POT-Creation-Date: 2017-05-31 14:55+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -71,7 +71,7 @@ msgid "Calendar Sheet"
 msgstr ""
 
 msgctxt "#30023"
-msgid "max Preview"
+msgid "Load Preview for max"
 msgstr ""
 
 msgctxt "#30024"
