@@ -27,6 +27,7 @@ __xml__ = xbmc.translatePath('special://skin').split(os.sep)[-2] + '.calendar.xm
 if not os.path.exists(xbmc.translatePath(__profiles__)): os.makedirs(xbmc.translatePath(__profiles__))
 
 TEMP_STORAGE_EVENTS = os.path.join(xbmc.translatePath(__profiles__), 'events.json')
+TEMP_STORAGE_NOTIFICATIONS = os.path.join(xbmc.translatePath(__profiles__), 'notifications.json')
 TEMP_STORAGE_CALENDARS = os.path.join(xbmc.translatePath(__profiles__), 'calendars.json')
 TEMP_STORAGE_COLORS = os.path.join(xbmc.translatePath(__profiles__), 'colors.json')
 
@@ -87,8 +88,25 @@ def main(mode=None, handle=None, content=None):
         if _idx is not None:
             __addon__.setSetting('calendars', ', '.join(_list[i] for i in _idx))
 
-        cals = googlecal.get_calendarIdFromSetup(TEMP_STORAGE_CALENDARS)
+        cals = googlecal.get_calendarIdFromSetup('calendars', TEMP_STORAGE_CALENDARS)
         googlecal.get_events(TEMP_STORAGE_EVENTS, TEMP_STORAGE_CALENDARS, now, timemax, maxResult=30, calendars=cals)
+
+    elif mode == 'set_notifications':
+        googlecal = Calendar()
+        tools.writeLog('establish online connection to google calendar')
+        googlecal.establish()
+        cals = googlecal.set_calendars(TEMP_STORAGE_CALENDARS)
+
+        _list = []
+        for cal in cals:
+            _list.append(cal.get('summaryOverride', cal.get('summary', 'primary')))
+        dialog = xbmcgui.Dialog()
+        _idx = dialog.multiselect(__LS__(30091), _list)
+        if _idx is not None:
+            __addon__.setSetting('notifications', ', '.join(_list[i] for i in _idx))
+
+        cals = googlecal.get_calendarIdFromSetup('notifications', TEMP_STORAGE_CALENDARS)
+        googlecal.get_events(TEMP_STORAGE_NOTIFICATIONS, TEMP_STORAGE_CALENDARS, now, timemax, maxResult=30, calendars=cals)
 
     elif mode == 'getcontent':
         googlecal = Calendar()
@@ -96,7 +114,7 @@ def main(mode=None, handle=None, content=None):
             # content is older than 300 secs, getting it online and store into local storage
             tools.writeLog('establish online connection to google calendar')
             googlecal.establish()
-            cals = googlecal.get_calendarIdFromSetup(TEMP_STORAGE_CALENDARS)
+            cals = googlecal.get_calendarIdFromSetup('calendars', TEMP_STORAGE_CALENDARS)
             googlecal.get_events(TEMP_STORAGE_EVENTS, TEMP_STORAGE_CALENDARS, now, timemax, maxResult=30, calendars=cals)
         else:
             tools.writeLog('getting calendar content from local storage')

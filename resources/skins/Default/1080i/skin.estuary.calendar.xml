@@ -108,8 +108,8 @@
                 <height>720</height>
                 <onleft>30009</onleft>
                 <onright>30009</onright>
-                <onup>30008</onup>
-                <ondown>30008</ondown>
+                <onup>RunScript(service.calendar,action=prev)</onup>
+                <ondown>RunScript(service.calendar,action=next)</ondown>
                 <itemlayout width="120" height="120">
                     <control type="group">
                         <control type="image">
@@ -391,7 +391,7 @@
                         <left>475</left>
                         <top>1</top>
                         <texture>colors/white.png</texture>
-                        <colordiffuse>$INFO[ListItem.Property(cal_color)]</colordiffuse>
+                        <colordiffuse>COLOR $INFO[ListItem.Property(cal_color)]]</colordiffuse>
                     </control>
                     <control type="label">
                         <description>event</description>

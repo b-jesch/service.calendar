@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XBMC-Addons\n"
 "Report-Msgid-Bugs-To: alanwww1@xbmc.org\n"
-"POT-Creation-Date: 2017-05-31 14:55+0000\n"
+"POT-Creation-Date: 2017-06-01 07:27+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -258,7 +258,11 @@ msgctxt "#30091"
 msgid "Choose calendars from list"
 msgstr ""
 
-#empty strings from id 30092 to 30099
+msgctxt "#30092"
+msgid "My Notifications"
+msgstr ""
+
+#empty strings from id 30093 to 30099
 
 msgctxt "#30100"
 msgid "%s: Request for authentication"
@@ -411,7 +415,7 @@ msgid "at"
 msgstr ""
 
 msgctxt "#30146"
-msgid "1 month"
+msgid "in 1 month"
 msgstr ""
 
 msgctxt "#30147"

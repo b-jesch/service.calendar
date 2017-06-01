@@ -206,9 +206,9 @@ class Calendar(object):
             raise self.MissingStorageFile('missing %s' % (storage))
         with open(storage, 'r') as filehandle: return json.load(filehandle)
 
-    def get_calendarIdFromSetup(self, storage):
+    def get_calendarIdFromSetup(self, setting, storage):
         calId = []
-        _cals = t.getAddonSetting('calendars').split(', ')
+        _cals = t.getAddonSetting(setting).split(', ')
         if len(_cals) == 1 and _cals[0] == 'primary':
             calId.append('primary')
         else:

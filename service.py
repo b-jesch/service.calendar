@@ -22,7 +22,7 @@ __profiles__ = __addon__.getAddonInfo('profile')
 __LS__ = __addon__.getLocalizedString
 
 TEMP_STORAGE_CALENDARS = os.path.join(xbmc.translatePath(__profiles__), 'calendars.json')
-TEMP_STORAGE_EVENTS = os.path.join(xbmc.translatePath(__profiles__), 'events.json')
+TEMP_STORAGE_NOTIFICATIONS = os.path.join(xbmc.translatePath(__profiles__), 'notifications.json')
 
 if t.getAddonSetting('show_onstart', sType=t.BOOL):
     xbmcgui.Window(10000).setProperty('reminders', '1')
@@ -34,7 +34,7 @@ _cycle = 0
 try:
     googlecal = Calendar()
     while xbmcgui.Window(10000).getProperty('reminders') == '1':
-        if not os.path.exists(TEMP_STORAGE_EVENTS) or (int(time.time()) - os.path.getmtime(TEMP_STORAGE_EVENTS) > 300):
+        if not os.path.exists(TEMP_STORAGE_NOTIFICATIONS) or (int(time.time()) - os.path.getmtime(TEMP_STORAGE_NOTIFICATIONS) > 300):
 
             # temporary calendar storage not exists or last download is older then 300 secs
             # refresh calendar and store
@@ -42,12 +42,12 @@ try:
             now = datetime.utcnow().isoformat() + 'Z'
             timemax = (datetime.utcnow() + relativedelta.relativedelta(months=t.getAddonSetting('timemax', sType=t.NUM))).isoformat() + 'Z'
             googlecal.establish()
-            cals = googlecal.get_calendarIdFromSetup(TEMP_STORAGE_CALENDARS)
-            googlecal.get_events(TEMP_STORAGE_EVENTS, TEMP_STORAGE_CALENDARS, now, timemax, maxResult=30, calendars=cals)
+            cals = googlecal.get_calendarIdFromSetup('notifications', TEMP_STORAGE_CALENDARS)
+            googlecal.get_events(TEMP_STORAGE_NOTIFICATIONS, TEMP_STORAGE_CALENDARS, now, timemax, maxResult=30, calendars=cals)
         else:
             t.writeLog('getting calendar events from local storage')
 
-        with open(TEMP_STORAGE_EVENTS, 'r') as filehandle: events = json.load(filehandle)
+        with open(TEMP_STORAGE_NOTIFICATIONS, 'r') as filehandle: events = json.load(filehandle)
 
         _ev_count = 1
         for event in events:
