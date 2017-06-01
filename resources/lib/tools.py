@@ -5,6 +5,9 @@ import xbmcaddon
 import json
 import platform
 import re
+import os
+
+from PIL import Image
 
 # Constants
 
@@ -94,3 +97,22 @@ def ParamsToDict(args):
             par, value = pair.split('=')
             p_Dict[par] = value
     return p_Dict
+
+
+def createImage(width, height, rgbColor, path):
+    """
+    Creates an RGB image and store it into path
+    :param width:       width of image in pixel
+    :param height:      height of image in pixel
+    :param rgbColor:    color of the background in #RRGGBB hex notation
+    :param path:        Path/Name of image
+    :return:            True if successful
+    """
+
+    if os.path.exists(path): return path
+    rgb = rgbColor.lstrip('#')
+    lv = len(rgb)
+    bgcolor = tuple(int(rgb[i:i + lv // 3], 16) for i in range(0, lv, lv // 3))
+    img = Image.new('RGB', (width, height), bgcolor)
+    img.save(path)
+    return path

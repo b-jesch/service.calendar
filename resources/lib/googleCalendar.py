@@ -21,8 +21,12 @@ import xbmcaddon
 import xbmcplugin
 import xbmcgui
 
-__addonname__ = xbmcaddon.Addon().getAddonInfo('id')
-__LS__ = xbmcaddon.Addon().getLocalizedString
+__addon__ = xbmcaddon.Addon()
+__addonname__ = __addon__.getAddonInfo('id')
+__addonpath__ = __addon__.getAddonInfo('path')
+__profiles__ = __addon__.getAddonInfo('profile')
+__LS__ = __addon__.getLocalizedString
+__icon__ = os.path.join(xbmc.translatePath(__addonpath__), 'resources', 'skins', 'Default', 'media', 'icon.png')
 
 mail = SMTPMail()
 
@@ -46,13 +50,17 @@ class Calendar(object):
     # If modifying these scopes, delete your previously saved credentials
     # at ~/.credentials/service.calendar.json
 
-    if not os.path.exists(os.path.join(xbmc.translatePath(xbmcaddon.Addon().getAddonInfo('profile')), '_credentials')):
-        os.makedirs(os.path.join(xbmc.translatePath(xbmcaddon.Addon().getAddonInfo('profile')), '_credentials'))
+    CLIENTS_PATH = os.path.join(xbmc.translatePath(__profiles__), '_credentials')
+    if not os.path.exists(CLIENTS_PATH): os.makedirs(CLIENTS_PATH)
+
+    COLOR_PATH = os.path.join(xbmc.translatePath(__profiles__), 'colors')
+    if not os.path.exists(COLOR_PATH): os.makedirs(COLOR_PATH)
 
     SCOPES = 'https://www.googleapis.com/auth/calendar.readonly'
-    CLIENT_SECRET_FILE = os.path.join(xbmc.translatePath(xbmcaddon.Addon().getAddonInfo('path')), '_credentials', 'service.calendar.oauth.json')
-    CLIENT_CREDENTIALS = os.path.join(xbmc.translatePath(xbmcaddon.Addon().getAddonInfo('profile')), '_credentials', 'service.calendar.credits.json')
+    CLIENT_SECRET_FILE = os.path.join(xbmc.translatePath(__addonpath__), '_credentials', 'service.calendar.oauth.json')
+    CLIENT_CREDENTIALS = os.path.join(CLIENTS_PATH, 'service.calendar.credits.json')
     APPLICATION_NAME = 'service.calendar'
+    SHEET_ID = 30008
 
     def __init__(self):
         self.addtimestamps = t.getAddonSetting('additional_timestamps', sType=t.BOOL)
@@ -131,11 +139,11 @@ class Calendar(object):
             _evs = cal_events.get('items', [])
             if _evs:
                 # set additional attributes
-                calColor = self.get_calendarBGcolor(cal, storage_cals).replace('#', 'FF').upper()
+                calColor = self.get_calendarBGcolorImage(cal, storage_cals)
                 for _ev in _evs:
                     _ts = parser.parse(_ev['start'].get('dateTime', _ev['start'].get('date', ''))).timetuple()
                     _ev.update({'timestamp': int(time.mktime(_ts))})
-                    _ev.update({'cal_color': calColor})
+                    _ev.update({'icon': calColor})
                 events.extend(_evs)
 
         events.sort(key=operator.itemgetter('timestamp'))
@@ -176,7 +184,7 @@ class Calendar(object):
         ev_item.update({'summary': event.get('summary', '')})
         ev_item.update({'description': event.get('description', None)})
         ev_item.update({'location': event.get('location', None)})
-        ev_item.update({'cal_color': event.get('cal_color', '#80808080')})
+        ev_item.update({'icon': event.get('icon', '')})
 
         if optTimeStamps:
             t.writeLog('calculate additional timestamps')
@@ -218,10 +226,11 @@ class Calendar(object):
         t.writeLog('getting cal ids from setup: %s' % (', '.join(calId)))
         return calId
 
-    def get_calendarBGcolor(self, calendarId, storage):
+    def get_calendarBGcolorImage(self, calendarId, storage):
         with open(storage, 'r') as filehandle: cals = json.load(filehandle)
         for cal in cals:
-            if cal.get('id') == calendarId: return cal.get('backgroundColor')
+            if cal.get('id') == calendarId:
+                return t.createImage(15, 40, cal.get('backgroundColor', '#808080'), os.path.join(self.COLOR_PATH, cal.get('backgroundColor', '#808080') + '.png'))
 
     def get_colors(self):
         """
@@ -251,6 +260,7 @@ class Calendar(object):
         """
         self.sheet = []
         dom = 1
+        wid = xbmcgui.Window(xbmcgui.getCurrentWindowId())
         with open(storage, 'r') as filehandle: events = json.load(filehandle)
 
         # calculate current month/year if not given
@@ -258,6 +268,7 @@ class Calendar(object):
         if sheet_y is None: sheet_y = datetime.today().year
 
         _today = None
+        _todayCID = 0
         _now = datetime.now()
         if sheet_m == datetime.today().month and sheet_y == datetime.today().year:
             _today = datetime.today().day
@@ -294,7 +305,9 @@ class Calendar(object):
 
             self.sheet.append({'cid': cid, 'valid': '1', 'dom': str(dom)})
             if len(event_list) > 0: self.sheet[cid].update(num_events=str(len(event_list)), allday=allday, events=event_list)
-            if _today == int(self.sheet[cid].get('dom')): self.sheet[cid].update(today='1')
+            if _today == int(self.sheet[cid].get('dom')):
+                self.sheet[cid].update(today='1')
+                _todayCID = cid
             dom += 1
 
         if content == 'sheet':
@@ -304,18 +317,19 @@ class Calendar(object):
                 cal_sheet.setProperty('allday', self.sheet[cid].get('allday', '0'))
                 cal_sheet.setProperty('today', self.sheet[cid].get('today', '0'))
                 xbmcplugin.addDirectoryItem(handle, url='', listitem=cal_sheet)
+            # set at least focus to the current day
+            xbmc.executebuiltin('Control.SetFocus(%s, %s)' % (self.SHEET_ID, _todayCID))
 
         elif content == 'eventlist':
             for event in events:
                 _ev = self.prepare_events(event, _now, optTimeStamps=self.addtimestamps)
                 if _ev['date'].month >= sheet_m and _ev['date'].year >= sheet_y:
                     if self.addtimestamps:
-                        li = xbmcgui.ListItem(label=_ev['shortdate'] + ' - ' + _ev['timestamps'], label2=_ev['summary'])
+                        li = xbmcgui.ListItem(label=_ev['shortdate'] + ' - ' + _ev['timestamps'], label2=_ev['summary'], iconImage=_ev['icon'])
                     else:
-                        li = xbmcgui.ListItem(label=_ev['shortdate'], label2=_ev['summary'])
+                        li = xbmcgui.ListItem(label=_ev['shortdate'], label2=_ev['summary'], iconImage=_ev['icon'])
                     li.setProperty('range', _ev.get('range', ''))
                     li.setProperty('allday', _ev.get('allday', '0'))
-                    li.setProperty('cal_color', _ev.get('cal_color'))
                     li.setProperty('description', _ev.get('description') or _ev.get('location') or _ev.get('cal_color'))
                     xbmcplugin.addDirectoryItem(handle, url='', listitem=li)
 
