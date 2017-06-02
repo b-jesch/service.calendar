@@ -112,7 +112,7 @@ def createImage(width, height, rgbColor, path):
     if os.path.exists(path): return path
     rgb = rgbColor.lstrip('#')
     lv = len(rgb)
-    bgcolor = tuple(int(rgb[i:i + lv // 3], 16) for i in range(0, lv, lv // 3))
+    bgcolor = tuple(int(rgb[i:i + lv / 3], 16) for i in range(0, lv, lv / 3))
     img = Image.new('RGB', (width, height), bgcolor)
     img.save(path)
     return path
