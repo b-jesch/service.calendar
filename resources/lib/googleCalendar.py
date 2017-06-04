@@ -260,7 +260,6 @@ class Calendar(object):
         """
         self.sheet = []
         dom = 1
-        wid = xbmcgui.Window(xbmcgui.getCurrentWindowId())
         with open(storage, 'r') as filehandle: events = json.load(filehandle)
 
         # calculate current month/year if not given
