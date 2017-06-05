@@ -232,7 +232,7 @@ class Calendar(object):
             if cal.get('id') == calendarId:
                 return t.createImage(15, 40, cal.get('backgroundColor', '#808080'), os.path.join(self.COLOR_PATH, cal.get('backgroundColor', '#808080') + '.png'))
 
-    def build_sheet(self, handle, storage, content, sheet_y=None, sheet_m=None):
+    def build_sheet(self, handle, storage, content):
         """
         Building a month calendar sheet and filling days (dom) with events
         :param handle:      plugin handle
@@ -244,22 +244,17 @@ class Calendar(object):
         """
         self.sheet = []
         dom = 1
-        with open(storage, 'r') as filehandle: events = json.load(filehandle)
-
-        # calculate current month/year if not given
-        if sheet_m is None: sheet_m = datetime.today().month
-        if sheet_y is None: sheet_y = datetime.today().year
-
         _today = None
         _todayCID = 0
         _now = datetime.now()
+
+        with open(storage, 'r') as filehandle: events = json.load(filehandle)
+
+        sheet_m = int(xbmcgui.Window(10000).getProperty('calendar_month'))
+        sheet_y = int(xbmcgui.Window(10000).getProperty('calendar_year'))
+
         if sheet_m == datetime.today().month and sheet_y == datetime.today().year:
             _today = datetime.today().day
-
-        _header = '%s %s' % (__LS__(30119 + sheet_m), sheet_y)
-        xbmcgui.Window(10000).setProperty('calendar_header', _header)
-        xbmcgui.Window(10000).setProperty('calendar_month', str(sheet_m))
-        xbmcgui.Window(10000).setProperty('calendar_year', str(sheet_y))
 
         start, sheets = calendar.monthrange(sheet_y, sheet_m)
         prolog = (parser.parse('%s/1/%s' % (sheet_m, sheet_y)) - relativedelta.relativedelta(days=start)).day

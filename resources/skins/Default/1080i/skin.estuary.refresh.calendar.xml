@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window id="30005">
-    <defaultcontrol always="true">22002</defaultcontrol>
+    <defaultcontrol always="true">30009</defaultcontrol>
     <controls>
         <control type="group" id="30006">
             <left>285</left>
@@ -10,7 +10,6 @@
                 <param name="height" value="850" />
                 <param name="header_label" value="$ADDON[service.calendar 30010] - $INFO[Window(Home).Property(calendar_header)]" />
                 <param name="header_id" value="1" />
-                <param name="ondown" value="30008" />
             </include>
             <control type="group">
                 <description>header calendar sheet</description>
@@ -109,8 +108,8 @@
                 <height>720</height>
                 <onleft>30009</onleft>
                 <onright>30009</onright>
-                <onup>30008</onup>
-                <ondown>30008</ondown>
+                <onup>RunScript(service.calendar,action=prev)</onup>
+                <ondown>RunScript(service.calendar,action=next)</ondown>
                 <itemlayout width="120" height="120">
                     <control type="group">
                         <control type="image">
@@ -257,7 +256,7 @@
                         </control>
                     </control>
                 </focusedlayout>
-                <content>plugin://service.calendar?action=getcontent&amp;content=sheet</content>
+                <content>plugin://service.calendar?action=getcontent&amp;content=sheet&amp;month=$INFO[Window(Home).Property(calendar_month)]&amp;year=$INFO[Window(Home).Property(calendar_year)]</content>
                 <onclick>noop</onclick>
             </control>
             <control type="group">
@@ -310,7 +309,7 @@
                         <top>5</top>
                         <left>5</left>
                         <font>font25_title</font>
-                        <label>$INFO[ListItem.Label]</label>
+                        <info>ListItem.Label</info>
                     </control>
                     <control type="label">
                         <description>time of event</description>
@@ -321,7 +320,16 @@
                         <align>right</align>
                         <font>font20_title</font>
                         <textcolor>FF808080</textcolor>
-                        <label>$INFO[ListItem.Property(range)]</label>
+                        <info>ListItem.Property(range)</info>
+                    </control>
+                    <control type="image">
+                        <description>google calendar color</description>
+                        <width>15</width>
+                        <height>40</height>
+                        <left>475</left>
+                        <top>1</top>
+                        <texture>colors/white.png</texture>
+                        <info colordiffuse="$INFO[ListItem.Property(cal_color)]">ListItem.Icon</info>
                     </control>
                     <control type="label">
                         <description>event</description>
@@ -330,7 +338,7 @@
                         <top>40</top>
                         <left>5</left>
                         <font>font13</font>
-                        <label>$INFO[ListItem.Label2]</label>
+                        <info>ListItem.Label2</info>
                     </control>
                     <control type="label">
                         <description>description</description>
@@ -340,7 +348,7 @@
                         <left>5</left>
                         <textcolor>FF808080</textcolor>
                         <font>font_flag</font>
-                        <label>$INFO[ListItem.Property(description)]</label>
+                        <info>ListItem.Property(description)</info>
                     </control>
                 </itemlayout>
                 <focusedlayout width="485" height="120">
@@ -348,22 +356,22 @@
                         <width>485</width>
                         <height>120</height>
                         <texture colordiffuse="button_focus">eventlist_bg_1_selected.png</texture>
-                        <visible>!String.IsEqual(ListItem.Property(allday),1)</visible>
+                        <visible>!String.IsEqual(ListItem.Property(allday),1) + Control.HasFocus(30009)</visible>
                     </control>
                     <control type="image">
                         <width>485</width>
                         <height>120</height>
                         <texture colordiffuse="button_focus">eventlist_bg_2_selected.png</texture>
-                        <visible>String.IsEqual(ListItem.Property(allday),1)</visible>
+                        <visible>String.IsEqual(ListItem.Property(allday),1) + Control.HasFocus(30009</visible>
                     </control>
                     <control type="label">
                         <description>date of event</description>
-                        <width>375</width>
+                        <width>275</width>
                         <height>30</height>
                         <top>5</top>
                         <left>5</left>
                         <font>font25_title</font>
-                        <label>$INFO[ListItem.Label]</label>
+                        <info>ListItem.Label</info>
                     </control>
                     <control type="label">
                         <description>time of event</description>
@@ -373,8 +381,17 @@
                         <left>260</left>
                         <align>right</align>
                         <font>font20_title</font>
-                        <textcolor>FFFFFFFF</textcolor>
-                        <label>$INFO[ListItem.Property(range)]</label>
+                        <textcolor>FF808080</textcolor>
+                        <info>ListItem.Property(range)</info>
+                    </control>
+                    <control type="image">
+                        <description>google calendar color</description>
+                        <width>15</width>
+                        <height>40</height>
+                        <left>475</left>
+                        <top>1</top>
+                        <texture>colors/white.png</texture>
+                        <info>ListItem.Icon</info>
                     </control>
                     <control type="label">
                         <description>event</description>
@@ -383,7 +400,7 @@
                         <top>40</top>
                         <left>5</left>
                         <font>font13</font>
-                        <label>$INFO[ListItem.Label2]</label>
+                        <info>ListItem.Label2</info>
                     </control>
                     <control type="label">
                         <description>description</description>
@@ -391,12 +408,12 @@
                         <height>30</height>
                         <top>80</top>
                         <left>5</left>
-                        <textcolor>FFFFFFFF</textcolor>
+                        <textcolor>FF808080</textcolor>
                         <font>font_flag</font>
-                        <label>$INFO[ListItem.Property(description)]</label>
+                        <info>ListItem.Property(description)</info>
                     </control>
                 </focusedlayout>
-                <content>plugin://service.calendar?action=getcontent&amp;content=eventlist</content>
+                <content>plugin://service.calendar?action=getcontent&amp;content=eventlist&amp;month=$INFO[Window(Home).Property(calendar_month)]&amp;year=$INFO[Window(Home).Property(calendar_year)]</content>
                 <onclick>noop</onclick>
             </control>
         </control>

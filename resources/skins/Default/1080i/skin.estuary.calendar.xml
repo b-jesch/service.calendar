@@ -108,8 +108,8 @@
                 <height>720</height>
                 <onleft>30009</onleft>
                 <onright>30009</onright>
-                <onup>RunScript(service.calendar,action=prev&amp;content=sheet)</onup>
-                <ondown>RunScript(service.calendar,action=next&amp;content=sheet)</ondown>
+                <onup>RunScript(service.calendar,action=prev)</onup>
+                <ondown>RunScript(service.calendar,action=next)</ondown>
                 <itemlayout width="120" height="120">
                     <control type="group">
                         <control type="image">
@@ -256,7 +256,7 @@
                         </control>
                     </control>
                 </focusedlayout>
-                <content>plugin://service.calendar?action=getcontent&amp;content=sheet</content>
+                <content>plugin://service.calendar?action=getcontent&amp;content=sheet&amp;month=$INFO[Window(Home).Property(calendar_month)]&amp;year=$INFO[Window(Home).Property(calendar_year)]</content>
                 <onclick>noop</onclick>
             </control>
             <control type="group">
@@ -413,7 +413,7 @@
                         <info>ListItem.Property(description)</info>
                     </control>
                 </focusedlayout>
-                <content>plugin://service.calendar?action=getcontent&amp;content=eventlist</content>
+                <content>plugin://service.calendar?action=getcontent&amp;content=eventlist&amp;month=$INFO[Window(Home).Property(calendar_month)]&amp;year=$INFO[Window(Home).Property(calendar_year)]</content>
                 <onclick>noop</onclick>
             </control>
         </control>

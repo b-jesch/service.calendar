@@ -30,8 +30,34 @@ TEMP_STORAGE_EVENTS = os.path.join(xbmc.translatePath(__profiles__), 'events.jso
 TEMP_STORAGE_NOTIFICATIONS = os.path.join(xbmc.translatePath(__profiles__), 'notifications.json')
 TEMP_STORAGE_CALENDARS = os.path.join(xbmc.translatePath(__profiles__), 'calendars.json')
 
+if not (xbmcgui.Window(10000).getProperty('calendar_month') or xbmcgui.Window(10000).getProperty('calendar_year')):
+    xbmcgui.Window(10000).setProperty('calendar_month', str(datetime.today().month))
+    xbmcgui.Window(10000).setProperty('calendar_year', str(datetime.today().year))
+    _header = '%s %s' % (__LS__(30119 + datetime.today().month), datetime.today().year)
+    xbmcgui.Window(10000).setProperty('calendar_header', _header)
+
 class FileNotFoundException(Exception):
     pass
+
+def calc_sheet_properties(direction):
+    sheet_m = int(xbmcgui.Window(10000).getProperty('calendar_month')) + direction
+    sheet_y = int(xbmcgui.Window(10000).getProperty('calendar_year'))
+
+    if (sheet_m < datetime.today().month) or \
+            (sheet_m >= datetime.today().month + tools.getAddonSetting('timemax', sType=tools.NUM)):
+        return
+
+    if sheet_m < 1:
+        sheet_m = 12
+        sheet_y -= 1
+    elif sheet_m > 12:
+        sheet_m = 1
+        sheet_y += 1
+
+    xbmcgui.Window(10000).setProperty('calendar_month', str(sheet_m))
+    xbmcgui.Window(10000).setProperty('calendar_year', str(sheet_y))
+    _header = '%s %s' % (__LS__(30119 + sheet_m), sheet_y)
+    xbmcgui.Window(10000).setProperty('calendar_header', _header)
 
 def main(mode=None, handle=None, content=None):
     now = datetime.utcnow().isoformat() + 'Z'
@@ -121,40 +147,11 @@ def main(mode=None, handle=None, content=None):
         googlecal.build_sheet(handle, TEMP_STORAGE_EVENTS, content)
 
     elif mode == 'prev':
-        googlecal = Calendar()
-        if  not os.path.exists(TEMP_STORAGE_EVENTS) or (int(time.time()) - os.path.getmtime(TEMP_STORAGE_EVENTS) > 300):
-            # content is older than 300 secs, getting it online and store into local storage
-            tools.writeLog('establish online connection to google calendar')
-            googlecal.establish()
-            cals = googlecal.get_calendarIdFromSetup('calendars', TEMP_STORAGE_CALENDARS)
-            googlecal.get_events(TEMP_STORAGE_EVENTS, TEMP_STORAGE_CALENDARS, now, timemax, maxResult=30, calendars=cals)
-        else:
-            tools.writeLog('getting calendar content from local storage')
-
-        prev_sheet_y = int(xbmcgui.Window(10000).getProperty('calendar_year'))
-        prev_sheet_m = int(xbmcgui.Window(10000).getProperty('calendar_month')) - 1
-        if prev_sheet_m < 1:
-            prev_sheet_m = 12
-            prev_sheet_y -= 1
-        googlecal.build_sheet(handle, TEMP_STORAGE_EVENTS, content, sheet_y=prev_sheet_y, sheet_m=prev_sheet_m)
+        calc_sheet_properties(-1)
 
     elif mode == 'next':
-        googlecal = Calendar()
-        if  not os.path.exists(TEMP_STORAGE_EVENTS) or (int(time.time()) - os.path.getmtime(TEMP_STORAGE_EVENTS) > 300):
-            # content is older than 300 secs, getting it online and store into local storage
-            tools.writeLog('establish online connection to google calendar')
-            googlecal.establish()
-            cals = googlecal.get_calendarIdFromSetup('calendars', TEMP_STORAGE_CALENDARS)
-            googlecal.get_events(TEMP_STORAGE_EVENTS, TEMP_STORAGE_CALENDARS, now, timemax, maxResult=30, calendars=cals)
-        else:
-            tools.writeLog('getting calendar content from local storage')
+        calc_sheet_properties(1)
 
-        prev_sheet_y = int(xbmcgui.Window(10000).getProperty('calendar_year'))
-        prev_sheet_m = int(xbmcgui.Window(10000).getProperty('calendar_month')) + 1
-        if prev_sheet_m > 12:
-            prev_sheet_m = 1
-            prev_sheet_y += 1
-        googlecal.build_sheet(handle, TEMP_STORAGE_EVENTS, content, sheet_y=prev_sheet_y, sheet_m=prev_sheet_m)
     else:
         pass
 
