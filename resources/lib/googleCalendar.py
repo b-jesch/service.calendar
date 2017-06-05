@@ -232,22 +232,6 @@ class Calendar(object):
             if cal.get('id') == calendarId:
                 return t.createImage(15, 40, cal.get('backgroundColor', '#808080'), os.path.join(self.COLOR_PATH, cal.get('backgroundColor', '#808080') + '.png'))
 
-    def get_colors(self):
-        """
-        Getting colors from google calender app and store them in property colors
-        :return:            None
-        """
-        self.colors = self.service.colors().get().execute()
-
-    def get_color(self, color_id, scope='calendar'):
-        """
-        Getting color attributes (foreground, background) for a named color id
-        :param id:          color id
-        :param scope:       'calendar|item'
-        :return:            dict(foreground:#RGB, background: #RGB) or fallback (white, black)
-        """
-        return self.colors.get(scope, 'calendar').get(color_id, {u'foreground': u'#ffffff', u'background': u'#000000'})
-
     def build_sheet(self, handle, storage, content, sheet_y=None, sheet_m=None):
         """
         Building a month calendar sheet and filling days (dom) with events
@@ -274,6 +258,8 @@ class Calendar(object):
 
         _header = '%s %s' % (__LS__(30119 + sheet_m), sheet_y)
         xbmcgui.Window(10000).setProperty('calendar_header', _header)
+        xbmcgui.Window(10000).setProperty('calendar_month', str(sheet_m))
+        xbmcgui.Window(10000).setProperty('calendar_year', str(sheet_y))
 
         start, sheets = calendar.monthrange(sheet_y, sheet_m)
         prolog = (parser.parse('%s/1/%s' % (sheet_m, sheet_y)) - relativedelta.relativedelta(days=start)).day
