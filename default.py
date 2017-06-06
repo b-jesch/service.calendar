@@ -28,7 +28,6 @@ if not os.path.exists(xbmc.translatePath(__profiles__)): os.makedirs(xbmc.transl
 
 TEMP_STORAGE_EVENTS = os.path.join(xbmc.translatePath(__profiles__), 'events.json')
 TEMP_STORAGE_NOTIFICATIONS = os.path.join(xbmc.translatePath(__profiles__), 'notifications.json')
-TEMP_STORAGE_CALENDARS = os.path.join(xbmc.translatePath(__profiles__), 'calendars.json')
 
 if not (xbmcgui.Window(10000).getProperty('calendar_month') or xbmcgui.Window(10000).getProperty('calendar_year')):
     xbmcgui.Window(10000).setProperty('calendar_month', str(datetime.today().month))
@@ -45,6 +44,7 @@ def calc_sheet_properties(direction):
 
     if (sheet_m < datetime.today().month) or \
             (sheet_m >= datetime.today().month + tools.getAddonSetting('timemax', sType=tools.NUM)):
+        tools.writeLog('prev/next month outside boundary')
         return
 
     if sheet_m < 1:
@@ -58,6 +58,18 @@ def calc_sheet_properties(direction):
     xbmcgui.Window(10000).setProperty('calendar_year', str(sheet_y))
     _header = '%s %s' % (__LS__(30119 + sheet_m), sheet_y)
     xbmcgui.Window(10000).setProperty('calendar_header', _header)
+
+def set_localsetting(setting):
+    googlecal = Calendar()
+    cals = googlecal.get_calendars()
+
+    _list = []
+    for cal in cals:
+        _list.append(cal.get('summaryOverride', cal.get('summary', 'primary')))
+    dialog = xbmcgui.Dialog()
+    _idx = dialog.multiselect(__LS__(30091), _list)
+    if _idx is not None:
+        __addon__.setSetting(setting, ', '.join(_list[i] for i in _idx))
 
 def main(mode=None, handle=None, content=None):
     now = datetime.utcnow().isoformat() + 'Z'
@@ -100,51 +112,18 @@ def main(mode=None, handle=None, content=None):
         del Popup
 
     elif mode == 'set_calendars':
+        set_localsetting('calendars')
         googlecal = Calendar()
-        tools.writeLog('establish online connection to google calendar')
-        googlecal.establish()
-        cals = googlecal.set_calendars(TEMP_STORAGE_CALENDARS)
-
-        _list = []
-        for cal in cals:
-            _list.append(cal.get('summaryOverride', cal.get('summary', 'primary')))
-        dialog = xbmcgui.Dialog()
-        _idx = dialog.multiselect(__LS__(30091), _list)
-        if _idx is not None:
-            __addon__.setSetting('calendars', ', '.join(_list[i] for i in _idx))
-
-        cals = googlecal.get_calendarIdFromSetup('calendars', TEMP_STORAGE_CALENDARS)
-        googlecal.get_events(TEMP_STORAGE_EVENTS, TEMP_STORAGE_CALENDARS, now, timemax, maxResult=30, calendars=cals)
+        googlecal.get_events(TEMP_STORAGE_EVENTS, now, timemax, maxResult=30, calendars=googlecal.get_calendarIdFromSetup('calendars'))
 
     elif mode == 'set_notifications':
+        set_localsetting('notifications')
         googlecal = Calendar()
-        tools.writeLog('establish online connection to google calendar')
-        googlecal.establish()
-        cals = googlecal.set_calendars(TEMP_STORAGE_CALENDARS)
-
-        _list = []
-        for cal in cals:
-            _list.append(cal.get('summaryOverride', cal.get('summary', 'primary')))
-        dialog = xbmcgui.Dialog()
-        _idx = dialog.multiselect(__LS__(30091), _list)
-        if _idx is not None:
-            __addon__.setSetting('notifications', ', '.join(_list[i] for i in _idx))
-
-        cals = googlecal.get_calendarIdFromSetup('notifications', TEMP_STORAGE_CALENDARS)
-        googlecal.get_events(TEMP_STORAGE_NOTIFICATIONS, TEMP_STORAGE_CALENDARS, now, timemax, maxResult=30, calendars=cals)
+        googlecal.get_events(TEMP_STORAGE_NOTIFICATIONS, now, timemax, maxResult=30, calendars=googlecal.get_calendarIdFromSetup('notifications'))
 
     elif mode == 'getcontent':
         googlecal = Calendar()
-        if  not os.path.exists(TEMP_STORAGE_EVENTS) or (int(time.time()) - os.path.getmtime(TEMP_STORAGE_EVENTS) > 300):
-            # content is older than 300 secs, getting it online and store into local storage
-            tools.writeLog('establish online connection to google calendar')
-            googlecal.establish()
-            cals = googlecal.get_calendarIdFromSetup('calendars', TEMP_STORAGE_CALENDARS)
-            googlecal.get_events(TEMP_STORAGE_EVENTS, TEMP_STORAGE_CALENDARS, now, timemax, maxResult=30, calendars=cals)
-        else:
-            tools.writeLog('getting calendar content from local storage')
-
-        googlecal.build_sheet(handle, TEMP_STORAGE_EVENTS, content)
+        googlecal.build_sheet(handle, TEMP_STORAGE_EVENTS, content, now, timemax, maxResult=30, calendars=googlecal.get_calendarIdFromSetup('calendars'))
 
     elif mode == 'prev':
         calc_sheet_properties(-1)

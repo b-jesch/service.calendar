@@ -10,7 +10,7 @@
 		<setting id="abort_notification" type="action" label="30018" option="close" action="RunScript(service.calendar,action=abort_reminders)" />
 		<setting type="lsep" label="30022" />
 		<setting id="additional_timestamps" type="bool" label="30020" default="true" />
-		<setting id="timemax" type="labelenum" label="30023" lvalues="30024|30025|30026|30027|30028" default="30025" />
+		<setting id="timemax" type="labelenum" label="30023" lvalues="30024|30025|30026|30027|30028" default="2" />
 	</category>
 	<category label="30012">
 		<setting id="host" type="text" label="30041" default="" />

@@ -34,20 +34,9 @@ _cycle = 0
 try:
     googlecal = Calendar()
     while xbmcgui.Window(10000).getProperty('reminders') == '1':
-        if not os.path.exists(TEMP_STORAGE_NOTIFICATIONS) or (int(time.time()) - os.path.getmtime(TEMP_STORAGE_NOTIFICATIONS) > 300):
-
-            # temporary calendar storage not exists or last download is older then 300 secs
-            # refresh calendar and store
-            t.writeLog('establish online connection to google calendar')
-            now = datetime.utcnow().isoformat() + 'Z'
-            timemax = (datetime.utcnow() + relativedelta.relativedelta(months=t.getAddonSetting('timemax', sType=t.NUM))).isoformat() + 'Z'
-            googlecal.establish()
-            cals = googlecal.get_calendarIdFromSetup('notifications', TEMP_STORAGE_CALENDARS)
-            googlecal.get_events(TEMP_STORAGE_NOTIFICATIONS, TEMP_STORAGE_CALENDARS, now, timemax, maxResult=30, calendars=cals)
-        else:
-            t.writeLog('getting calendar events from local storage')
-
-        with open(TEMP_STORAGE_NOTIFICATIONS, 'r') as filehandle: events = json.load(filehandle)
+        now = datetime.utcnow().isoformat() + 'Z'
+        timemax = (datetime.utcnow() + relativedelta.relativedelta(months=t.getAddonSetting('timemax', sType=t.NUM))).isoformat() + 'Z'
+        events = googlecal.get_events(TEMP_STORAGE_NOTIFICATIONS, now, timemax, maxResult=30, calendars=googlecal.get_calendarIdFromSetup('notifications'))
 
         _ev_count = 1
         for event in events:

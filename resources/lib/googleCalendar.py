@@ -38,9 +38,6 @@ class Calendar(object):
     class oAuthMissingCredentialsFile(Exception):
         pass
 
-    class MissingStorageFile(Exception):
-        pass
-
     class oAuthIncomplete(Exception):
         pass
 
@@ -53,7 +50,7 @@ class Calendar(object):
     CLIENTS_PATH = os.path.join(xbmc.translatePath(__profiles__), '_credentials')
     if not os.path.exists(CLIENTS_PATH): os.makedirs(CLIENTS_PATH)
 
-    COLOR_PATH = os.path.join(xbmc.translatePath(__profiles__), 'colors')
+    COLOR_PATH = os.path.join(xbmc.translatePath(__profiles__), '_colors')
     if not os.path.exists(COLOR_PATH): os.makedirs(COLOR_PATH)
 
     SCOPES = 'https://www.googleapis.com/auth/calendar.readonly'
@@ -61,6 +58,8 @@ class Calendar(object):
     CLIENT_CREDENTIALS = os.path.join(CLIENTS_PATH, 'service.calendar.credits.json')
     APPLICATION_NAME = 'service.calendar'
     SHEET_ID = 30008
+
+    TEMP_STORAGE_CALENDARS = os.path.join(xbmc.translatePath(__profiles__), 'calendars.json')
 
     def __init__(self):
         self.addtimestamps = t.getAddonSetting('additional_timestamps', sType=t.BOOL)
@@ -131,23 +130,32 @@ class Calendar(object):
 
         return credentials
 
-    def get_events(self, storage_events, storage_cals, timeMin, timeMax, maxResult=30, calendars='primary'):
-        events = []
-        for cal in calendars:
-            cal_events = self.service.events().list(calendarId=cal, timeMin=timeMin, timeMax=timeMax, maxResults=maxResult,
-                                                         singleEvents=True, orderBy='startTime').execute()
-            _evs = cal_events.get('items', [])
-            if _evs:
-                # set additional attributes
-                calColor = self.get_calendarBGcolorImage(cal, storage_cals)
-                for _ev in _evs:
-                    _ts = parser.parse(_ev['start'].get('dateTime', _ev['start'].get('date', ''))).timetuple()
-                    _ev.update({'timestamp': int(time.mktime(_ts))})
-                    _ev.update({'icon': calColor})
-                events.extend(_evs)
+    def get_events(self, storage, timeMin, timeMax, maxResult=30, calendars='primary'):
+        if not os.path.exists(storage) or not t.lastmodified(storage, 60):
+            t.writeLog('establish online connection for getting events')
+            self.establish()
 
-        events.sort(key=operator.itemgetter('timestamp'))
-        with open(storage_events, 'w') as filehandle:  json.dump(events, filehandle)
+            events = []
+            for cal in calendars:
+                cal_events = self.service.events().list(calendarId=cal, timeMin=timeMin, timeMax=timeMax, maxResults=maxResult,
+                                                             singleEvents=True, orderBy='startTime').execute()
+                _evs = cal_events.get('items', [])
+                if _evs:
+                    # set additional attributes
+                    calColor = self.get_calendarBGcolorImage(cal)
+                    for _ev in _evs:
+                        _ts = parser.parse(_ev['start'].get('dateTime', _ev['start'].get('date', ''))).timetuple()
+                        _ev.update({'timestamp': int(time.mktime(_ts))})
+                        _ev.update({'icon': calColor})
+                    events.extend(_evs)
+
+            events.sort(key=operator.itemgetter('timestamp'))
+            with open(storage, 'w') as filehandle:  json.dump(events, filehandle)
+        else:
+            t.writeLog('getting events from local storage')
+            with open(storage, 'r') as filehandle: events = json.load(filehandle)
+        return events
+
 
     @classmethod
     def prepare_events(cls, event, timebase=datetime.now(), optTimeStamps=True):
@@ -203,52 +211,48 @@ class Calendar(object):
 
         return ev_item
 
-    def set_calendars(self, storage):
-        cal_list = self.service.calendarList().list().execute()
-        cals = cal_list.get('items', [])
-        with open(storage, 'w') as filehandle: json.dump(cals, filehandle)
-        return cals
+    def get_calendars(self):
+        if not os.path.exists(self.TEMP_STORAGE_CALENDARS) or not t.lastmodified(self.TEMP_STORAGE_CALENDARS, 60):
+            t.writeLog('establish online connection for getting calendars')
+            self.establish()
+            cal_list = self.service.calendarList().list().execute()
+            cals = cal_list.get('items', [])
+            with open(self.TEMP_STORAGE_CALENDARS, 'w') as filehandle: json.dump(cals, filehandle)
+            return cals
+        else:
+            t.writeLog('getting calendars from local storage')
+            with open(self.TEMP_STORAGE_CALENDARS, 'r') as filehandle: return json.load(filehandle)
 
-    def get_calendars(self, storage):
-        if not os.path.exists(storage):
-            raise self.MissingStorageFile('missing %s' % (storage))
-        with open(storage, 'r') as filehandle: return json.load(filehandle)
-
-    def get_calendarIdFromSetup(self, setting, storage):
+    def get_calendarIdFromSetup(self, setting):
         calId = []
         _cals = t.getAddonSetting(setting).split(', ')
         if len(_cals) == 1 and _cals[0] == 'primary':
             calId.append('primary')
         else:
-            cals = self.get_calendars(storage)
+            cals = self.get_calendars()
             for cal in cals:
                 if cal.get('summaryOverride', cal.get('summary', 'primary')) in _cals: calId.append(cal.get('id'))
         t.writeLog('getting cal ids from setup: %s' % (', '.join(calId)))
         return calId
 
-    def get_calendarBGcolorImage(self, calendarId, storage):
-        with open(storage, 'r') as filehandle: cals = json.load(filehandle)
+    def get_calendarBGcolorImage(self, calendarId):
+        cals = self.get_calendars()
         for cal in cals:
             if cal.get('id') == calendarId:
                 return t.createImage(15, 40, cal.get('backgroundColor', '#808080'), os.path.join(self.COLOR_PATH, cal.get('backgroundColor', '#808080') + '.png'))
 
-    def build_sheet(self, handle, storage, content):
-        """
-        Building a month calendar sheet and filling days (dom) with events
-        :param handle:      plugin handle
-        :param storage:     local storage path
-        :param content:     calendar content (sheet/event list)
-        :param sheet_y:     year of the calendar sheet
-        :param sheet_m:     month of the calender sheet
-        :return:            None
-        """
+    def build_sheet(self, handle, storage, content, now, timemax, maxResult, calendars):
+        '''
+        googlecal.build_sheet(handle, TEMP_STORAGE_EVENTS, content, now, timemax, maxResult=30, calendars=googlecal.get_calendarIdFromSetup('calendars'))
+        '''
         self.sheet = []
         dom = 1
         _today = None
         _todayCID = 0
         _now = datetime.now()
 
-        with open(storage, 'r') as filehandle: events = json.load(filehandle)
+        # with open(storage, 'r') as filehandle: events = json.load(filehandle)
+        events = self.get_events(storage, now, timemax, maxResult, calendars)
 
         sheet_m = int(xbmcgui.Window(10000).getProperty('calendar_month'))
         sheet_y = int(xbmcgui.Window(10000).getProperty('calendar_year'))

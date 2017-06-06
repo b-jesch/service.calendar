@@ -6,6 +6,7 @@ import json
 import platform
 import re
 import os
+import time
 
 from PIL import Image
 
@@ -25,7 +26,6 @@ def writeLog(message, level=xbmc.LOGDEBUG):
 
 
 class Notify(object):
-
     def __init__(self):
         self.prev_header = ''
         self.prev_message = ''
@@ -40,7 +40,6 @@ class Notify(object):
 
 
 class release(object):
-
     def __init__(self):
         self.platform = platform.system()
         self.hostname = platform.node()
@@ -54,6 +53,12 @@ class release(object):
         self.osname = item.get('NAME', '')
         self.osid = item.get('ID', '')
         self.osversion = item.get('VERSION_ID', '')
+
+def lastmodified(path, limit):
+    if (int(time.time()) - os.path.getmtime(path)) > limit:
+        return False
+    else:
+        return True
 
 def dialogOK(header, message):
     xbmcgui.Dialog().ok(header.encode('utf-8'), message.encode('utf-8'))
