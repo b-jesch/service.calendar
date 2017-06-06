@@ -239,7 +239,6 @@ class Calendar(object):
         _todayCID = 0
         _now = datetime.now()
 
-        # with open(storage, 'r') as filehandle: events = json.load(filehandle)
         events = self.get_events(storage, now, timemax, maxResult, calendars)
 
         sheet_m = int(xbmcgui.Window(10000).getProperty('calendar_month'))
