@@ -1,9 +1,7 @@
 # -*- encoding: utf-8 -*-
 from datetime import datetime
 from dateutil import relativedelta
-import json
 import os
-import time
 
 import xbmc
 import xbmcaddon

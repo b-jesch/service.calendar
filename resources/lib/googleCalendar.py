@@ -70,15 +70,6 @@ class Calendar(object):
         self.service = discovery.build('calendar', 'v3', http=http)
 
     def get_credentials(self):
-        """
-        Gets valid user credentials from storage.
-
-        If nothing has been stored, or if the stored credentials are invalid,
-        the OAuth2 flow is completed to obtain the new credentials.
-
-        Returns:
-            Credentials, the obtained credential.
-        """
         if not os.path.isfile(self.CLIENT_SECRET_FILE):
             raise self.oAuthMissingSecretFile('missing %s' % (self.CLIENT_SECRET_FILE))
 
@@ -242,9 +233,6 @@ class Calendar(object):
                 return t.createImage(15, 40, cal.get('backgroundColor', '#808080'), os.path.join(self.COLOR_PATH, cal.get('backgroundColor', '#808080') + '.png'))
 
     def build_sheet(self, handle, storage, content, now, timemax, maxResult, calendars):
-        '''
-        googlecal.build_sheet(handle, TEMP_STORAGE_EVENTS, content, now, timemax, maxResult=30, calendars=googlecal.get_calendarIdFromSetup('calendars'))
-        '''
         self.sheet = []
         dom = 1
         _today = None

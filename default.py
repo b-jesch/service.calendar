@@ -2,7 +2,6 @@
 from __future__ import print_function
 from datetime import datetime
 from dateutil import relativedelta
-import time
 
 import sys
 import os
@@ -38,7 +37,7 @@ if not (xbmcgui.Window(10000).getProperty('calendar_month') or xbmcgui.Window(10
 class FileNotFoundException(Exception):
     pass
 
-def calc_sheet_properties(direction):
+def calc_boundaries(direction):
     sheet_m = int(xbmcgui.Window(10000).getProperty('calendar_month')) + direction
     sheet_y = int(xbmcgui.Window(10000).getProperty('calendar_year'))
 
@@ -97,19 +96,9 @@ def main(mode=None, handle=None, content=None):
         tools.writeLog('mail delivered', xbmc.LOGNOTICE)
         tools.dialogOK(__LS__(30010), __LS__(30076) % (mail.smtp_client['recipient']))
 
-
     elif mode == 'abort_reminders':
         tools.writeLog('abort notification service by setup', xbmc.LOGNOTICE)
         xbmcgui.Window(10000).setProperty('reminders', '0')
-
-    elif mode == 'gui':
-        try:
-            Popup = xbmcgui.WindowXMLDialog(__xml__, __path__)
-        except RuntimeError, e:
-            raise FileNotFoundException(e.message)
-
-        Popup.doModal()
-        del Popup
 
     elif mode == 'set_calendars':
         set_localsetting('calendars')
@@ -126,11 +115,19 @@ def main(mode=None, handle=None, content=None):
         googlecal.build_sheet(handle, TEMP_STORAGE_EVENTS, content, now, timemax, maxResult=30, calendars=googlecal.get_calendarIdFromSetup('calendars'))
 
     elif mode == 'prev':
-        calc_sheet_properties(-1)
+        calc_boundaries(-1)
 
     elif mode == 'next':
-        calc_sheet_properties(1)
+        calc_boundaries(1)
 
+    # this is the real controller bootstrap
+    elif mode == 'gui':
+        try:
+            Popup = xbmcgui.WindowXMLDialog(__xml__, __path__)
+            Popup.doModal()
+            del Popup
+        except RuntimeError, e:
+            raise FileNotFoundException(e.message)
     else:
         pass
 
@@ -151,6 +148,7 @@ if __name__ == '__main__':
         action = params.get('action', '')
         content = params.get('content', '')
 
+    # call the controller of MVC
     tools.writeLog('action is %s' % (action), xbmc.LOGNOTICE)
     try:
         if action is not None:
