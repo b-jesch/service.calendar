@@ -26,7 +26,8 @@
     <assets>
         <icon>icon.png</icon>
         <fanart>resources/skins/Default/media/fanart.jpg</fanart>
-        <screenshot></screenshot>
+        <screenshot>resources/screenshots/screenshot_01.png</screenshot>
+        <screenshot>resources/screenshots/screenshot_02.png</screenshot>
     </assets>
   </extension>
 </addon>
