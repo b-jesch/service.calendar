@@ -2,7 +2,18 @@
 <window id="30005">
     <defaultcontrol always="true">30009</defaultcontrol>
     <controls>
-        <include>DefaultBackground</include>
+		<control type="multiimage">
+			<depth>DepthBackground</depth>
+			<include>FullScreenDimensions</include>
+			<aspectratio>scale</aspectratio>
+			<fadetime>600</fadetime>
+			<animation effect="zoom" center="auto" end="102,102" time="0" condition="Integer.IsGreater(System.StereoscopicMode,0)">conditional</animation>
+			<animation effect="fade" start="0" end="100" time="400">WindowOpen</animation>
+			<animation effect="fade" start="100" end="0" time="300">WindowClose</animation>
+			<animation effect="fade" time="400">VisibleChange</animation>
+			<imagepath background="true">fanart.jpg</imagepath>
+			<visible>!Player.HasMedia</visible>
+		</control>
         <control type="group" id="30006">
             <left>285</left>
             <top>110</top>
@@ -12,6 +23,13 @@
                 <param name="header_label" value="$ADDON[service.calendar 30010] - $INFO[Window(Home).Property(calendar_header)]" />
                 <param name="header_id" value="1" />
             </include>
+            <control type="image">
+                <width>1350</width>
+                <height>778</height>
+                <left>0</left>
+                <top>71</top>
+                <texture border="3">todaymarker.png</texture>
+            </control>
             <control type="group">
                 <description>header calendar sheet</description>
                 <width>840</width>

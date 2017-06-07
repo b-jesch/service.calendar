@@ -23,5 +23,10 @@
     <website></website>
     <email>birger.jesch@gmail.com</email>
     <source>https://github.com/b-jesch/service.calendar</source>
+    <assets>
+        <icon>icon.png</icon>
+        <fanart>resources/skins/Default/media/fanart.jpg</fanart>
+        <screenshot></screenshot>
+    </assets>
   </extension>
 </addon>
