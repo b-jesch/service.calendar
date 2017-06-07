@@ -2,6 +2,7 @@
 <window id="30005">
     <defaultcontrol always="true">30009</defaultcontrol>
     <controls>
+        <include>DefaultBackground</include>
         <control type="group" id="30006">
             <left>285</left>
             <top>110</top>
