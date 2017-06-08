@@ -386,13 +386,13 @@
                     <control type="image">
                         <width>485</width>
                         <height>120</height>
-                        <texture colordiffuse="button_focus">eventlist_bg_1.png</texture>
+                        <texture>eventlist_bg_1.png</texture>
                         <visible>!String.IsEqual(ListItem.Property(allday),1) + !Control.HasFocus(30009)</visible>
                     </control>
                     <control type="image">
                         <width>485</width>
                         <height>120</height>
-                        <texture colordiffuse="button_focus">eventlist_bg_2.png</texture>
+                        <texture>eventlist_bg_2.png</texture>
                         <visible>String.IsEqual(ListItem.Property(allday),1) + !Control.HasFocus(30009)</visible>
                     </control>
                     <control type="label">

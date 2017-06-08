@@ -127,7 +127,7 @@ def main(mode=None, handle=None, content=None):
             Popup.doModal()
             del Popup
         except RuntimeError, e:
-            raise FileNotFoundException(e.message)
+            raise FileNotFoundException('%s: %s' % (e.message, __xml__))
     else:
         pass
 

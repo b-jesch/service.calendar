@@ -38,9 +38,13 @@ class DialogKaiToast(BaseWindow):
 
     def onInit(self):
         tools.writeLog('Init notification window')
-        self.getControl(DialogKaiToast.LABEL_1_ID).addLabel(self.label_1)
-        self.getControl(DialogKaiToast.LABEL_2_ID).setText(self.label_2)
         self.getControl(DialogKaiToast.AVATAR_ID).setImage(self.icon)
+        self.getControl(DialogKaiToast.LABEL_1_ID).addLabel(self.label_1)
+        try:
+            self.getControl(DialogKaiToast.LABEL_2_ID).setText(self.label_2)
+            self.getControl(DialogKaiToast.LABEL_2_ID).addLabel(self.label_2)
+        except:
+            self.getControl(DialogKaiToast.LABEL_2_ID).addLabel(self.label_2)
 
     @classmethod
     def onClick(cls, controlID):
