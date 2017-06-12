@@ -64,6 +64,7 @@
     <string id="30090">My calendars</string>
     <string id="30091">Choose calendars from list</string>
     <string id="30092">My Notifications</string>
+    <string id="30093">No further information available</string>
 
     <string id="30100">%s: Request for authentication</string>
     <string id="30101">An application requests for an authentication code. Please visit the link below, confirm the request on that page and type in the received key sequence in your application. Alternatively, you can store the key in a file and load it from the setup of the addon.\n\nThis is the link for confirmation: %s</string>

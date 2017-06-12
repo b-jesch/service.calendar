@@ -147,6 +147,11 @@ class Calendar(object):
             with open(storage, 'r') as filehandle: events = json.load(filehandle)
         return events
 
+    def get_event(self, eventId, storage):
+        with open(storage, 'r') as filehandle: events = json.load(filehandle)
+        for event in events:
+            if event.get('id', '') == eventId: return event
+        return False
 
     @classmethod
     def prepare_events(cls, event, timebase=datetime.now(), optTimeStamps=True):
@@ -154,6 +159,7 @@ class Calendar(object):
         ev_item = {}
 
         _dt = parser.parse(event['start'].get('date', event['start'].get('dateTime')))
+        ev_item.update({'id': event.get('id', '')})
         ev_item.update({'date': _dt})
         ev_item.update({'shortdate': _dt.strftime('%d.%m')})
 
@@ -299,6 +305,7 @@ class Calendar(object):
                         li = xbmcgui.ListItem(label=_ev['shortdate'] + ' - ' + _ev['timestamps'], label2=_ev['summary'], iconImage=_ev['icon'])
                     else:
                         li = xbmcgui.ListItem(label=_ev['shortdate'], label2=_ev['summary'], iconImage=_ev['icon'])
+                    li.setProperty('id', _ev.get('id', ''))
                     li.setProperty('range', _ev.get('range', ''))
                     li.setProperty('allday', _ev.get('allday', '0'))
                     li.setProperty('description', _ev.get('description') or _ev.get('location') or _ev.get('cal_color'))

@@ -43,7 +43,7 @@ class DialogKaiToast(BaseWindow):
         try:
             self.getControl(DialogKaiToast.LABEL_2_ID).setText(self.label_2)
             self.getControl(DialogKaiToast.LABEL_2_ID).addLabel(self.label_2)
-        except:
+        except AttributeError:
             self.getControl(DialogKaiToast.LABEL_2_ID).addLabel(self.label_2)
 
     @classmethod
@@ -53,4 +53,3 @@ class DialogKaiToast(BaseWindow):
     def close(self):
         BaseWindow.close(self)
         tools.writeLog('Close notification window')
-

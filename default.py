@@ -70,7 +70,7 @@ def set_localsetting(setting):
     if _idx is not None:
         __addon__.setSetting(setting, ', '.join(_list[i] for i in _idx))
 
-def main(mode=None, handle=None, content=None):
+def controller(mode=None, handle=None, content=None, eventId=None):
     now = datetime.utcnow().isoformat() + 'Z'
     timemax = (datetime.utcnow() + relativedelta.relativedelta(months=tools.getAddonSetting('timemax', sType=tools.NUM))).isoformat() + 'Z'
 
@@ -114,6 +114,14 @@ def main(mode=None, handle=None, content=None):
         googlecal = Calendar()
         googlecal.build_sheet(handle, TEMP_STORAGE_EVENTS, content, now, timemax, maxResult=30, calendars=googlecal.get_calendarIdFromSetup('calendars'))
 
+    elif mode == 'getinfo':
+        googlecal = Calendar()
+        event = googlecal.get_event(eventId, TEMP_STORAGE_EVENTS)
+        if event:
+            _msg = event.get('description', False) or event.get('location', False) or __LS__(30093)
+            _ev = googlecal.prepare_events(event, optTimeStamps=True)
+            tools.dialogOK('%s, %s: %s' % (_ev.get('shortdate', ''), _ev.get('range', ''), _ev.get('summary', '')), _msg)
+
     elif mode == 'prev':
         calc_boundaries(-1)
 
@@ -135,6 +143,7 @@ if __name__ == '__main__':
 
     action = None
     content = None
+    eventId = None
     _addonHandle = None
 
     arguments = sys.argv
@@ -144,17 +153,18 @@ if __name__ == '__main__':
             arguments.pop(0)
             arguments[1] = arguments[1][1:]
 
+        tools.writeLog('parameter hash: %s' % (str(arguments[1])), xbmc.LOGNOTICE)
         params = tools.ParamsToDict(arguments[1])
         action = params.get('action', '')
         content = params.get('content', '')
+        eventId = params.get('id', '')
 
     # call the controller of MVC
-    tools.writeLog('action is %s' % (action), xbmc.LOGNOTICE)
     try:
         if action is not None:
-            main(mode=action, handle=_addonHandle, content=content)
+            controller(mode=action, handle=_addonHandle, content=content, eventId=eventId)
         else:
-            main(mode='gui')
+            controller(mode='gui')
 
     except FileNotFoundException, e:
         tools.writeLog(e.message, xbmc.LOGERROR)

@@ -308,6 +308,7 @@
                 <onup>30006</onup>
                 <onleft>30008</onleft>
                 <onright>30008</onright>
+                <onclick>RunScript(service.calendar,action=getinfo&amp;id=$INFO[ListItem.Property(id)])</onclick>
                 <itemlayout width="485" height="120">
                     <control type="image">
                         <width>485</width>
@@ -445,7 +446,6 @@
                     </control>
                 </focusedlayout>
                 <content>plugin://service.calendar?action=getcontent&amp;content=eventlist&amp;month=$INFO[Window(Home).Property(calendar_month)]&amp;year=$INFO[Window(Home).Property(calendar_year)]</content>
-                <onclick>noop</onclick>
             </control>
         </control>
     </controls>

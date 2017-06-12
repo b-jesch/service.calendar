@@ -1,13 +1,13 @@
 # XBMC Media Center language file
 # Addon Name: KN Calendar Reminder
 # Addon id: service.calendar
-# Addon version: 0.0.4
+# Addon version: 0.0.5
 # Addon Provider: Birger Jesch
 msgid ""
 msgstr ""
 "Project-Id-Version: XBMC-Addons\n"
 "Report-Msgid-Bugs-To: alanwww1@xbmc.org\n"
-"POT-Creation-Date: 2017-06-01 07:27+0000\n"
+"POT-Creation-Date: 2017-06-12 07:05+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -262,7 +262,11 @@ msgctxt "#30092"
 msgid "My Notifications"
 msgstr ""
 
-#empty strings from id 30093 to 30099
+msgctxt "#30093"
+msgid "No further information available"
+msgstr ""
+
+#empty strings from id 30094 to 30099
 
 msgctxt "#30100"
 msgid "%s: Request for authentication"
