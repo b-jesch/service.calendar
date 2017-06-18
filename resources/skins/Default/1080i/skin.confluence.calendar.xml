@@ -164,6 +164,13 @@
                             </control>
                         </control>
                         <control type="image">
+                            <width>40</width>
+                            <height>40</height>
+                            <left>75</left>
+                            <top>75</top>
+                            <texture colordiffuse="CCCC0000">$INFO[ListItem.Property(specialicon)]</texture>
+                        </control>
+                        <control type="image">
                             <width>114</width>
                             <height>114</height>
                             <left>3</left>
@@ -251,6 +258,13 @@
                                 <aligny>center</aligny>
                                 <label>$INFO[ListItem.Label2]</label>
                             </control>
+                        </control>
+                        <control type="image">
+                            <width>40</width>
+                            <height>40</height>
+                            <left>75</left>
+                            <top>75</top>
+                            <texture>$INFO[ListItem.Property(specialicon)]</texture>
                         </control>
                         <control type="image">
                             <width>114</width>

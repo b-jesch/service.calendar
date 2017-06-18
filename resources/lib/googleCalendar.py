@@ -27,6 +27,7 @@ __addonpath__ = __addon__.getAddonInfo('path')
 __profiles__ = __addon__.getAddonInfo('profile')
 __LS__ = __addon__.getLocalizedString
 __icon__ = os.path.join(xbmc.translatePath(__addonpath__), 'resources', 'skins', 'Default', 'media', 'icon.png')
+__cake__ = os.path.join(xbmc.translatePath(__addonpath__), 'resources', 'skins', 'Default', 'media', 'cake_2.png')
 
 mail = SMTPMail()
 
@@ -138,6 +139,10 @@ class Calendar(object):
                         _ts = parser.parse(_ev['start'].get('dateTime', _ev['start'].get('date', ''))).timetuple()
                         _ev.update({'timestamp': int(time.mktime(_ts))})
                         _ev.update({'icon': calColor})
+                        gadget = _ev.get('gadget', None)
+                        if gadget:
+                            if gadget.get('preferences').get('goo.contactsEventType') == 'BIRTHDAY':
+                                _ev.update({'specialicon': __cake__})
                     events.extend(_evs)
 
             events.sort(key=operator.itemgetter('timestamp'))
@@ -175,9 +180,10 @@ class Calendar(object):
                 if _tdelta.months == 0 and _tdelta.weeks == 0 and _tdelta.days == 1: ev_item.update({'range': __LS__(30111)})
                 elif _tdelta.months == 0 and _tdelta.weeks == 0: ev_item.update({'range': __LS__(30112) % (_tdelta.days)})
                 elif _tdelta.months == 0 and _tdelta.weeks == 1: ev_item.update({'range': __LS__(30113)})
-                elif _tdelta.months == 0: ev_item.update({'range': __LS__(30114) % (_tdelta.weeks)})
+                elif _tdelta.months == 0 and _tdelta.weeks > 0: ev_item.update({'range': __LS__(30114) % (_tdelta.weeks)})
                 elif _tdelta.months == 1: ev_item.update({'range': __LS__(30115)})
-                else: ev_item.update({'range': __LS__(30116) % (_tdelta.months)})
+                elif _tdelta.months > 1: ev_item.update({'range': __LS__(30116) % (_tdelta.months)})
+                else: ev_item.update({'range': __LS__(30117)})
             else:
                 _end = parser.parse(event['end'].get('dateTime', ''))
                 if _dt != _end:
@@ -190,6 +196,7 @@ class Calendar(object):
         ev_item.update({'description': event.get('description', None)})
         ev_item.update({'location': event.get('location', None)})
         ev_item.update({'icon': event.get('icon', '')})
+        ev_item.update({'specialicon': event.get('specialicon', '')})
 
         if optTimeStamps:
             t.writeLog('calculate additional timestamps')
@@ -201,7 +208,8 @@ class Calendar(object):
                 elif _tdelta.days == 2: ats = __LS__(30141)
                 elif 3 <= _tdelta.days <= 6: ats = __LS__(30142) % (_tdelta.days)
                 elif _tdelta.weeks == 1: ats = __LS__(30143)
-                else: ats = __LS__(30144) % (_tdelta.weeks)
+                elif _tdelta.weeks > 1: ats = __LS__(30144) % (_tdelta.weeks)
+                else: ats = __LS__(30117)
             elif _tdelta.months == 1: ats = __LS__(30146)
             else: ats = __LS__(30147) % (_tdelta.months)
             ev_item.update({'timestamps': ats})
@@ -272,6 +280,7 @@ class Calendar(object):
 
             event_list = []
             allday = '0'
+            specialicon = ''
 
             for event in events:
                 _ev = self.prepare_events(event, _now, optTimeStamps=False)
@@ -279,9 +288,10 @@ class Calendar(object):
                 if _ev['date'].day == dom and _ev['date'].month == sheet_m and _ev['date'].year == sheet_y:
                     event_list.append(_ev)
                     if _ev['allday'] == '1': allday = '1'
+                    if _ev.get('specialicon', '') != '': specialicon = _ev.get('specialicon')
 
             self.sheet.append({'cid': cid, 'valid': '1', 'dom': str(dom)})
-            if len(event_list) > 0: self.sheet[cid].update(num_events=str(len(event_list)), allday=allday, events=event_list)
+            if len(event_list) > 0: self.sheet[cid].update(num_events=str(len(event_list)), allday=allday, events=event_list, specialicon=specialicon)
             if _today == int(self.sheet[cid].get('dom')):
                 self.sheet[cid].update(today='1')
                 _todayCID = cid
@@ -293,6 +303,7 @@ class Calendar(object):
                 cal_sheet.setProperty('valid', self.sheet[cid].get('valid', '0'))
                 cal_sheet.setProperty('allday', self.sheet[cid].get('allday', '0'))
                 cal_sheet.setProperty('today', self.sheet[cid].get('today', '0'))
+                cal_sheet.setProperty('specialicon', self.sheet[cid].get('specialicon', ''))
                 xbmcplugin.addDirectoryItem(handle, url='', listitem=cal_sheet)
             # set at least focus to the current day
             xbmc.executebuiltin('Control.SetFocus(%s, %s)' % (self.SHEET_ID, _todayCID))
