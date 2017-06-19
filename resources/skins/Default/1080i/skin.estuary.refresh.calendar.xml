@@ -165,7 +165,7 @@
                             <height>40</height>
                             <left>75</left>
                             <top>75</top>
-                            <texture colordiffuse="FF5C0000">$INFO[ListItem.Property(specialicon)]</texture>
+                            <texture colordiffuse="FF006C00">$INFO[ListItem.Property(specialicon)]</texture>
                         </control>
                         <control type="image">
                             <width>114</width>
@@ -238,7 +238,7 @@
                             <height>40</height>
                             <left>75</left>
                             <top>75</top>
-                            <texture>$INFO[ListItem.Property(specialicon)]</texture>
+                            <texture colordiffuse="FF00AC00">$INFO[ListItem.Property(specialicon)]</texture>
                         </control>
                         <control type="image">
                             <width>114</width>

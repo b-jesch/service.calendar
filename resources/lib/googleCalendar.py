@@ -138,12 +138,13 @@ class Calendar(object):
                     calColor = self.get_calendarBGcolorImage(cal)
                     for _ev in _evs:
                         _ts = parser.parse(_ev['start'].get('dateTime', _ev['start'].get('date', ''))).timetuple()
+
                         _ev.update({'timestamp': int(time.mktime(_ts))})
                         _ev.update({'icon': calColor})
+
                         gadget = _ev.get('gadget', None)
                         if gadget:
-                            if gadget.get('preferences').get('goo.contactsEventType') == 'BIRTHDAY':
-                                _ev.update({'specialicon': __cake__})
+                            if gadget.get('preferences').get('goo.contactsEventType') == 'BIRTHDAY': _ev.update({'specialicon': __cake__})
                     events.extend(_evs)
 
             events.sort(key=operator.itemgetter('timestamp'))
