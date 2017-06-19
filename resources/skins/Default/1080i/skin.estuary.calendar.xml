@@ -146,14 +146,7 @@
                             <control type="image">
                                 <width>40</width>
                                 <height>40</height>
-                                <texture>eventmarker_1.png</texture>
-                                <visible>String.IsEqual(ListItem.Property(allday),0)</visible>
-                            </control>
-                            <control type="image">
-                                <width>40</width>
-                                <height>40</height>
-                                <texture>eventmarker_2.png</texture>
-                                <visible>String.IsEqual(ListItem.Property(allday),1)</visible>
+                                <texture>$INFO[ListItem.Property(eventicon)]</texture>
                             </control>
                             <control type="label">
                                 <description>number of events</description>
@@ -172,7 +165,7 @@
                             <height>40</height>
                             <left>75</left>
                             <top>75</top>
-                            <texture colordiffuse="CCCC0000">$INFO[ListItem.Property(specialicon)]</texture>
+                            <texture colordiffuse="FF5C0000">$INFO[ListItem.Property(specialicon)]</texture>
                         </control>
                         <control type="image">
                             <width>114</width>
@@ -226,14 +219,7 @@
                             <control type="image">
                                 <width>40</width>
                                 <height>40</height>
-                                <texture>eventmarker_1.png</texture>
-                                <visible>String.IsEqual(ListItem.Property(allday),0)</visible>
-                            </control>
-                            <control type="image">
-                                <width>40</width>
-                                <height>40</height>
-                                <texture>eventmarker_2.png</texture>
-                                <visible>String.IsEqual(ListItem.Property(allday),1)</visible>
+                                <texture>$INFO[ListItem.Property(eventicon)]</texture>
                             </control>
                             <control type="label">
                                 <description>number of events</description>
