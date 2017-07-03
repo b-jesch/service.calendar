@@ -1,4 +1,5 @@
 # -*- encoding: utf-8 -*-
+
 from apiclient import discovery
 from oauth2client import client
 from oauth2client.file import Storage
@@ -86,7 +87,8 @@ class Calendar(object):
     def require_credentials(self, storage_path, require_from_setup=False, reenter=None):
         storage = Storage(storage_path)
         try:
-            flow = client.flow_from_clientsecrets(self.CLIENT_SECRET_FILE, self.SCOPES, redirect_uri='urn:ietf:wg:oauth:2.0:oob')
+            flow = client.flow_from_clientsecrets(self.CLIENT_SECRET_FILE, self.SCOPES,
+                                                  redirect_uri='urn:ietf:wg:oauth:2.0:oob')
             flow.user_agent = self.APPLICATION_NAME
 
             auth_code = ''
@@ -130,8 +132,9 @@ class Calendar(object):
 
             events = []
             for cal in calendars:
-                cal_events = self.service.events().list(calendarId=cal, timeMin=timeMin, timeMax=timeMax, maxResults=maxResult,
-                                                             singleEvents=True, orderBy='startTime').execute()
+                cal_events = self.service.events().list(calendarId=cal, timeMin=timeMin, timeMax=timeMax,
+                                                        maxResults=maxResult, singleEvents=True,
+                                                        orderBy='startTime').execute()
                 _evs = cal_events.get('items', [])
                 if _evs:
                     # set additional attributes
@@ -144,7 +147,8 @@ class Calendar(object):
 
                         gadget = _ev.get('gadget', None)
                         if gadget:
-                            if gadget.get('preferences').get('goo.contactsEventType') == 'BIRTHDAY': _ev.update({'specialicon': __cake__})
+                            if gadget.get('preferences').get('goo.contactsEventType') == 'BIRTHDAY':
+                                _ev.update({'specialicon': __cake__})
                     events.extend(_evs)
 
             events.sort(key=operator.itemgetter('timestamp'))
@@ -241,7 +245,8 @@ class Calendar(object):
         cals = self.get_calendars()
         for cal in cals:
             if cal.get('id') == calendarId:
-                return t.createImage(15, 40, cal.get('backgroundColor', '#808080'), os.path.join(self.COLOR_PATH, cal.get('backgroundColor', '#808080') + '.png'))
+                return t.createImage(15, 40, cal.get('backgroundColor', '#808080'),
+                                     os.path.join(self.COLOR_PATH, cal.get('backgroundColor', '#808080') + '.png'))
 
     def build_sheet(self, handle, storage, content, now, timemax, maxResult, calendars):
         self.sheet = []
@@ -275,7 +280,8 @@ class Calendar(object):
                     epilog += 1
                 continue
 
-            event_list = []
+            num_events = 0
+            event_ids = ''
             allday = 0
             specialicon = ''
 
@@ -283,7 +289,8 @@ class Calendar(object):
                 _ev = self.prepare_events(event, _now, optTimeStamps=False)
 
                 if _ev['date'].day == dom and _ev['date'].month == sheet_m and _ev['date'].year == sheet_y:
-                    event_list.append(_ev)
+                    event_ids += ' %s' % (_ev['id'])
+                    num_events += 1
                     if _ev['allday'] > allday: allday = _ev['allday']
                     if _ev.get('specialicon', '') != '': specialicon = _ev.get('specialicon')
 
@@ -292,7 +299,10 @@ class Calendar(object):
                 else: eventicon = os.path.join(__symbolpath__, 'eventmarker_3.png')
 
             self.sheet.append({'cid': cid, 'valid': '1', 'dom': str(dom)})
-            if len(event_list) > 0: self.sheet[cid].update(num_events=str(len(event_list)), allday=allday, events=event_list, specialicon=specialicon, eventicon=eventicon)
+            if num_events > 0:
+                print event_ids
+                self.sheet[cid].update(num_events=str(num_events), allday=allday, event_ids=event_ids,
+                                       specialicon=specialicon, eventicon=eventicon)
             if _today == int(self.sheet[cid].get('dom')):
                 self.sheet[cid].update(today='1')
                 _todayCID = cid
@@ -304,6 +314,7 @@ class Calendar(object):
                 cal_sheet.setProperty('valid', self.sheet[cid].get('valid', '0'))
                 cal_sheet.setProperty('allday', str(self.sheet[cid].get('allday', 0)))
                 cal_sheet.setProperty('today', self.sheet[cid].get('today', '0'))
+                cal_sheet.setProperty('ids', self.sheet[cid].get('event_ids', ''))
                 cal_sheet.setProperty('specialicon', self.sheet[cid].get('specialicon', ''))
                 cal_sheet.setProperty('eventicon', self.sheet[cid].get('eventicon', ''))
                 xbmcplugin.addDirectoryItem(handle, url='', listitem=cal_sheet)

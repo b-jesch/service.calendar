@@ -265,6 +265,10 @@ msgctxt "#30103"
 msgid "The authentication code is invalid. Please request a new authentication code from the addon's setup or re-enter the authentication code from the setup."
 msgstr "Der eingegebene Authentifizierungsschlüssel ist ungültig! Fordern Sie einen neuen Schlüssel über das Setup des Addons an oder geben Sie den Authentifizierungsschlüssel erneut im Setup ein."
 
+msgctxt "#30109"
+msgid "Events"
+msgstr "Termine"
+
 msgctxt "#30110"
 msgid "next Events"
 msgstr "nächste Termine"

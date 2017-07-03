@@ -129,6 +129,7 @@
                 <onright>30009</onright>
                 <onup>RunScript(service.calendar,action=prev)</onup>
                 <ondown>RunScript(service.calendar,action=next)</ondown>
+                <onclick>RunScript(service.calendar,action=getinfo&amp;id=$INFO[ListItem.Property(ids)])</onclick>
                 <itemlayout width="120" height="120">
                     <control type="group">
                         <control type="image">

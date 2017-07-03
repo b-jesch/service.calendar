@@ -116,11 +116,16 @@ def controller(mode=None, handle=None, content=None, eventId=None):
 
     elif mode == 'getinfo':
         googlecal = Calendar()
-        event = googlecal.get_event(eventId, TEMP_STORAGE_EVENTS)
-        if event:
-            _msg = event.get('description', False) or event.get('location', False) or __LS__(30093)
-            _ev = googlecal.prepare_events(event, optTimeStamps=True)
-            tools.dialogOK('%s, %s: %s' % (_ev.get('shortdate', ''), _ev.get('range', ''), _ev.get('summary', '')), _msg)
+        events = eventId.strip().split(' ')
+        _msg = ''
+        _date = ''
+        for event in events:
+            _ev = googlecal.get_event(event, TEMP_STORAGE_EVENTS)
+            _mev = googlecal.prepare_events(_ev, optTimeStamps=True)
+            _msg += '[B]%s[/B]: %s[CR]%s[CR][CR]' % (_mev.get('range', ''), _mev.get('summary', ''),
+                                                     _mev.get('description', False)
+                                                     or _mev.get('location', False) or __LS__(30093))
+        tools.dialogOK('%s %s %s' % (__LS__(30109), __LS__(30145), _mev.get('shortdate', '')), _msg)
 
     elif mode == 'prev':
         calc_boundaries(-1)

@@ -282,7 +282,11 @@ msgctxt "#30103"
 msgid "The authentication code is invalid. Please request a new authentication code from the addon's setup or re-enter the authentication code from the setup."
 msgstr ""
 
-#empty strings from id 30104 to 30109
+#empty strings from id 30104 to 30108
+
+msgctxt "#30109"
+msgid "Events"
+msgstr ""
 
 msgctxt "#30110"
 msgid "next Events"
