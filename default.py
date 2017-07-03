@@ -114,11 +114,10 @@ def controller(mode=None, handle=None, content=None, eventId=None):
         googlecal = Calendar()
         googlecal.build_sheet(handle, TEMP_STORAGE_EVENTS, content, now, timemax, maxResult=30, calendars=googlecal.get_calendarIdFromSetup('calendars'))
 
-    elif mode == 'getinfo':
+    elif mode == 'getinfo' and eventId != '':
         googlecal = Calendar()
-        events = eventId.strip().split(' ')
+        events = eventId.strip(' ').split(' ')
         _msg = ''
-        _date = ''
         for event in events:
             _ev = googlecal.get_event(event, TEMP_STORAGE_EVENTS)
             _mev = googlecal.prepare_events(_ev, optTimeStamps=True)

@@ -300,7 +300,6 @@ class Calendar(object):
 
             self.sheet.append({'cid': cid, 'valid': '1', 'dom': str(dom)})
             if num_events > 0:
-                print event_ids
                 self.sheet[cid].update(num_events=str(num_events), allday=allday, event_ids=event_ids,
                                        specialicon=specialicon, eventicon=eventicon)
             if _today == int(self.sheet[cid].get('dom')):
