@@ -184,25 +184,25 @@ class Calendar(object):
         ev_item.update({'icon': event.get('icon', '')})
         ev_item.update({'specialicon': event.get('specialicon', '')})
 
+        if _range > 0:
+            if _tdelta.months == 0 and _tdelta.weeks == 0 and _range == 1: ev_item.update({'range': __LS__(30111)})
+            elif _tdelta.months == 0 and _tdelta.weeks == 0: ev_item.update({'range': __LS__(30112) % (_range)})
+            elif _tdelta.months == 0 and _tdelta.weeks == 1: ev_item.update({'range': __LS__(30113)})
+            elif _tdelta.months == 0 and _tdelta.weeks > 0: ev_item.update({'range': __LS__(30114) % (_tdelta.weeks)})
+            elif _tdelta.months == 1: ev_item.update({'range': __LS__(30115)})
+            elif _tdelta.months > 1: ev_item.update({'range': __LS__(30116) % (_tdelta.months)})
+            else: ev_item.update({'range': __LS__(30117)})
+        else:
+            _end = parser.parse(event['end'].get('dateTime', ''))
+            if _dt != _end:
+                ev_item.update({'range': _dt.strftime('%H:%M') + ' - ' + _end.strftime('%H:%M')})
+            else:
+                ev_item.update({'range': _dt.strftime('%H:%M')})
+
         if optTimeStamps:
             t.writeLog('calculate additional timestamps')
-            if _range > 0:
-                if _tdelta.months == 0 and _tdelta.weeks == 0 and _range == 1: ev_item.update({'range': __LS__(30111)})
-                elif _tdelta.months == 0 and _tdelta.weeks == 0: ev_item.update({'range': __LS__(30112) % (_range)})
-                elif _tdelta.months == 0 and _tdelta.weeks == 1: ev_item.update({'range': __LS__(30113)})
-                elif _tdelta.months == 0 and _tdelta.weeks > 0: ev_item.update({'range': __LS__(30114) % (_tdelta.weeks)})
-                elif _tdelta.months == 1: ev_item.update({'range': __LS__(30115)})
-                elif _tdelta.months > 1: ev_item.update({'range': __LS__(30116) % (_tdelta.months)})
-                else: ev_item.update({'range': __LS__(30117)})
-            else:
-                _end = parser.parse(event['end'].get('dateTime', ''))
-                if _dt != _end:
-                    ev_item.update({'range': _dt.strftime('%H:%M') + ' - ' + _end.strftime('%H:%M')})
-                else:
-                    ev_item.update({'range': _dt.strftime('%H:%M')})
 
             _tdelta = relativedelta.relativedelta(_dt.date(), timebase.date())
-
             if _tdelta.months == 0:
                 if _tdelta.days == 0: ats = __LS__(30139)
                 elif _tdelta.days == 1: ats = __LS__(30140)
@@ -309,13 +309,13 @@ class Calendar(object):
 
         if content == 'sheet':
             for cid in range(0, 42):
-                cal_sheet = xbmcgui.ListItem(label=self.sheet[cid].get('dom'), label2=self.sheet[cid].get('num_events', '0'))
+                cal_sheet = xbmcgui.ListItem(label=self.sheet[cid].get('dom'), label2=self.sheet[cid].get('num_events', '0'),
+                                             iconImage=self.sheet[cid].get('eventicon', ''))
                 cal_sheet.setProperty('valid', self.sheet[cid].get('valid', '0'))
                 cal_sheet.setProperty('allday', str(self.sheet[cid].get('allday', 0)))
                 cal_sheet.setProperty('today', self.sheet[cid].get('today', '0'))
                 cal_sheet.setProperty('ids', self.sheet[cid].get('event_ids', ''))
                 cal_sheet.setProperty('specialicon', self.sheet[cid].get('specialicon', ''))
-                cal_sheet.setProperty('eventicon', self.sheet[cid].get('eventicon', ''))
                 xbmcplugin.addDirectoryItem(handle, url='', listitem=cal_sheet)
             # set at least focus to the current day
             xbmc.executebuiltin('Control.SetFocus(%s, %s)' % (self.SHEET_ID, _todayCID))
@@ -325,7 +325,8 @@ class Calendar(object):
                 _ev = self.prepare_events(event, _now, optTimeStamps=self.addtimestamps)
                 if _ev['date'].month >= sheet_m and _ev['date'].year >= sheet_y:
                     if self.addtimestamps:
-                        li = xbmcgui.ListItem(label=_ev['shortdate'] + ' - ' + _ev['timestamps'], label2=_ev['summary'], iconImage=_ev['icon'])
+                        li = xbmcgui.ListItem(label=_ev['shortdate'] + ' - ' + _ev['timestamps'], label2=_ev['summary'],
+                                              iconImage=_ev['icon'])
                     else:
                         li = xbmcgui.ListItem(label=_ev['shortdate'], label2=_ev['summary'], iconImage=_ev['icon'])
                     li.setProperty('id', _ev.get('id', ''))

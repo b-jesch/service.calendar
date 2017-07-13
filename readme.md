@@ -4,6 +4,8 @@
 
 Alle zur Inbetriebnahme relevanten Schritte (und Voraussetzungen) sind im Eingangsthread im Kodinerds-Forum unter folgender Adresse abrufbar: [KN Notizkalender](https://www.kodinerds.net/index.php/Thread/57041-Release-KN-Notizkalender-Google-Kalender/). Dieser Thread ist auch Supportthread für Fragen und Probleme bei der Installation.
 
+Hinweis: Das für den Kalender erforderliche Modul 'script.module.oauth2client' funktioniert u.U. nicht korrekt (Fehlermeldung beim Einlesen des Kalenders). In diesem Fall ist das Modul aus dem kodinerds Repo nachzuinstallieren oder aus diesem Threadbeitrag downzuloaden und zu installieren: [Beitrag #53](https://www.kodinerds.net/index.php/Thread/56444-WIP-Google-Kalender/?postID=384900#post384900)
+
 <h2>Hinweise für Skinner und Programmierer</h2>
 
 Sowohl der Content für das Kalenderblatt auf der linken Seite als auch die Terminliste rechts werden über ein dynamisches Content-Listing per Plugin-Aufruf über die Content-Methode aus der GUI heraus bereitgestellt (siehe auch: http://kodi.wiki/view/Dynamic_List_Content)
@@ -35,12 +37,13 @@ Properties (ListItems):
 ```
 ListItem.Label:                 1...31  Tag des Monats (min. 1...28, max. 1...31)
 ListItem.Label2:                0...x   Anzahl der Termine an diesem Tag
+ListItem.icon                           Icon für Termine ohne Ganztagstermine, mit mind. einem Ganztagstermin, mit mehrtägigen Terminen
+
 ListItem.Property(valid):       0|1     ListItem ist Vor-/Nachläufer (valid:0) oder Item des aktuellen Monats (valid:1)
 ListItem.Property(allday):      0|1     wenigstens ein Termin ist ein Ganztagstermin (allday:1)
 ListItem.Property(today):       0|1     ListItem ist aktueller Tag/Heute (today:1)
 ListItem.Property(ids):                 Event-IDs (Schlüssel) aus dem Googlekalender, kommagetrennt
 ListItem.Property(specialicon):         Icon für spezielle Termine (z.Zt. nur Geburtstage)
-ListItem.Property(eventicon):           Icon für Termine ohne Ganztagstermine, mit mind. einem Ganztagstermin, mit mehrtägigen Terminen
 ```
 
 <h3>Aufruf der Terminliste</h3>

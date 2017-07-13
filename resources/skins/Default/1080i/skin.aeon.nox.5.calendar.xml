@@ -131,7 +131,7 @@
                             <control type="image">
                                 <width>40</width>
                                 <height>40</height>
-                                <texture>$INFO[ListItem.Property(eventicon)]</texture>
+                                <texture>$INFO[ListItem.icon]</texture>
                             </control>
                             <control type="label">
                                 <description>number of events</description>
@@ -213,7 +213,7 @@
                             <control type="image">
                                 <width>40</width>
                                 <height>40</height>
-                                <texture>$INFO[ListItem.Property(eventicon)]</texture>
+                                <texture>$INFO[ListItem.icon]</texture>
                             </control>
                             <control type="label">
                                 <description>number of events</description>
