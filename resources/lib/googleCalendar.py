@@ -331,7 +331,7 @@ class Calendar(object):
                     li.setProperty('id', _ev.get('id', ''))
                     li.setProperty('range', _ev.get('range', ''))
                     li.setProperty('allday', str(_ev.get('allday', 0)))
-                    li.setProperty('description', _ev.get('description') or _ev.get('location') or _ev.get('cal_color'))
+                    li.setProperty('description', _ev.get('description') or _ev.get('location'))
                     xbmcplugin.addDirectoryItem(handle, url='', listitem=li)
 
         xbmcplugin.endOfDirectory(handle, updateListing=True)
