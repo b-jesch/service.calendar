@@ -1,4 +1,9 @@
 <h1>KN Notizkalender (Google Kalender)</h1>
+
+<h2>Vorbereitungen</h2>
+
+Alle zur Inbetriebnahme relevanten Schritte (und Voraussetzungen) sind im Eingangsthread im Kodinerds-Forum unter folgender Adresse abrufbar: [KN Notizkalender](https://www.kodinerds.net/index.php/Thread/57041-Release-KN-Notizkalender-Google-Kalender/). Dieser Thread ist auch Supportthread für Fragen und Probleme bei der Installation.
+
 <h2>Hinweise für Skinner und Programmierer</h2>
 
 Sowohl der Content für das Kalenderblatt auf der linken Seite als auch die Terminliste rechts werden über ein dynamisches Content-Listing per Plugin-Aufruf über die Content-Methode aus der GUI heraus bereitgestellt (siehe auch: http://kodi.wiki/view/Dynamic_List_Content)
