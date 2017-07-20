@@ -39,12 +39,22 @@ class DialogKaiToast(BaseWindow):
     def onInit(self):
         tools.writeLog('Init notification window')
         self.getControl(DialogKaiToast.AVATAR_ID).setImage(self.icon)
-        self.getControl(DialogKaiToast.LABEL_1_ID).addLabel(self.label_1)
         try:
-            self.getControl(DialogKaiToast.LABEL_2_ID).setText(self.label_2)
-            self.getControl(DialogKaiToast.LABEL_2_ID).addLabel(self.label_2)
-        except AttributeError:
-            self.getControl(DialogKaiToast.LABEL_2_ID).addLabel(self.label_2)
+            if hasattr(self.getControl(DialogKaiToast.LABEL_1_ID), 'addLabel'):
+                self.getControl(DialogKaiToast.LABEL_1_ID).addLabel(self.label_1)
+            elif hasattr(self.getControl(DialogKaiToast.LABEL_1_ID), 'setText'):
+                self.getControl(DialogKaiToast.LABEL_1_ID).setText(self.label_1)
+            else:
+                pass
+            if hasattr(self.getControl(DialogKaiToast.LABEL_2_ID), 'addLabel'):
+                self.getControl(DialogKaiToast.LABEL_2_ID).addLabel(self.label_2)
+            elif hasattr(self.getControl(DialogKaiToast.LABEL_2_ID), 'setText'):
+                self.getControl(DialogKaiToast.LABEL_2_ID).setText(self.label_2)
+            else:
+                pass
+        except AttributeError, e:
+            tools.writeLog('could not set all attributes to DialogKaiToast properly', xbmc.LOGFATAL)
+            tools.writeLog(e.message, xbmc.LOGFATAL)
 
     @classmethod
     def onClick(cls, controlID):

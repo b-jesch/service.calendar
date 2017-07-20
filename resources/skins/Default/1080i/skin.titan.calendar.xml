@@ -11,24 +11,47 @@
 			<animation effect="fade" start="0" end="100" time="400">WindowOpen</animation>
 			<animation effect="fade" start="100" end="0" time="300">WindowClose</animation>
 			<animation effect="fade" time="400">VisibleChange</animation>
-			<imagepath background="true">fanart.jpg</imagepath>
+			<imagepath background="true" colordiffuse="FF808080">fanart.jpg</imagepath>
 			<visible>!Player.HasMedia</visible>
 		</control>
         <control type="group" id="30006">
             <left>285</left>
             <top>110</top>
+            <!--
             <include content="DialogBackgroundCommons">
-                <param name="width" value="1350" />
-                <param name="height" value="850" />
-                <param name="header_label" value="$ADDON[service.calendar 30010] - $INFO[Window(Home).Property(calendar_header)]" />
-                <param name="header_id" value="1" />
+                <param name="DialogBackgroundWidth" value="1350" />
+                <param name="DialogBackgroundHeight" value="850" />
+                <param name="DialogHeaderWidth" value="1270" />
+                <param name="DialogHeaderLabel" value="$ADDON[service.calendar 30010] - $INFO[Window(Home).Property(calendar_header)]" />
+                <param name="header_id" value="2" />
+				<param name="CloseButtonLeft" value="1260" />
+				<param name="CloseButtonNav" value="3" />
             </include>
+            -->
             <control type="image">
+                <!--Panel-->
                 <width>1350</width>
-                <height>778</height>
-                <left>0</left>
-                <top>71</top>
-                <texture border="3">todaymarker.png</texture>
+                <height>850</height>
+				<texture border="15">diffuse/bgpanel.png</texture>
+				<bordersize>10</bordersize>
+				<colordiffuse>$INFO[Skin.String(GeneralPanelsColor)]</colordiffuse>
+            </control>
+            <control type="image">
+                <!--Panel-->
+                <width>1350</width>
+                <height>850</height>
+				<texture border="15">diffuse/bgpanel.png</texture>
+				<bordersize>10</bordersize>
+				<colordiffuse>$INFO[Skin.String(GeneralPanelsColor)]</colordiffuse>
+            </control>
+            <control type="label">
+                <width>1300</width>
+                <height>50</height>
+                <left>25</left>
+                <top>15</top>
+                <align>center</align>
+                <font>font24_title</font>
+                <label>$ADDON[service.calendar 30010] - $INFO[Window(Home).Property(calendar_header)]</label>
             </control>
             <control type="group">
                 <description>header calendar sheet</description>
@@ -47,7 +70,7 @@
                     <height>50</height>
                     <left>0</left>
                     <top>0</top>
-                    <font>font30_title</font>
+                    <font>font13_title</font>
                     <textcolor>FF808080</textcolor>
                     <align>center</align>
                     <aligny>center</aligny>
@@ -58,7 +81,7 @@
                     <width>120</width>
                     <height>50</height>
                     <left>125</left>
-                    <font>font30_title</font>
+                    <font>font13_title</font>
                     <textcolor>FF808080</textcolor>
                     <align>center</align>
                     <aligny>center</aligny>
@@ -69,7 +92,7 @@
                     <width>120</width>
                     <height>50</height>
                     <left>245</left>
-                    <font>font30_title</font>
+                    <font>font13_title</font>
                     <textcolor>FF808080</textcolor>
                     <align>center</align>
                     <aligny>center</aligny>
@@ -80,7 +103,7 @@
                     <width>120</width>
                     <height>50</height>
                     <left>365</left>
-                    <font>font30_title</font>
+                    <font>font13_title</font>
                     <textcolor>FF808080</textcolor>
                     <align>center</align>
                     <aligny>center</aligny>
@@ -91,7 +114,7 @@
                     <width>120</width>
                     <height>50</height>
                     <left>485</left>
-                    <font>font30_title</font>
+                    <font>font13_title</font>
                     <textcolor>FF808080</textcolor>
                     <align>center</align>
                     <aligny>center</aligny>
@@ -102,7 +125,7 @@
                     <width>120</width>
                     <height>50</height>
                     <left>605</left>
-                    <font>font30_title</font>
+                    <font>font13_title</font>
                     <textcolor>FF808080</textcolor>
                     <align>center</align>
                     <aligny>center</aligny>
@@ -113,7 +136,7 @@
                     <width>120</width>
                     <height>50</height>
                     <left>725</left>
-                    <font>font30_title</font>
+                    <font>font13_title</font>
                     <textcolor>FF808080</textcolor>
                     <align>center</align>
                     <aligny>center</aligny>
@@ -165,7 +188,7 @@
                             <height>40</height>
                             <left>75</left>
                             <top>75</top>
-                            <texture colordiffuse="FF006C00">$INFO[ListItem.Property(specialicon)]</texture>
+                            <texture colordiffuse="FF5C0000">$INFO[ListItem.Property(specialicon)]</texture>
                         </control>
                         <control type="image">
                             <width>114</width>
@@ -195,7 +218,7 @@
                             <height>85</height>
                             <left>5</left>
                             <top>30</top>
-                            <font>font36_title</font>
+                            <font>font30_title</font>
                             <align>center</align>
                             <aligny>center</aligny>
                             <label>$INFO[ListItem.Label]</label>
@@ -205,9 +228,25 @@
                 <focusedlayout width="120" height="120">
                     <control type="group">
                         <control type="image">
-                            <width>120</width>
-                            <height>120</height>
-                            <texture colordiffuse="button_focus">sheet_bg_selected.png</texture>
+                            <width>114</width>
+                            <height>114</height>
+                            <left>3</left>
+                            <top>3</top>
+                            <texture colordiffuse="80FFFFFF">todaymarker.png</texture>
+                        </control>
+                        <control type="image">
+                            <left>4</left>
+                            <top>4</top>
+                            <width>112</width>
+                            <height>112</height>
+                            <texture colordiffuse="FF004080" border="5">sheet_bg_selected.png</texture>
+                        </control>
+                        <control type="image">
+                            <left>4</left>
+                            <top>4</top>
+                            <width>112</width>
+                            <height>112</height>
+                            <texture border="5">MenuItemFO.png</texture>
                         </control>
                         <control type="group">
                             <description>event marker</description>
@@ -238,7 +277,7 @@
                             <height>40</height>
                             <left>75</left>
                             <top>75</top>
-                            <texture colordiffuse="FF00AC00">$INFO[ListItem.Property(specialicon)]</texture>
+                            <texture>$INFO[ListItem.Property(specialicon)]</texture>
                         </control>
                         <control type="image">
                             <width>114</width>
@@ -268,7 +307,7 @@
                             <height>85</height>
                             <left>5</left>
                             <top>30</top>
-                            <font>font36_title</font>
+                            <font>font30_title</font>
                             <align>center</align>
                             <aligny>center</aligny>
                             <label>$INFO[ListItem.Label]</label>
@@ -292,7 +331,7 @@
                 <control type="label">
                     <width>485</width>
                     <height>50</height>
-                    <font>font30_title</font>
+                    <font>font13_title</font>
                     <textcolor>FF808080</textcolor>
                     <align>center</align>
                     <aligny>center</aligny>
@@ -328,7 +367,7 @@
                         <height>30</height>
                         <top>5</top>
                         <left>5</left>
-                        <font>font25_title</font>
+                        <font>font12_title</font>
                         <info>ListItem.Label</info>
                     </control>
                     <control type="label">
@@ -338,7 +377,7 @@
                         <top>5</top>
                         <left>260</left>
                         <align>right</align>
-                        <font>font20_title</font>
+                        <font>font12</font>
                         <textcolor>FF808080</textcolor>
                         <info>ListItem.Property(range)</info>
                     </control>
@@ -367,7 +406,7 @@
                         <top>80</top>
                         <left>5</left>
                         <textcolor>FF808080</textcolor>
-                        <font>font_flag</font>
+                        <font>font10</font>
                         <info>ListItem.Property(description)</info>
                     </control>
                 </itemlayout>
@@ -375,34 +414,28 @@
                     <control type="image">
                         <width>485</width>
                         <height>120</height>
-                        <texture colordiffuse="button_focus">eventlist_bg_1_selected.png</texture>
-                        <visible>!String.IsEqual(ListItem.Property(allday),1) + Control.HasFocus(30009)</visible>
-                    </control>
-                    <control type="image">
-                        <width>485</width>
-                        <height>120</height>
-                        <texture colordiffuse="button_focus">eventlist_bg_2_selected.png</texture>
-                        <visible>String.IsEqual(ListItem.Property(allday),1) + Control.HasFocus(30009)</visible>
-                    </control>
-                    <control type="image">
-                        <width>485</width>
-                        <height>120</height>
                         <texture>eventlist_bg_1.png</texture>
-                        <visible>!String.IsEqual(ListItem.Property(allday),1) + !Control.HasFocus(30009)</visible>
+                        <visible>!String.IsEqual(ListItem.Property(allday),1)</visible>
                     </control>
                     <control type="image">
                         <width>485</width>
                         <height>120</height>
                         <texture>eventlist_bg_2.png</texture>
-                        <visible>String.IsEqual(ListItem.Property(allday),1) + !Control.HasFocus(30009)</visible>
+                        <visible>String.IsEqual(ListItem.Property(allday),1)</visible>
                     </control>
+                    <control type="image">
+                            <width>485</width>
+                            <height>120</height>
+                            <texture border="5">MenuItemFO.png</texture>
+                            <visible>Control.HasFocus(30009)</visible>
+                        </control>
                     <control type="label">
                         <description>date of event</description>
                         <width>275</width>
                         <height>30</height>
                         <top>5</top>
                         <left>5</left>
-                        <font>font25_title</font>
+                        <font>font12_title</font>
                         <info>ListItem.Label</info>
                     </control>
                     <control type="label">
@@ -412,7 +445,7 @@
                         <top>5</top>
                         <left>260</left>
                         <align>right</align>
-                        <font>font20_title</font>
+                        <font>font12</font>
                         <textcolor>FF808080</textcolor>
                         <info>ListItem.Property(range)</info>
                     </control>
@@ -441,11 +474,12 @@
                         <top>80</top>
                         <left>5</left>
                         <textcolor>FF808080</textcolor>
-                        <font>font_flag</font>
+                        <font>font10</font>
                         <info>ListItem.Property(description)</info>
                     </control>
                 </focusedlayout>
                 <content>plugin://service.calendar?action=getcontent&amp;content=eventlist&amp;month=$INFO[Window(Home).Property(calendar_month)]&amp;year=$INFO[Window(Home).Property(calendar_year)]</content>
+                <onclick>noop</onclick>
             </control>
         </control>
     </controls>
