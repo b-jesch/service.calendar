@@ -41,17 +41,21 @@ def calc_boundaries(direction):
     sheet_m = int(xbmcgui.Window(10000).getProperty('calendar_month')) + direction
     sheet_y = int(xbmcgui.Window(10000).getProperty('calendar_year'))
 
-    if (sheet_m < datetime.today().month) or \
-            (sheet_m >= datetime.today().month + tools.getAddonSetting('timemax', sType=tools.NUM)):
-        tools.writeLog('prev/next month outside boundary')
-        return
-
     if sheet_m < 1:
         sheet_m = 12
         sheet_y -= 1
     elif sheet_m > 12:
         sheet_m = 1
         sheet_y += 1
+
+    if sheet_y == datetime.today().year:
+        if sheet_m < datetime.today().month or sheet_m > datetime.today().month + tools.getAddonSetting('timemax', sType=tools.NUM):
+            tools.writeLog('prev/next month outside boundary')
+            return
+    else:
+        if sheet_m + 12 > datetime.today().month + tools.getAddonSetting('timemax', sType=tools.NUM):
+            tools.writeLog('prev/next month outside boundary')
+            return
 
     xbmcgui.Window(10000).setProperty('calendar_month', str(sheet_m))
     xbmcgui.Window(10000).setProperty('calendar_year', str(sheet_y))
