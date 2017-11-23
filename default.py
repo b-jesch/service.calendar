@@ -75,8 +75,9 @@ def set_localsetting(setting):
         __addon__.setSetting(setting, ', '.join(_list[i] for i in _idx))
 
 def controller(mode=None, handle=None, content=None, eventId=None):
-    now = datetime.utcnow().isoformat() + 'Z'
-    timemax = (datetime.utcnow() + relativedelta.relativedelta(months=tools.getAddonSetting('timemax', sType=tools.NUM))).isoformat() + 'Z'
+    now = datetime.utcnow().replace(hour=0, minute=0, second=0, microsecond=0).isoformat() + 'Z'
+    timemax = (datetime.utcnow().replace(hour=0, minute=0, second=0, microsecond=0) +
+               relativedelta.relativedelta(months=tools.getAddonSetting('timemax', sType=tools.NUM))).isoformat() + 'Z'
 
     if mode == 'require_oauth_key':
         Calendar().require_credentials(Calendar().CLIENT_CREDENTIALS, require_from_setup=True)
