@@ -17,6 +17,7 @@ from datetime import datetime, timedelta
 from dateutil import parser, relativedelta
 import json
 import urllib
+import sys
 
 import xbmc
 import xbmcaddon
@@ -186,8 +187,13 @@ class Calendar(object):
                         for _record in cal_set:
                             _item = {}
                             _show = _record.get('show')
-                            _ts = datetime.fromtimestamp(int(_record.get('first_aired', '0'))).replace(hour=int(_show.get('airs_time', '00:00')[0:2]),
-                                                                                                   minute=int(_show.get('airs_time', '00:00')[3:5]))
+                            if len(_show.get('airs_time', '')) == 5:
+                                _hour = int(_show.get('airs_time')[0:2])
+                                _minute = int(_show.get('airs_time')[3:5])
+                            else:
+                                _hour = 0
+                                _minute = 0
+                            _ts = datetime.fromtimestamp(int(_record.get('first_aired', '0'))).replace(hour=_hour, minute=_minute)
                             _end = _ts + timedelta(minutes=int(_show.get('runtime', '0')))
 
                             _item.update({'timestamp': int(time.mktime(_ts.timetuple())),
@@ -205,8 +211,11 @@ class Calendar(object):
                                           'banner': _show['images'].get('banner', '')})
 
                             events.append(_item)
-                    except ValueError, e:
+                    except Exception as e:
+                        t.writeLog('Error on line {}'.format(sys.exc_info()[-1].tb_lineno), level=xbmc.LOGERROR)
+                        t.writeLog(type(e).__name__, level=xbmc.LOGERROR)
                         t.writeLog(e.message, level=xbmc.LOGERROR)
+
 
             events.sort(key=operator.itemgetter('timestamp'))
 
