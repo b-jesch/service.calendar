@@ -6,7 +6,7 @@
     <import addon="script.module.googleapi" version="1.6.4"/>
     <import addon="script.module.httplib2" version="0.8.0"/>
     <import addon="script.module.dateutil" version="2.5.3"/>
-    <import addon="script.skin.helper.colorpicker" version="1.0.12"/>
+    <import addon="script.skin.helper.colorpicker" version="1.0.11"/>
     <import addon="script.module.pil" version="1.1.7" />
   </requires>
   <extension point="xbmc.python.script" library="default.py" />

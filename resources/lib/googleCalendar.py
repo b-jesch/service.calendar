@@ -127,7 +127,7 @@ class Calendar(object):
 
         return credentials
 
-    def get_events(self, storage, timeMin, timeMax, maxResult=30, calendars='primary'):
+    def get_events(self, storage, timeMin, timeMax, maxResult=30, calendars='primary', evtype='default'):
         if not os.path.exists(storage) or not t.lastmodified(storage, 60):
             t.writeLog('establish online connection for getting events')
             self.establish()
@@ -138,67 +138,75 @@ class Calendar(object):
                                                         maxResults=maxResult, singleEvents=True,
                                                         orderBy='startTime').execute()
                 cal_set = cal_items.get('items', [])
-                if cal_set:
-                    # set additional attributes
-                    for _record in cal_set:
-                        _item = {}
-                        _ts = parser.parse(_record['start'].get('dateTime', _record['start'].get('date', '')))
-                        _end = parser.parse(_record['end'].get('dateTime', _record['end'].get('date', '')))
-                        _tdelta = relativedelta.relativedelta(_end.date(), _ts.date())
 
-                        _item.update({'allday': 0 if _record['start'].get('dateTime') else _tdelta.days})
-                        _item.update({'timestamp': int(time.mktime(_ts.timetuple()))})
+                # set additional attributes
 
-                        if _record['start'].get('dateTime', False):
-                            _item.update({'start': {'dateTime': datetime.isoformat(_ts)}})
-                        else:
-                            _item.update({'start': {'date': datetime.isoformat(_ts)}})
+                icon = self.get_calendarBGcolorImage(cal)
+                for _record in cal_set:
+                    _item = {}
+                    _ts = parser.parse(_record['start'].get('dateTime', _record['start'].get('date', '')))
+                    _end = parser.parse(_record['end'].get('dateTime', _record['end'].get('date', '')))
+                    _tdelta = relativedelta.relativedelta(_end.date(), _ts.date())
 
-                        if _record['end'].get('dateTime', False):
-                            _item.update({'end': {'dateTime': datetime.isoformat(_end)}})
-                        else:
-                            _item.update({'end': {'date': datetime.isoformat(_end)}})
+                    _item.update({'date': datetime.isoformat(_ts),
+                                  'shortdate': _ts.strftime('%d.%m'),
+                                  'allday': 0 if _record['start'].get('dateTime') else _tdelta.days,
+                                  'timestamp': int(time.mktime(_ts.timetuple())),
+                                  'icon': icon,
+                                  'id': _record.get('id', ''),
+                                  'summary': _record.get('summary', ''),
+                                  'description': _record.get('description', None),
+                                  'location': _record.get('location', None)})
 
-                        gadget = _record.get('gadget', None)
-                        if gadget:
-                            if gadget.get('preferences').get('goo.contactsEventType') == 'BIRTHDAY':
-                                _item.update({'specialicon': __cake__})
+                    if _record['start'].get('dateTime', False):
+                        _item.update({'start': {'dateTime': datetime.isoformat(_ts)}})
+                    else:
+                        _item.update({'start': {'date': datetime.isoformat(_ts)}})
 
-                        _item.update({'icon': self.get_calendarBGcolorImage(cal),
-                                      'id': _record.get('id', ''),
-                                      'summary': _record.get('summary', ''),
-                                      'description': _record.get('description', None),
-                                      'location': _record.get('location', None)})
-                        events.append(_item)
+                    if _record['end'].get('dateTime', False):
+                        _item.update({'end': {'dateTime': datetime.isoformat(_end)}})
+                    else:
+                        _item.update({'end': {'date': datetime.isoformat(_end)}})
+
+                    gadget = _record.get('gadget', None)
+                    if gadget:
+                        if gadget.get('preferences').get('goo.contactsEventType') == 'BIRTHDAY':
+                            _item.update({'specialicon': __cake__})
+
+                    events.append(_item)
 
             # get additional calendars, glotz.info
 
             if t.getAddonSetting('glotz_enabled', sType=t.BOOL) and t.getAddonSetting('glotz_apikey') != '':
-                t.writeLog('getting events from glotz.info')
-                try:
-                    cal_set = json.loads(urllib.urlopen(self.GLOTZ_URL).read())
-                    for _record in cal_set:
-                        _item = {}
-                        _show = _record.get('show')
-                        _ts = datetime.fromtimestamp(int(_record.get('first_aired', '0'))).replace(hour=int(_show.get('airs_time', '00:00')[0:2]),
-                                                                                               minute=int(_show.get('airs_time', '00:00')[3:5]))
-                        _end = _ts + timedelta(minutes=int(_show.get('runtime', '0')))
+                if evtype == 'default' or (evtype == 'notification' and t.getAddonSetting('glotz_notify', sType=t.BOOL)):
+                    t.writeLog('getting events from glotz.info')
+                    try:
+                        cal_set = json.loads(urllib.urlopen(self.GLOTZ_URL).read())
+                        icon = self.get_calendarBGcolorImage('glotz_color')
+                        for _record in cal_set:
+                            _item = {}
+                            _show = _record.get('show')
+                            _ts = datetime.fromtimestamp(int(_record.get('first_aired', '0'))).replace(hour=int(_show.get('airs_time', '00:00')[0:2]),
+                                                                                                   minute=int(_show.get('airs_time', '00:00')[3:5]))
+                            _end = _ts + timedelta(minutes=int(_show.get('runtime', '0')))
 
-                        _item.update({'timestamp': int(time.mktime(_ts.timetuple())),
-                                      'start': {'dateTime': datetime.isoformat(_ts)},
-                                      'end': {'dateTime': datetime.isoformat(_end)},
-                                      'id': '%s-%s' % (_record.get('first_aired', ''), _show.get('tvdb_id', '')),
-                                      'summary': _show.get('network', ''),
-                                      'description': '%s S%02iE%02i: %s' % (_show.get('title', ''),
-                                                                            int(_record.get('season', '0')),
-                                                                            int(_record.get('number', '0')),
-                                                                            _record.get('title', '')),
-                                      'icon': self.get_calendarBGcolorImage(None),
-                                      'banner': _show['images'].get('banner', '')})
+                            _item.update({'timestamp': int(time.mktime(_ts.timetuple())),
+                                          'date': datetime.isoformat(_ts),
+                                          'shortdate': _ts.strftime('%d.%m'),
+                                          'start': {'dateTime': datetime.isoformat(_ts)},
+                                          'end': {'dateTime': datetime.isoformat(_end)},
+                                          'id': '%s-%s' % (_record.get('first_aired', ''), _show.get('tvdb_id', '')),
+                                          'summary': _show.get('network', ''),
+                                          'description': '%s - S%02iE%02i: %s' % (_show.get('title', ''),
+                                                                                  int(_record.get('season', '0')),
+                                                                                  int(_record.get('number', '0')),
+                                                                                  _record.get('title', '')),
+                                          'icon': icon,
+                                          'banner': _show['images'].get('banner', '')})
 
-                        events.append(_item)
-                except ValueError, e:
-                    t.writeLog(e.message, level=xbmc.LOGERROR)
+                            events.append(_item)
+                    except ValueError, e:
+                        t.writeLog(e.message, level=xbmc.LOGERROR)
 
             events.sort(key=operator.itemgetter('timestamp'))
 
@@ -221,9 +229,6 @@ class Calendar(object):
         _end = parser.parse(event['end'].get('dateTime', event['end'].get('date', '')))
         _tdelta = relativedelta.relativedelta(_end.date(), _ts.date())
         
-        event.update({'date': _ts,
-                        'shortdate': _ts.strftime('%d.%m')})
-
         if event.get('allday', 0) > 0:
             if _tdelta.months == 0 and _tdelta.weeks == 0 and _tdelta.days == 1: event.update({'range': __LS__(30111)})
             elif _tdelta.months == 0 and _tdelta.weeks == 0: event.update({'range': __LS__(30112) % (_tdelta.days)})
@@ -281,13 +286,19 @@ class Calendar(object):
         return calId
 
     def get_calendarBGcolorImage(self, calendarId):
-        color = '#808080'
-        if calendarId is not None:
-            cals = self.get_calendars()
-            for cal in cals:
-                if cal.get('id') == calendarId:
-                    color = cal.get('backgroundColor', '#808080')
-                    break
+
+        cals = self.get_calendars()
+        for cal in cals:
+            if cal.get('id') == calendarId:
+                color = cal.get('backgroundColor', '#808080')
+                return t.createImage(15, 40, color, os.path.join(self.COLOR_PATH, color + '.png'))
+
+        color = xbmcgui.Window(10000).getProperty(calendarId)
+        if color:
+            t.setAddonSetting(calendarId, color)
+            xbmcgui.Window(10000).clearProperty(calendarId)
+        else:
+            color = t.getAddonSetting(calendarId)
         return t.createImage(15, 40, color, os.path.join(self.COLOR_PATH, color + '.png'))
 
     def build_sheet(self, handle, storage, content, now, timemax, maxResult, calendars):
@@ -329,8 +340,9 @@ class Calendar(object):
 
             for event in events:
                 event = self.prepareForAddon(event, _now, optTimeStamps=False)
+                cur_date = parser.parse(event.get('date'))
 
-                if event['date'].day == dom and event['date'].month == sheet_m and event['date'].year == sheet_y:
+                if cur_date.day == dom and cur_date.month == sheet_m and cur_date.year == sheet_y:
                     event_ids += ' %s' % (event['id'])
                     num_events += 1
                     if event.get('allday', 0) > allday: allday = event.get('allday')
@@ -365,7 +377,8 @@ class Calendar(object):
         elif content == 'eventlist':
             for event in events:
                 event = self.prepareForAddon(event, _now, optTimeStamps=self.addtimestamps)
-                if event['date'].month >= sheet_m and event['date'].year >= sheet_y:
+                cur_date = parser.parse(event.get('date'))
+                if cur_date.month >= sheet_m and cur_date.year >= sheet_y:
                     if self.addtimestamps:
                         li = xbmcgui.ListItem(label=event['shortdate'] + ' - ' + event['timestamps'], label2=event['summary'],
                                               iconImage=event['icon'])

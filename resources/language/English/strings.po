@@ -187,10 +187,14 @@ msgid "Calendar Marker Color"
 msgstr ""
 
 msgctxt "#30054"
+msgid "Show Events in Notifications"
+msgstr ""
+
+msgctxt "#30055"
 msgid "Check Email Settings"
 msgstr ""
 
-#empty strings from id 30055 to 30069
+#empty strings from id 30056 to 30069
 
 msgctxt "#30070"
 msgid "Keyfile missing, Reinstallation required"

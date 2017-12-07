@@ -182,6 +182,10 @@ msgid "Calendar Marker Color"
 msgstr "Kalender Farbmarkierung"
 
 msgctxt "#30054"
+msgid "Show Events in Notifications"
+msgstr "Termine in den Erinnerungen anzeigen"
+
+msgctxt "#30055"
 msgid "Check Email Settings"
 msgstr "Einstellungen für Mail-Konto testen"
 

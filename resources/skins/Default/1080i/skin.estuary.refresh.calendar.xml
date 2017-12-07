@@ -327,7 +327,7 @@
                         <top>42</top>
                         <width>485</width>
                         <height>76</height>
-                        <texture colordiffuse="6080A080">$INFO[ListItem.Property(banner)]</texture>
+                        <texture colordiffuse="B080A080">$INFO[ListItem.Property(banner)]</texture>
                     </control>
                     <control type="label">
                         <description>date of event</description>
