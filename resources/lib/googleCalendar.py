@@ -187,20 +187,24 @@ class Calendar(object):
                         for _record in cal_set:
                             _item = {}
                             _show = _record.get('show')
+                            _time_fmt = 'dateTime'
                             if len(_show.get('airs_time', '')) == 5:
                                 _hour = int(_show.get('airs_time')[0:2])
                                 _minute = int(_show.get('airs_time')[3:5])
                             else:
                                 _hour = 0
                                 _minute = 0
+                                _time_fmt = 'date'
+
+
                             _ts = datetime.fromtimestamp(int(_record.get('first_aired', '0'))).replace(hour=_hour, minute=_minute)
-                            _end = _ts + timedelta(minutes=int(_show.get('runtime', '0')))
+                            _end = _ts + timedelta(minutes=int(_show.get('runtime', '0'))) if _time_fmt == 'dateTime' else _ts
 
                             _item.update({'timestamp': int(time.mktime(_ts.timetuple())),
                                           'date': datetime.isoformat(_ts),
                                           'shortdate': _ts.strftime('%d.%m'),
-                                          'start': {'dateTime': datetime.isoformat(_ts)},
-                                          'end': {'dateTime': datetime.isoformat(_end)},
+                                          'start': {_time_fmt: datetime.isoformat(_ts)},
+                                          'end': {_time_fmt: datetime.isoformat(_end)},
                                           'id': '%s-%s-%s' % (_record.get('first_aired', ''), _record.get('season', '0'), _record.get('number', '0')),
                                           'summary': _show.get('network', ''),
                                           'description': '%s - S%02iE%02i: %s' % (_show.get('title', ''),
@@ -208,7 +212,8 @@ class Calendar(object):
                                                                                   int(_record.get('number', '0')),
                                                                                   _record.get('title', '')),
                                           'icon': icon,
-                                          'banner': _show['images'].get('banner', '')})
+                                          'banner': _show['images'].get('banner', ''),
+                                          'allday': 1 if _time_fmt == 'date' else 0})
 
                             events.append(_item)
                     except Exception as e:
@@ -240,7 +245,8 @@ class Calendar(object):
         _tdelta = relativedelta.relativedelta(_end.date(), _ts.date())
 
         if event.get('allday', 0) > 0:
-            if _tdelta.months == 0 and _tdelta.weeks == 0 and _tdelta.days == 1: event.update({'range': __LS__(30111)})
+            if _tdelta.months == 0 and _tdelta.weeks == 0 and _tdelta.days == 0: event.update({'range': ''})
+            elif _tdelta.months == 0 and _tdelta.weeks == 0 and _tdelta.days == 1: event.update({'range': __LS__(30111)})
             elif _tdelta.months == 0 and _tdelta.weeks == 0: event.update({'range': __LS__(30112) % (_tdelta.days)})
             elif _tdelta.months == 0 and _tdelta.weeks == 1: event.update({'range': __LS__(30113)})
             elif _tdelta.months == 0 and _tdelta.weeks > 0: event.update({'range': __LS__(30114) % (_tdelta.weeks)})

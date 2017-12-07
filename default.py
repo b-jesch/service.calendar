@@ -126,9 +126,9 @@ def controller(mode=None, handle=None, content=None, eventId=None):
         for event in events:
             _ev = googlecal.get_event(event, TEMP_STORAGE_EVENTS)
             _mev = googlecal.prepareForAddon(_ev, optTimeStamps=True)
-            _msg += '[B]%s[/B]: %s[CR]%s[CR][CR]' % (_mev.get('range', ''), _mev.get('summary', ''),
-                                                     _mev.get('description', False)
-                                                     or _mev.get('location', False) or __LS__(30093))
+            _time = '' if _mev.get('range', '') == '' else '[B]%s[/B]: ' % (_mev.get('range'))
+            _msg += '%s%s[CR]%s[CR][CR]' % (_time, _mev.get('summary', ''),
+                                            _mev.get('description', False) or _mev.get('location', False) or __LS__(30093))
         tools.dialogOK('%s %s %s' % (__LS__(30109), __LS__(30145), _mev.get('shortdate', '')), _msg)
 
     elif mode == 'prev':
