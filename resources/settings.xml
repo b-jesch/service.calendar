@@ -32,4 +32,11 @@
 		<setting id="calendars" type="action" label="30090" option="close" action="RunScript(service.calendar,action=set_calendars)" default="primary" />
 		<setting id="notifications" type="action" label="30092" option="close" action="RunScript(service.calendar,action=set_notifications)" default="primary" />
 	</category>
+	<category label="30029">
+		<setting type="lsep" label="30050" />
+		<setting id="glotz_enabled" type="bool" label="30051" default="false" />
+		<setting id="glotz_apikey" type="text" label="30052" default="" enable="eq(-1,true)" />
+		<setting id="glotz_color" type="action" label="30053" default="#808080" option="close"
+				 action="RunScript(script.skin.helper.colorpicker,winproperty=glotz)" enable="eq(-2,true)"/>
+	</category>
 </settings>

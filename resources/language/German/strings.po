@@ -93,6 +93,10 @@ msgctxt "#30028"
 msgid "6 months"
 msgstr "6 Monate"
 
+msgctxt "#30029"
+msgid "additional Calendars"
+msgstr "weitere Kalender"
+
 msgctxt "#30030"
 msgid "1 min"
 msgstr "1 Min"
@@ -160,6 +164,22 @@ msgstr "Zeichensatz"
 msgctxt "#30049"
 msgid "Encryption"
 msgstr "Verschlüsselung"
+
+msgctxt "#30050"
+msgid "glotz.info"
+msgstr "glotz.info"
+
+msgctxt "#30051"
+msgid "Show in Calendar"
+msgstr "Im Kalender anzeigen"
+
+msgctxt "#30052"
+msgid "API Key"
+msgstr "API Schlüssel"
+
+msgctxt "#30053"
+msgid "Calendar Marker Color"
+msgstr "Kalender Farbmarkierung"
 
 msgctxt "#30054"
 msgid "Check Email Settings"

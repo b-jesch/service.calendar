@@ -125,7 +125,7 @@ def controller(mode=None, handle=None, content=None, eventId=None):
         _msg = ''
         for event in events:
             _ev = googlecal.get_event(event, TEMP_STORAGE_EVENTS)
-            _mev = googlecal.prepare_events(_ev, optTimeStamps=True)
+            _mev = googlecal.prepareForAddon(_ev, optTimeStamps=True)
             _msg += '[B]%s[/B]: %s[CR]%s[CR][CR]' % (_mev.get('range', ''), _mev.get('summary', ''),
                                                      _mev.get('description', False)
                                                      or _mev.get('location', False) or __LS__(30093))

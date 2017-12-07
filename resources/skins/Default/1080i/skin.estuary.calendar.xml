@@ -129,6 +129,7 @@
                 <onright>30009</onright>
                 <onup>RunScript(service.calendar,action=prev)</onup>
                 <ondown>RunScript(service.calendar,action=next)</ondown>
+                <onclick>RunScript(service.calendar,action=getinfo&amp;id=$INFO[ListItem.Property(ids)])</onclick>
                 <itemlayout width="120" height="120">
                     <control type="group">
                         <control type="image">
@@ -314,13 +315,19 @@
                         <width>485</width>
                         <height>120</height>
                         <texture>eventlist_bg_1.png</texture>
-                        <visible>!String.IsEqual(ListItem.Property(allday),1)</visible>
+                        <visible>String.IsEqual(ListItem.Property(allday),0)</visible>
                     </control>
                     <control type="image">
                         <width>485</width>
                         <height>120</height>
                         <texture>eventlist_bg_2.png</texture>
-                        <visible>String.IsEqual(ListItem.Property(allday),1)</visible>
+                        <visible>!String.IsEqual(ListItem.Property(allday),0)</visible>
+                    </control>
+                    <control type="image">
+                        <top>42</top>
+                        <width>485</width>
+                        <height>76</height>
+                        <texture colordiffuse="6080A080">$INFO[ListItem.Property(banner)]</texture>
                     </control>
                     <control type="label">
                         <description>date of event</description>
@@ -366,7 +373,7 @@
                         <height>30</height>
                         <top>80</top>
                         <left>5</left>
-                        <textcolor>FF808080</textcolor>
+                        <textcolor>FF999999</textcolor>
                         <font>font_flag</font>
                         <info>ListItem.Property(description)</info>
                     </control>
@@ -376,13 +383,13 @@
                         <width>485</width>
                         <height>120</height>
                         <texture colordiffuse="button_focus">eventlist_bg_1_selected.png</texture>
-                        <visible>!String.IsEqual(ListItem.Property(allday),1) + Control.HasFocus(30009)</visible>
+                        <visible>String.IsEqual(ListItem.Property(allday),0) + Control.HasFocus(30009)</visible>
                     </control>
                     <control type="image">
                         <width>485</width>
                         <height>120</height>
                         <texture colordiffuse="button_focus">eventlist_bg_2_selected.png</texture>
-                        <visible>String.IsEqual(ListItem.Property(allday),1) + Control.HasFocus(30009)</visible>
+                        <visible>!String.IsEqual(ListItem.Property(allday),0) + Control.HasFocus(30009)</visible>
                     </control>
                     <control type="image">
                         <width>485</width>
@@ -440,7 +447,7 @@
                         <height>30</height>
                         <top>80</top>
                         <left>5</left>
-                        <textcolor>FF808080</textcolor>
+                        <textcolor>FF999999</textcolor>
                         <font>font_flag</font>
                         <info>ListItem.Property(description)</info>
                     </control>
