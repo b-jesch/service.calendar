@@ -216,7 +216,8 @@ class Calendar(object):
             with open(storage, 'r') as filehandle: events = json.load(filehandle)
         return events
 
-    def get_event(self, eventId, storage):
+    @classmethod
+    def get_event(cls, eventId, storage):
         with open(storage, 'r') as filehandle: events = json.load(filehandle)
         for event in events:
             if event.get('id', '') == eventId: return event
@@ -228,7 +229,7 @@ class Calendar(object):
         _ts = parser.parse(event['start'].get('dateTime', event['start'].get('date', '')))
         _end = parser.parse(event['end'].get('dateTime', event['end'].get('date', '')))
         _tdelta = relativedelta.relativedelta(_end.date(), _ts.date())
-        
+
         if event.get('allday', 0) > 0:
             if _tdelta.months == 0 and _tdelta.weeks == 0 and _tdelta.days == 1: event.update({'range': __LS__(30111)})
             elif _tdelta.months == 0 and _tdelta.weeks == 0: event.update({'range': __LS__(30112) % (_tdelta.days)})
