@@ -201,7 +201,7 @@ class Calendar(object):
                                           'shortdate': _ts.strftime('%d.%m'),
                                           'start': {'dateTime': datetime.isoformat(_ts)},
                                           'end': {'dateTime': datetime.isoformat(_end)},
-                                          'id': '%s-%s' % (_record.get('first_aired', ''), _show.get('tvdb_id', '')),
+                                          'id': '%s-%s-%s' % (_record.get('first_aired', ''), _record.get('season', '0'), _record.get('number', '0')),
                                           'summary': _show.get('network', ''),
                                           'description': '%s - S%02iE%02i: %s' % (_show.get('title', ''),
                                                                                   int(_record.get('season', '0')),
