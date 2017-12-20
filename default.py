@@ -94,6 +94,13 @@ def controller(mode=None, handle=None, content=None, eventId=None):
         tools.writeLog('new credentials successfull received and stored', xbmc.LOGDEBUG)
         tools.Notify().notify(__LS__(30010), __LS__(30073))
 
+    elif mode == 'load_glotz_key':
+        glotz_apikey = tools.dialogFile(__LS__(30089))
+        if glotz_apikey != '':
+            tools.setAddonSetting('glotz_apikey', glotz_apikey)
+            tools.writeLog('API key for glotz.info successfull stored')
+            tools.Notify().notify(__LS__(30010), __LS__(30073))
+
     elif mode == 'check_mailsettings':
         mail = SMTPMail()
         mail.checkproperties()

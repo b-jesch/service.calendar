@@ -36,8 +36,10 @@
 		<setting type="lsep" label="30050" />
 		<setting id="glotz_enabled" type="bool" label="30051" default="false" />
 		<setting id="glotz_apikey" type="text" label="30052" default="" enable="eq(-1,true)" />
+		<setting id="glotz_loadkey" type="action" label="30088" option="close"
+				 action="RunScript(service.calendar,action=load_glotz_key)" enable="eq(-2,true)" />
 		<setting id="glotz_color" type="action" label="30053" default="808080" option="close"
-				 action="RunScript(script.skin.helper.colorpicker,winproperty=glotz_color)" enable="eq(-2,true)"/>
-		<setting id="glotz_notify" type="bool" label="30054" default="true" />
+				 action="RunScript(script.skin.helper.colorpicker,winproperty=glotz_color)" enable="eq(-3,true)"/>
+		<setting id="glotz_notify" type="bool" label="30054" default="true" enable="eq(-4,true)"/>
 	</category>
 </settings>

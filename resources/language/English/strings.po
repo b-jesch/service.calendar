@@ -268,7 +268,13 @@ msgctxt "#30087"
 msgid "Would You enter the authentification code now?"
 msgstr ""
 
-#empty strings from id 30088 to 30089
+msgctxt "#30088"
+msgid "Load API key from file"
+msgstr ""
+
+msgctxt "#30089"
+msgid "File with API key"
+msgstr ""
 
 msgctxt "#30090"
 msgid "My calendars"

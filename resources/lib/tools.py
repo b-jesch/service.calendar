@@ -45,14 +45,18 @@ class release(object):
         self.hostname = platform.node()
         item = {}
         if self.platform == 'Linux':
-            with open('/etc/os-release', 'r') as _file:
-                for _line in _file:
-                    parameter, value = _line.split('=')
-                    item[parameter] = value
 
-        self.osname = item.get('NAME', '')
-        self.osid = item.get('ID', '')
-        self.osversion = item.get('VERSION_ID', '')
+            try:
+                with open('/etc/os-release', 'r') as _file:
+                    for _line in _file:
+                        parameter, value = _line.split('=')
+                        item[parameter] = value
+            except IOError, e:
+                writeLog(e.message, xbmc.LOGERROR)
+
+        self.osname = item.get('NAME', 'unknown')
+        self.osid = item.get('ID', 'unknown')
+        self.osversion = item.get('VERSION_ID', 'unknown')
 
 def lastmodified(path, limit):
     if (int(time.time()) - os.path.getmtime(path)) > limit:
@@ -119,7 +123,7 @@ def createImage(width, height, rgbColor, path):
     # skip transparency
     if len(rgb) == 8: rgb = rgb[2:8]
     lv = len(rgb)
-    bgcolor = tuple(int(rgb[i:i + lv / 3], 16) for i in range(0, lv, lv / 3))
-    img = Image.new('RGB', (width, height), bgcolor)
+    color = tuple(int(rgb[i:i + lv / 3], 16) for i in range(0, lv, lv / 3))
+    img = Image.new('RGB', (width, height), color)
     img.save(path)
     return path

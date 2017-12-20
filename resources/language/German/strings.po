@@ -261,6 +261,14 @@ msgctxt "#30087"
 msgid "Would You enter the authentification code now?"
 msgstr "Möchten Sie den Authentifizierungsschlüssel jetzt eingeben?"
 
+msgctxt "#30088"
+msgid "Load API key from file"
+msgstr "API-Schlüssel aus Datei laden"
+
+msgctxt "#30089"
+msgid "File with API key"
+msgstr "Datei mit API-Schlüssel"
+
 msgctxt "#30090"
 msgid "My calendars"
 msgstr "Meine Kalender"
