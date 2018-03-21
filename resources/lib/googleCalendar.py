@@ -310,11 +310,14 @@ class Calendar(object):
                 return t.createImage(15, 40, color, os.path.join(self.COLOR_PATH, color + '.png'))
 
         color = xbmcgui.Window(10000).getProperty(calendarId)
+
         if color:
             t.setAddonSetting(calendarId, color)
             xbmcgui.Window(10000).clearProperty(calendarId)
         else:
-            color = '#808080'
+            color = t.getAddonSetting(calendarId)
+            if not color: color = '#808080'
+            
         return t.createImage(15, 40, color, os.path.join(self.COLOR_PATH, color + '.png'))
 
     def build_sheet(self, handle, storage, content, now, timemax, maxResult, calendars):

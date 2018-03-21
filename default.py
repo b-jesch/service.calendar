@@ -146,6 +146,8 @@ def controller(mode=None, handle=None, content=None, eventId=None):
 
     # this is the real controller bootstrap
     elif mode == 'gui':
+        xbmcgui.Window(10000).setProperty('reminders', '0')
+        tools.writeLog('GUI called, reset reminders', xbmc.LOGNOTICE)
         try:
             Popup = xbmcgui.WindowXMLDialog(__xml__, __path__)
             Popup.doModal()
