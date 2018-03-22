@@ -137,6 +137,10 @@ msgctxt "#30039"
 msgid "20 sec"
 msgstr "20 Sek"
 
+msgctxt "#30040"
+msgid "max Count of Repeats"
+msgstr "maximale Anzahl der Wiederholungen"
+
 msgctxt "#30041"
 msgid "SMTP-Mailserver (Outbox)"
 msgstr "SMTP-Mailserver (Postausgang)"

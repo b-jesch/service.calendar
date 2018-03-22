@@ -54,8 +54,12 @@ try:
             xbmc.Monitor().waitForAbort(t.getAddonSetting('lastnoticeduration', sType=t.NUM))
             DialogKT.close()
 
-        xbmc.Monitor().waitForAbort(t.getAddonSetting('interval', sType=t.NUM, multiplicator=60))
         _cycle += 1
+        if _cycle >= t.getAddonSetting('cycles', sType=t.NUM):
+            t.writeLog('max count of reminder cycles reached, stop notifications')
+            break
+        xbmc.Monitor().waitForAbort(t.getAddonSetting('interval', sType=t.NUM, multiplicator=60))
+
 
 except SMTPMail.SMPTMailInvalidOrMissingParameterException, e:
     t.writeLog(e.message, xbmc.LOGERROR)

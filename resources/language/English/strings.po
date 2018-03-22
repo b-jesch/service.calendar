@@ -138,7 +138,9 @@ msgctxt "#30039"
 msgid "20 sec"
 msgstr ""
 
-#empty string with id 30040
+msgctxt "#30040"
+msgid "max Count of Repeats"
+msgstr ""
 
 msgctxt "#30041"
 msgid "SMTP-Mailserver (Outbox)"

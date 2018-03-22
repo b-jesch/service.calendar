@@ -5,7 +5,8 @@
 		<setting id="show_onstart" type="bool" label="30015" default="true" />
 		<setting id="numreminders" type="labelenum" label="30016" values="1|2|3|4|5" enable="eq(-1,true)" default="3" />
 		<setting id="interval" type="labelenum" label="30017" lvalues="30030|30031|30032|30033|30034|30035" enable="eq(-2,true)" />
-		<setting id="lastnoticeduration" type="labelenum" label="30021" lvalues="30036|30037|30038|30039" enable="eq(-3,true)" />
+		<setting id="cycles" type="labelenum" label="30040" values="1|2|3|4|5" enable="eq(-3,true)" default="3" />
+		<setting id="lastnoticeduration" type="labelenum" label="30021" lvalues="30036|30037|30038|30039" enable="eq(-4,true)" />
 		<setting type="sep" />
 		<setting id="abort_notification" type="action" label="30018" option="close" action="RunScript(service.calendar,action=abort_reminders)" />
 		<setting type="lsep" label="30022" />
