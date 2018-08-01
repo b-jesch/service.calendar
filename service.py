@@ -45,7 +45,7 @@ try:
             xbmc.Monitor().waitForAbort(7)
             if _ev_count > t.getAddonSetting('numreminders', sType=t.NUM) or xbmcgui.Window(10000).getProperty('reminders') != '1': break
 
-        if events and _cycle > 0:
+        if events and _cycle > 0 and _cycle < t.getAddonSetting('cycles', sType=t.NUM):
             DialogKT = DKT.DialogKaiToast.createDialogKaiToast()
             DialogKT.label_1 = __LS__(30019)
             DialogKT.label_2 = __LS__(30018)
