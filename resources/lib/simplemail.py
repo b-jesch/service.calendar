@@ -1,7 +1,8 @@
 # -*- encoding: utf-8 -*-
 import smtplib
 from email.message import Message
-import tools
+from . import tools
+
 
 class SMTPMail(object):
     """
@@ -17,19 +18,18 @@ class SMTPMail(object):
     class SMTPMailNotDeliveredException(Exception):
         pass
 
-
-    class SMPTMailInvalidOrMissingParameterException(Exception):
+    class SMPTMailParameterException(Exception):
         pass
 
-
-    smtp_client = dict(
-        host = tools.getAddonSetting('host'),
-        user = tools.getAddonSetting('user'),
-        passwd = tools.getAddonSetting('passwd'),
-        enc = tools.getAddonSetting('enc'),
-        sender = tools.getAddonSetting('sender'),
-        recipient = tools.getAddonSetting('recipient'),
-        charset = tools.getAddonSetting('charset'))
+    smtp_client = dict({
+        'host': tools.getAddonSetting('host'),
+        'user': tools.getAddonSetting('user'),
+        'passwd': tools.getAddonSetting('passwd'),
+        'enc': tools.getAddonSetting('enc'),
+        'sender': tools.getAddonSetting('sender'),
+        'recipient': tools.getAddonSetting('recipient'),
+        'charset': tools.getAddonSetting('charset')
+    })
 
     def __init__(self):
         pass
@@ -41,9 +41,9 @@ class SMTPMail(object):
 
     def checkproperties(self):
 
-        for item, ivalue in self.smtp_client.items():
-            if not ivalue or ivalue == '':
-                raise self.SMPTMailInvalidOrMissingParameterException('%s not set' % (item))
+        for item in self.smtp_client:
+            if not self.smtp_client[item] or self.smtp_client[item] == '':
+                raise self.SMPTMailParameterException('%s not set' % item)
 
     def sendmail(self, subject, message):
 
@@ -65,5 +65,5 @@ class SMTPMail(object):
             __conn.login(self.smtp_client['user'], self.smtp_client['passwd'])
             __conn.sendmail(self.smtp_client['sender'], self.smtp_client['recipient'], __msg.as_string())
             __conn.close()
-        except Exception, e:
+        except Exception as e:
             raise self.SMTPMailNotDeliveredException(str(e))

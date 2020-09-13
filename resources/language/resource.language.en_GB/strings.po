@@ -231,7 +231,7 @@ msgid "An error occured while delivering mail to %s. Check your settings and you
 msgstr ""
 
 msgctxt "#30078"
-msgid "You mail settings are invalid or incomplete"
+msgid "Your mail settings are incomplete"
 msgstr ""
 
 msgctxt "#30079"

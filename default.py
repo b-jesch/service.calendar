@@ -13,20 +13,21 @@ from resources.lib.simplemail import SMTPMail
 import xbmc
 import xbmcaddon
 import xbmcgui
+import xbmcvfs
 
 __addon__ = xbmcaddon.Addon()
 __addonname__ = __addon__.getAddonInfo('id')
-__path__ = __addon__.getAddonInfo('path')
-__profiles__ = __addon__.getAddonInfo('profile')
+__path__ = xbmcvfs.translatePath(__addon__.getAddonInfo('path'))
+__profiles__ = xbmcvfs.translatePath(__addon__.getAddonInfo('profile'))
 __version__ = __addon__.getAddonInfo('version')
 __LS__ = __addon__.getLocalizedString
 
-__xml__ = xbmc.translatePath('special://skin').split(os.sep)[-2] + '.calendar.xml'
+__xml__ = xbmcvfs.translatePath('special://skin').split(os.sep)[-2] + '.calendar.xml'
 
-if not os.path.exists(xbmc.translatePath(__profiles__)): os.makedirs(xbmc.translatePath(__profiles__))
+if not os.path.exists(__profiles__): os.makedirs(__profiles__)
 
-TEMP_STORAGE_EVENTS = os.path.join(xbmc.translatePath(__profiles__), 'events.json')
-TEMP_STORAGE_NOTIFICATIONS = os.path.join(xbmc.translatePath(__profiles__), 'notifications.json')
+TEMP_STORAGE_EVENTS = os.path.join(__profiles__, 'events.json')
+TEMP_STORAGE_NOTIFICATIONS = os.path.join(__profiles__, 'notifications.json')
 
 if not (xbmcgui.Window(10000).getProperty('calendar_month') or xbmcgui.Window(10000).getProperty('calendar_year')):
     xbmcgui.Window(10000).setProperty('calendar_month', str(datetime.today().month))
@@ -34,8 +35,10 @@ if not (xbmcgui.Window(10000).getProperty('calendar_month') or xbmcgui.Window(10
     _header = '%s %s' % (__LS__(30119 + datetime.today().month), datetime.today().year)
     xbmcgui.Window(10000).setProperty('calendar_header', _header)
 
+
 class FileNotFoundException(Exception):
     pass
+
 
 def calc_boundaries(direction):
     sheet_m = int(xbmcgui.Window(10000).getProperty('calendar_month')) + direction
@@ -105,11 +108,11 @@ def controller(mode=None, handle=None, content=None, eventId=None):
         mail = SMTPMail()
         mail.checkproperties()
         mail.sendmail(__LS__(30074) % (__LS__(30010), tools.release().hostname), __LS__(30075))
-        tools.writeLog('mail delivered', xbmc.LOGNOTICE)
+        tools.writeLog('mail delivered', xbmc.LOGINFO)
         tools.dialogOK(__LS__(30010), __LS__(30076) % (mail.smtp_client['recipient']))
 
     elif mode == 'abort_reminders':
-        tools.writeLog('abort notification service by setup', xbmc.LOGNOTICE)
+        tools.writeLog('abort notification service by setup', xbmc.LOGINFO)
         xbmcgui.Window(10000).setProperty('reminders', '0')
 
     elif mode == 'set_calendars':
@@ -147,15 +150,16 @@ def controller(mode=None, handle=None, content=None, eventId=None):
     # this is the real controller bootstrap
     elif mode == 'gui':
         xbmcgui.Window(10000).setProperty('reminders', '0')
-        tools.writeLog('GUI called, reset reminders', xbmc.LOGNOTICE)
+        tools.writeLog('GUI called, reset reminders', xbmc.LOGINFO)
         try:
             Popup = xbmcgui.WindowXMLDialog(__xml__, __path__)
             Popup.doModal()
             del Popup
-        except RuntimeError, e:
-            raise FileNotFoundException('%s: %s' % (e.message, __xml__))
+        except RuntimeError as e:
+            raise FileNotFoundException('%s: %s' % (e, __xml__))
     else:
         pass
+
 
 if __name__ == '__main__':
 
@@ -164,18 +168,17 @@ if __name__ == '__main__':
     eventId = None
     _addonHandle = None
 
-    arguments = sys.argv
-    if len(arguments) > 1:
-        if arguments[0][0:6] == 'plugin':               # calling as plugin path
-            _addonHandle = int(arguments[1])
-            arguments.pop(0)
-            arguments[1] = arguments[1][1:]
+    if len(sys.argv) > 1:
+        if sys.argv[0][0:6] == 'plugin':               # calling as plugin path
+            _addonHandle = int(sys.argv[1])
+            args = tools.ParamsToDict(sys.argv[2][1:])
+        else:
+            args = tools.ParamsToDict(sys.argv[1])
 
-        tools.writeLog('parameter hash: %s' % (str(arguments[1])), xbmc.LOGNOTICE)
-        params = tools.ParamsToDict(arguments[1])
-        action = params.get('action', '')
-        content = params.get('content', '')
-        eventId = params.get('id', '')
+        tools.writeLog('provided parameters: %s' % (str(args)), xbmc.LOGINFO)
+        action = args.get('action', '')
+        content = args.get('content', '')
+        eventId = args.get('id', '')
 
     # call the controller of MVC
     try:
@@ -184,24 +187,24 @@ if __name__ == '__main__':
         else:
             controller(mode='gui')
 
-    except FileNotFoundException, e:
-        tools.writeLog(e.message, xbmc.LOGERROR)
+    except FileNotFoundException as e:
+        tools.writeLog(e, xbmc.LOGERROR)
         tools.Notify().notify(__LS__(30010), __LS__(30079))
-    except SMTPMail.SMPTMailInvalidOrMissingParameterException, e:
-        tools.writeLog(e.message, xbmc.LOGERROR)
-        tools.dialogOK(__LS__(30010), __LS__(30078))
-    except SMTPMail.SMTPMailNotDeliveredException, e:
-        tools.writeLog(e.message, xbmc.LOGERROR)
+    except SMTPMail.SMPTMailParameterException as e:
+        tools.writeLog(e, xbmc.LOGERROR)
+        tools.Notify().notify(__LS__(30010), __LS__(30078), icon=xbmcgui.NOTIFICATION_ERROR, repeat=True)
+    except SMTPMail.SMTPMailNotDeliveredException as e:
+        tools.writeLog(e, xbmc.LOGERROR)
         tools.dialogOK(__LS__(30010), __LS__(30077) % (SMTPMail.smtp_client['recipient']))
-    except Calendar.oAuthMissingSecretFile, e:
-        tools.writeLog(e.message, xbmc.LOGERROR)
+    except Calendar.oAuthMissingSecretFile as e:
+        tools.writeLog(e, xbmc.LOGERROR)
         tools.Notify().notify(__LS__(30010), __LS__(30070), icon=xbmcgui.NOTIFICATION_ERROR, repeat=True)
-    except Calendar.oAuthMissingCredentialsFile, e:
-        tools.writeLog(e.message, xbmc.LOGERROR)
+    except Calendar.oAuthMissingCredentialsFile as e:
+        tools.writeLog(e, xbmc.LOGERROR)
         tools.Notify().notify(__LS__(30010), __LS__(30072), icon=xbmcgui.NOTIFICATION_ERROR, repeat=True)
-    except Calendar.oAuthIncomplete, e:
-        tools.writeLog(e.message, xbmc.LOGERROR)
+    except Calendar.oAuthIncomplete as e:
+        tools.writeLog(e, xbmc.LOGERROR)
         tools.Notify().notify(__LS__(30010), __LS__(30071), icon=xbmcgui.NOTIFICATION_ERROR, repeat=True)
-    except Calendar.oAuthFlowExchangeError, e:
-        tools.writeLog(e.message, xbmc.LOGERROR)
+    except Calendar.oAuthFlowExchangeError as e:
+        tools.writeLog(e, xbmc.LOGERROR)
         tools.dialogOK(__LS__(30010), __LS__(30103))

@@ -195,7 +195,7 @@ msgstr "Einstellungen für Mail-Konto testen"
 
 msgctxt "#30070"
 msgid "Keyfile missing, Reinstallation required"
-msgstr "Schlüsseldatei fehlt oder defekt, Neuinstallation erforderlich"
+msgstr "Schlüsseldatei fehlt oder ungültig, Neuinstallation erforderlich"
 
 msgctxt "#30071"
 msgid "Authentication process incomplete"
@@ -203,7 +203,7 @@ msgstr "Authentifizierungsprozess unvollständig"
 
 msgctxt "#30072"
 msgid "Keyfile invalid, require new one in addon settings"
-msgstr "Schlüssel defekt, neuen Schlüssel über Addon-Settings anfordern"
+msgstr "Schlüssel ungültig, neuen Schlüssel über Addon-Settings anfordern"
 
 msgctxt "#30073"
 msgid "Keyfile succesfully installed"
@@ -226,8 +226,8 @@ msgid "An error occured while delivering mail to %s. Check your settings and you
 msgstr "Ein Fehler ist während des Versands einer Mail an %s aufgetreten. Überprüfen Sie Ihre Einstellungen im Addon sowie die Logdatei auf Fehler."
 
 msgctxt "#30078"
-msgid "You mail settings are invalid or incomplete"
-msgstr "Die Einstellungen für Ihr Mail-Konto sind fehlerhaft oder unvollständig."
+msgid "Your mail settings are incomplete"
+msgstr "Die Einstellungen für Ihr Mail-Konto sind unvollständig."
 
 msgctxt "#30079"
 msgid "GUI file of calendar not found"

@@ -5,35 +5,36 @@ from oauth2client import client
 from oauth2client.file import Storage
 
 import httplib2
+from urllib.request import urlopen
 import os
 import operator
 from resources.lib import tinyurl
 from resources.lib.simplemail import SMTPMail
-import resources.lib.tools as t
-
+import resources.lib.tools as tools
 import time
 import calendar
 from datetime import datetime, timedelta
 from dateutil import parser, relativedelta
 import json
-import urllib
 import sys
 
 import xbmc
 import xbmcaddon
 import xbmcplugin
 import xbmcgui
+import xbmcvfs
 
 __addon__ = xbmcaddon.Addon()
 __addonname__ = __addon__.getAddonInfo('id')
-__addonpath__ = __addon__.getAddonInfo('path')
-__profiles__ = __addon__.getAddonInfo('profile')
+__addonpath__ = xbmcvfs.translatePath(__addon__.getAddonInfo('path'))
+__profiles__ = xbmcvfs.translatePath(__addon__.getAddonInfo('profile'))
 __LS__ = __addon__.getLocalizedString
-__icon__ = os.path.join(xbmc.translatePath(__addonpath__), 'resources', 'skins', 'Default', 'media', 'icon.png')
-__symbolpath__ = os.path.join(xbmc.translatePath(__addonpath__), 'resources', 'skins', 'Default', 'media')
+__icon__ = os.path.join(__addonpath__, 'resources', 'skins', 'Default', 'media', 'icon.png')
+__symbolpath__ = os.path.join(__addonpath__, 'resources', 'skins', 'Default', 'media')
 __cake__ = os.path.join(__symbolpath__, 'cake_2.png')
 
 mail = SMTPMail()
+
 
 class Calendar(object):
 
@@ -52,32 +53,35 @@ class Calendar(object):
     # If modifying these scopes, delete your previously saved credentials
     # at ~/.credentials/service.calendar.json
 
-    CLIENTS_PATH = os.path.join(xbmc.translatePath(__profiles__), '_credentials')
+    CLIENTS_PATH = os.path.join(__profiles__, '_credentials')
     if not os.path.exists(CLIENTS_PATH): os.makedirs(CLIENTS_PATH)
 
-    COLOR_PATH = os.path.join(xbmc.translatePath(__profiles__), '_colors')
+    COLOR_PATH = os.path.join(__profiles__, '_colors')
     if not os.path.exists(COLOR_PATH): os.makedirs(COLOR_PATH)
 
     SCOPES = 'https://www.googleapis.com/auth/calendar.readonly'
-    CLIENT_SECRET_FILE = os.path.join(xbmc.translatePath(__addonpath__), '_credentials', 'service.calendar.oauth.json')
+    CLIENT_SECRET_FILE = os.path.join(__addonpath__, '_credentials', 'service.calendar.oauth.json')
     CLIENT_CREDENTIALS = os.path.join(CLIENTS_PATH, 'service.calendar.credits.json')
     APPLICATION_NAME = 'service.calendar'
     SHEET_ID = 30008
 
-    TEMP_STORAGE_CALENDARS = os.path.join(xbmc.translatePath(__profiles__), 'calendars.json')
-    GLOTZ_URL = 'https://www.glotz.info/v2/user/calendar/%s' % (t.getAddonSetting('glotz_apikey'))
+    TEMP_STORAGE_CALENDARS = os.path.join(__profiles__, 'calendars.json')
+    GLOTZ_URL = 'https://www.glotz.info/v2/user/calendar/%s' % (tools.getAddonSetting('glotz_apikey'))
 
     def __init__(self):
-        self.addtimestamps = t.getAddonSetting('additional_timestamps', sType=t.BOOL)
+        self.addtimestamps = tools.getAddonSetting('additional_timestamps', sType=tools.BOOL)
 
     def establish(self):
         credentials = self.get_credentials()
-        http = credentials.authorize(httplib2.Http())
-        self.service = discovery.build('calendar', 'v3', http=http)
+        if credentials is not None:
+            self.service = discovery.build('calendar', 'v3', http=credentials.authorize(httplib2.Http()))
+            return True
+        else:
+            return False
 
     def get_credentials(self):
         if not os.path.isfile(self.CLIENT_SECRET_FILE):
-            raise self.oAuthMissingSecretFile('missing %s' % (self.CLIENT_SECRET_FILE))
+            raise self.oAuthMissingSecretFile('missing %s' % self.CLIENT_SECRET_FILE)
 
         storage = Storage(self.CLIENT_CREDENTIALS)
         credentials = storage.get()
@@ -97,47 +101,58 @@ class Calendar(object):
             auth_code = ''
             if reenter is None:
                 auth_uri = tinyurl.create_one(flow.step1_get_authorize_url())
+                mail.checkproperties()
 
                 if require_from_setup:
                     _dialog = __LS__(30082)
                 else:
                     _dialog = '%s %s' % (__LS__(30081), __LS__(30082))
 
-                if not t.dialogYesNo(__LS__(30080), _dialog):
+                if not tools.dialogYesNo(__LS__(30080), _dialog):
                     raise self.oAuthIncomplete('oAuth2 flow aborted by user')
-                t.dialogOK(__LS__(30080), __LS__(30083))
+                tools.dialogOK(__LS__(30080), __LS__(30083))
 
-                mail.checkproperties()
-                mail.sendmail(__LS__(30100) % (__addonname__), __LS__(30101) % (auth_uri))
-                if not t.dialogYesNo(__LS__(30080), __LS__(30087)):
+                mail.sendmail(__LS__(30100) % __addonname__, __LS__(30101) % auth_uri)
+                if not tools.dialogYesNo(__LS__(30080), __LS__(30087)):
                     raise self.oAuthIncomplete('oAuth2 flow aborted by user')
                 reenter = 'kb'
 
             if reenter == 'kb':
-                auth_code = t.dialogKeyboard(__LS__(30084))
+                auth_code = tools.dialogKeyboard(__LS__(30084))
             elif reenter == 'file':
-                auth_code = t.dialogFile(__LS__(30086))
+                auth_code = tools.dialogFile(__LS__(30086))
 
             if auth_code == '':
                 raise self.oAuthIncomplete('no key provided')
 
             credentials = flow.step2_exchange(auth_code)
             storage.put(credentials)
-        except client.FlowExchangeError, e:
-            raise self.oAuthFlowExchangeError(e.message)
+            return credentials
 
-        return credentials
+        except client.FlowExchangeError as e:
+            raise self.oAuthFlowExchangeError(e)
+
+        except self.oAuthIncomplete:
+            tools.Notify().notify(__LS__(30010), __LS__(30071), icon=xbmcgui.NOTIFICATION_ERROR, repeat=False)
+
+        except self.oAuthFlowExchangeError:
+            tools.dialogOK(__LS__(30010), __LS__(30103))
+
+        finally:
+            exit()
 
     def get_events(self, storage, timeMin, timeMax, maxResult=30, calendars='primary', evtype='default'):
-        if not os.path.exists(storage) or not t.lastmodified(storage, 60):
-            t.writeLog('establish online connection for getting events')
-            self.establish()
-
+        if not os.path.exists(storage) or not tools.lastmodified(storage, 60):
             events = []
+            established = self.establish()
+            tools.writeLog('establish online connection for getting events: %s' % established)
+            if not established:
+                return events
+
             for cal in calendars:
                 cal_items = self.service.events().list(calendarId=cal, timeMin=timeMin, timeMax=timeMax,
-                                                        maxResults=maxResult, singleEvents=True,
-                                                        orderBy='startTime').execute()
+                                                       maxResults=maxResult, singleEvents=True,
+                                                       orderBy='startTime').execute()
                 cal_set = cal_items.get('items', [])
 
                 # set additional attributes
@@ -178,11 +193,11 @@ class Calendar(object):
 
             # get additional calendars, glotz.info
 
-            if t.getAddonSetting('glotz_enabled', sType=t.BOOL) and t.getAddonSetting('glotz_apikey') != '':
-                if evtype == 'default' or (evtype == 'notification' and t.getAddonSetting('glotz_notify', sType=t.BOOL)):
-                    t.writeLog('getting events from glotz.info')
+            if tools.getAddonSetting('glotz_enabled', sType=tools.BOOL) and tools.getAddonSetting('glotz_apikey') != '':
+                if evtype == 'default' or (evtype == 'notification' and tools.getAddonSetting('glotz_notify', sType=tools.BOOL)):
+                    tools.writeLog('getting events from glotz.info')
                     try:
-                        cal_set = json.loads(urllib.urlopen(self.GLOTZ_URL).read())
+                        cal_set = json.loads(urlopen(self.GLOTZ_URL).read())
                         icon = self.get_calendarBGcolorImage('glotz_color')
                         for _record in cal_set:
                             _item = {}
@@ -195,7 +210,6 @@ class Calendar(object):
                                 _hour = 0
                                 _minute = 0
                                 _time_fmt = 'date'
-
 
                             _ts = datetime.fromtimestamp(int(_record.get('first_aired', '0'))).replace(hour=_hour, minute=_minute)
                             _end = _ts + timedelta(minutes=int(_show.get('runtime', '0'))) if _time_fmt == 'dateTime' else _ts
@@ -217,16 +231,15 @@ class Calendar(object):
 
                             events.append(_item)
                     except Exception as e:
-                        t.writeLog('Error on line {}'.format(sys.exc_info()[-1].tb_lineno), level=xbmc.LOGERROR)
-                        t.writeLog(type(e).__name__, level=xbmc.LOGERROR)
-                        t.writeLog(e.message, level=xbmc.LOGERROR)
-
+                        tools.writeLog('Error on line {}'.format(sys.exc_info()[-1].tb_lineno), level=xbmc.LOGERROR)
+                        tools.writeLog(type(e).__name__, level=xbmc.LOGERROR)
+                        tools.writeLog(e, level=xbmc.LOGERROR)
 
             events.sort(key=operator.itemgetter('timestamp'))
 
             with open(storage, 'w') as filehandle:  json.dump(events, filehandle)
         else:
-            t.writeLog('getting events from local storage')
+            tools.writeLog('getting events from local storage')
             with open(storage, 'r') as filehandle: events = json.load(filehandle)
         return events
 
@@ -247,11 +260,11 @@ class Calendar(object):
         if event.get('allday', 0) > 0:
             if _tdelta.months == 0 and _tdelta.weeks == 0 and _tdelta.days == 0: event.update({'range': ''})
             elif _tdelta.months == 0 and _tdelta.weeks == 0 and _tdelta.days == 1: event.update({'range': __LS__(30111)})
-            elif _tdelta.months == 0 and _tdelta.weeks == 0: event.update({'range': __LS__(30112) % (_tdelta.days)})
+            elif _tdelta.months == 0 and _tdelta.weeks == 0: event.update({'range': __LS__(30112) % _tdelta.days})
             elif _tdelta.months == 0 and _tdelta.weeks == 1: event.update({'range': __LS__(30113)})
-            elif _tdelta.months == 0 and _tdelta.weeks > 0: event.update({'range': __LS__(30114) % (_tdelta.weeks)})
+            elif _tdelta.months == 0 and _tdelta.weeks > 0: event.update({'range': __LS__(30114) % _tdelta.weeks})
             elif _tdelta.months == 1: event.update({'range': __LS__(30115)})
-            elif _tdelta.months > 1: event.update({'range': __LS__(30116) % (_tdelta.months)})
+            elif _tdelta.months > 1: event.update({'range': __LS__(30116) % _tdelta.months})
             else: event.update({'range': __LS__(30117)})
         else:
             if _ts != _end:
@@ -260,45 +273,48 @@ class Calendar(object):
                 event.update({'range': _ts.strftime('%H:%M')})
 
         if optTimeStamps:
-            t.writeLog('calculate additional timestamps')
+            tools.writeLog('calculate additional timestamps')
 
             _tdelta = relativedelta.relativedelta(_ts.date(), timebase.date())
             if _tdelta.months == 0:
                 if _tdelta.days == 0: ats = __LS__(30139)
                 elif _tdelta.days == 1: ats = __LS__(30140)
                 elif _tdelta.days == 2: ats = __LS__(30141)
-                elif 3 <= _tdelta.days <= 6: ats = __LS__(30142) % (_tdelta.days)
+                elif 3 <= _tdelta.days <= 6: ats = __LS__(30142) % _tdelta.days
                 elif _tdelta.weeks == 1: ats = __LS__(30143)
-                elif _tdelta.weeks > 1: ats = __LS__(30144) % (_tdelta.weeks)
+                elif _tdelta.weeks > 1: ats = __LS__(30144) % _tdelta.weeks
                 else: ats = __LS__(30117)
             elif _tdelta.months == 1: ats = __LS__(30146)
-            else: ats = __LS__(30147) % (_tdelta.months)
+            else: ats = __LS__(30147) % _tdelta.months
             event.update({'timestamps': ats})
 
         return event
 
     def get_calendars(self):
-        if not os.path.exists(self.TEMP_STORAGE_CALENDARS) or not t.lastmodified(self.TEMP_STORAGE_CALENDARS, 60):
-            t.writeLog('establish online connection for getting calendars')
-            self.establish()
+        if not os.path.exists(self.TEMP_STORAGE_CALENDARS) or not tools.lastmodified(self.TEMP_STORAGE_CALENDARS, 60):
+            cals = []
+            established = self.establish()
+            tools.writeLog('establish online connection for getting calendars: %s' % established)
+            if not established:
+                return cals
             cal_list = self.service.calendarList().list().execute()
             cals = cal_list.get('items', [])
             with open(self.TEMP_STORAGE_CALENDARS, 'w') as filehandle: json.dump(cals, filehandle)
             return cals
         else:
-            t.writeLog('getting calendars from local storage')
+            tools.writeLog('getting calendars from local storage')
             with open(self.TEMP_STORAGE_CALENDARS, 'r') as filehandle: return json.load(filehandle)
 
     def get_calendarIdFromSetup(self, setting):
         calId = []
-        _cals = t.getAddonSetting(setting).split(', ')
+        _cals = tools.getAddonSetting(setting).split(', ')
         if len(_cals) == 1 and _cals[0] == 'primary':
             calId.append('primary')
         else:
             cals = self.get_calendars()
             for cal in cals:
                 if cal.get('summaryOverride', cal.get('summary', 'primary')) in _cals: calId.append(cal.get('id'))
-        t.writeLog('getting cal ids from setup: %s' % (', '.join(calId)))
+        tools.writeLog('getting cal ids from setup: %s' % (', '.join(calId)))
         return calId
 
     def get_calendarBGcolorImage(self, calendarId):
@@ -307,18 +323,18 @@ class Calendar(object):
         for cal in cals:
             if cal.get('id') == calendarId:
                 color = cal.get('backgroundColor', '#808080')
-                return t.createImage(15, 40, color, os.path.join(self.COLOR_PATH, color + '.png'))
+                return tools.createImage(15, 40, color, os.path.join(self.COLOR_PATH, color + '.png'))
 
         color = xbmcgui.Window(10000).getProperty(calendarId)
 
         if color:
-            t.setAddonSetting(calendarId, color)
+            tools.setAddonSetting(calendarId, color)
             xbmcgui.Window(10000).clearProperty(calendarId)
         else:
-            color = t.getAddonSetting(calendarId)
+            color = tools.getAddonSetting(calendarId)
             if not color: color = '#808080'
             
-        return t.createImage(15, 40, color, os.path.join(self.COLOR_PATH, color + '.png'))
+        return tools.createImage(15, 40, color, os.path.join(self.COLOR_PATH, color + '.png'))
 
     def build_sheet(self, handle, storage, content, now, timemax, maxResult, calendars):
         self.sheet = []
@@ -339,7 +355,7 @@ class Calendar(object):
         prolog = (parser.parse('%s/1/%s' % (sheet_m, sheet_y)) - relativedelta.relativedelta(days=start)).day
         epilog = 1
 
-        for cid in xrange(0, 42):
+        for cid in range(0, 42):
             if cid < start or cid >= start + sheets:
 
                 # daily sheets outside of actual month, set these to valid:0
@@ -382,8 +398,8 @@ class Calendar(object):
 
         if content == 'sheet':
             for cid in range(0, 42):
-                cal_sheet = xbmcgui.ListItem(label=self.sheet[cid].get('dom'), label2=self.sheet[cid].get('num_events', '0'),
-                                             iconImage=self.sheet[cid].get('eventicon', ''))
+                cal_sheet = xbmcgui.ListItem(label=self.sheet[cid].get('dom'), label2=self.sheet[cid].get('num_events', '0'))
+                cal_sheet.setArt({'icon': self.sheet[cid].get('eventicon', '')})
                 cal_sheet.setProperty('valid', self.sheet[cid].get('valid', '0'))
                 cal_sheet.setProperty('allday', str(self.sheet[cid].get('allday', 0)))
                 cal_sheet.setProperty('today', self.sheet[cid].get('today', '0'))
@@ -399,10 +415,10 @@ class Calendar(object):
                 cur_date = parser.parse(event.get('date'))
                 if cur_date.month >= sheet_m and cur_date.year >= sheet_y:
                     if self.addtimestamps:
-                        li = xbmcgui.ListItem(label=event['shortdate'] + ' - ' + event['timestamps'], label2=event['summary'],
-                                              iconImage=event['icon'])
+                        li = xbmcgui.ListItem(label=event['shortdate'] + ' - ' + event['timestamps'], label2=event['summary'])
                     else:
-                        li = xbmcgui.ListItem(label=event['shortdate'], label2=event['summary'], iconImage=event['icon'])
+                        li = xbmcgui.ListItem(label=event['shortdate'], label2=event['summary'])
+                    li.setArt({'icon': event['icon']})
                     li.setProperty('id', event.get('id', ''))
                     li.setProperty('range', event.get('range', ''))
                     li.setProperty('allday', str(event.get('allday', 0)))
