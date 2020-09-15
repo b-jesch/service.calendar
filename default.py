@@ -1,38 +1,23 @@
 # -*- encoding: utf-8 -*-
-from __future__ import print_function
 from datetime import datetime
 from dateutil import relativedelta
 
 import sys
-import os
-
-import resources.lib.tools as tools
+from resources.lib.tools import *
 from resources.lib.googleCalendar import Calendar
 from resources.lib.simplemail import SMTPMail
 
-import xbmc
-import xbmcaddon
-import xbmcgui
-import xbmcvfs
-
-__addon__ = xbmcaddon.Addon()
-__addonname__ = __addon__.getAddonInfo('id')
-__path__ = xbmcvfs.translatePath(__addon__.getAddonInfo('path'))
-__profiles__ = xbmcvfs.translatePath(__addon__.getAddonInfo('profile'))
-__version__ = __addon__.getAddonInfo('version')
-__LS__ = __addon__.getLocalizedString
-
 __xml__ = xbmcvfs.translatePath('special://skin').split(os.sep)[-2] + '.calendar.xml'
 
-if not os.path.exists(__profiles__): os.makedirs(__profiles__)
+if not os.path.exists(PROFILES): os.makedirs(PROFILES)
 
-TEMP_STORAGE_EVENTS = os.path.join(__profiles__, 'events.json')
-TEMP_STORAGE_NOTIFICATIONS = os.path.join(__profiles__, 'notifications.json')
+TEMP_STORAGE_EVENTS = os.path.join(PROFILES, 'events.json')
+TEMP_STORAGE_NOTIFICATIONS = os.path.join(PROFILES, 'notifications.json')
 
 if not (xbmcgui.Window(10000).getProperty('calendar_month') or xbmcgui.Window(10000).getProperty('calendar_year')):
     xbmcgui.Window(10000).setProperty('calendar_month', str(datetime.today().month))
     xbmcgui.Window(10000).setProperty('calendar_year', str(datetime.today().year))
-    _header = '%s %s' % (__LS__(30119 + datetime.today().month), datetime.today().year)
+    _header = '%s %s' % (LS(30119 + datetime.today().month), datetime.today().year)
     xbmcgui.Window(10000).setProperty('calendar_header', _header)
 
 
@@ -52,17 +37,17 @@ def calc_boundaries(direction):
         sheet_y += 1
 
     if sheet_y == datetime.today().year:
-        if sheet_m < datetime.today().month or sheet_m > datetime.today().month + tools.getAddonSetting('timemax', sType=tools.NUM):
-            tools.writeLog('prev/next month outside boundary')
+        if sheet_m < datetime.today().month or sheet_m > datetime.today().month + getAddonSetting('timemax', sType=NUM, isLabel=True):
+            writeLog('prev/next month outside boundary')
             return
     else:
-        if sheet_m + 12 > datetime.today().month + tools.getAddonSetting('timemax', sType=tools.NUM):
-            tools.writeLog('prev/next month outside boundary')
+        if sheet_m + 12 > datetime.today().month + getAddonSetting('timemax', sType=NUM, isLabel=True):
+            writeLog('prev/next month outside boundary')
             return
 
     xbmcgui.Window(10000).setProperty('calendar_month', str(sheet_m))
     xbmcgui.Window(10000).setProperty('calendar_year', str(sheet_y))
-    _header = '%s %s' % (__LS__(30119 + sheet_m), sheet_y)
+    _header = '%s %s' % (LS(30119 + sheet_m), sheet_y)
     xbmcgui.Window(10000).setProperty('calendar_header', _header)
 
 def set_localsetting(setting):
@@ -73,46 +58,46 @@ def set_localsetting(setting):
     for cal in cals:
         _list.append(cal.get('summaryOverride', cal.get('summary', 'primary')))
     dialog = xbmcgui.Dialog()
-    _idx = dialog.multiselect(__LS__(30091), _list)
+    _idx = dialog.multiselect(LS(30091), _list)
     if _idx is not None:
-        __addon__.setSetting(setting, ', '.join(_list[i] for i in _idx))
+        ADDON.setSetting(setting, ', '.join(_list[i] for i in _idx))
 
 def controller(mode=None, handle=None, content=None, eventId=None):
     now = datetime.utcnow().replace(hour=0, minute=0, second=0, microsecond=0).isoformat() + 'Z'
     timemax = (datetime.utcnow().replace(hour=0, minute=0, second=0, microsecond=0) +
-               relativedelta.relativedelta(months=tools.getAddonSetting('timemax', sType=tools.NUM))).isoformat() + 'Z'
+               relativedelta.relativedelta(months=getAddonSetting('timemax', sType=NUM, isLabel=True))).isoformat() + 'Z'
 
     if mode == 'require_oauth_key':
         Calendar().require_credentials(Calendar().CLIENT_CREDENTIALS, require_from_setup=True)
-        tools.writeLog('new credentials successfull received and stored', xbmc.LOGDEBUG)
-        tools.Notify().notify(__LS__(30010), __LS__(30073))
+        writeLog('new credentials successfull received and stored', xbmc.LOGDEBUG)
+        Notify().notify(LS(30010), LS(30073))
 
     elif mode == 'reenter_oauth_key':
         Calendar().require_credentials(Calendar().CLIENT_CREDENTIALS, require_from_setup=True, reenter='kb')
-        tools.writeLog('new credentials successfull received and stored', xbmc.LOGDEBUG)
-        tools.Notify().notify(__LS__(30010), __LS__(30073))
+        writeLog('new credentials successfull received and stored', xbmc.LOGDEBUG)
+        Notify().notify(LS(30010), LS(30073))
 
     elif mode == 'load_oauth_key':
         Calendar().require_credentials(Calendar().CLIENT_CREDENTIALS, require_from_setup=True, reenter='file')
-        tools.writeLog('new credentials successfull received and stored', xbmc.LOGDEBUG)
-        tools.Notify().notify(__LS__(30010), __LS__(30073))
+        writeLog('new credentials successfull received and stored', xbmc.LOGDEBUG)
+        Notify().notify(LS(30010), LS(30073))
 
     elif mode == 'load_glotz_key':
-        glotz_apikey = tools.dialogFile(__LS__(30089))
+        glotz_apikey = dialogFile(LS(30089))
         if glotz_apikey != '':
-            tools.setAddonSetting('glotz_apikey', glotz_apikey)
-            tools.writeLog('API key for glotz.info successfull stored')
-            tools.Notify().notify(__LS__(30010), __LS__(30073))
+            setAddonSetting('glotz_apikey', glotz_apikey)
+            writeLog('API key for glotz.info successfull stored')
+            Notify().notify(LS(30010), LS(30073))
 
     elif mode == 'check_mailsettings':
         mail = SMTPMail()
         mail.checkproperties()
-        mail.sendmail(__LS__(30074) % (__LS__(30010), tools.release().hostname), __LS__(30075))
-        tools.writeLog('mail delivered', xbmc.LOGINFO)
-        tools.dialogOK(__LS__(30010), __LS__(30076) % (mail.smtp_client['recipient']))
+        mail.sendmail(LS(30074) % (LS(30010), release().hostname), LS(30075))
+        writeLog('mail delivered', xbmc.LOGINFO)
+        dialogOK(LS(30010), LS(30076) % (mail.smtp_client['recipient']))
 
     elif mode == 'abort_reminders':
-        tools.writeLog('abort notification service by setup', xbmc.LOGINFO)
+        writeLog('abort notification service by setup', xbmc.LOGINFO)
         xbmcgui.Window(10000).setProperty('reminders', '0')
 
     elif mode == 'set_calendars':
@@ -138,8 +123,8 @@ def controller(mode=None, handle=None, content=None, eventId=None):
             _mev = googlecal.prepareForAddon(_ev, optTimeStamps=True)
             _time = '' if _mev.get('range', '') == '' else '[B]%s[/B]: ' % (_mev.get('range'))
             _msg += '%s%s[CR]%s[CR][CR]' % (_time, _mev.get('summary', ''),
-                                            _mev.get('description', False) or _mev.get('location', False) or __LS__(30093))
-        tools.dialogOK('%s %s %s' % (__LS__(30109), __LS__(30145), _mev.get('shortdate', '')), _msg)
+                                            _mev.get('description', False) or _mev.get('location', False) or LS(30093))
+        dialogOK('%s %s %s' % (LS(30109), LS(30145), _mev.get('shortdate', '')), _msg)
 
     elif mode == 'prev':
         calc_boundaries(-1)
@@ -150,9 +135,9 @@ def controller(mode=None, handle=None, content=None, eventId=None):
     # this is the real controller bootstrap
     elif mode == 'gui':
         xbmcgui.Window(10000).setProperty('reminders', '0')
-        tools.writeLog('GUI called, reset reminders', xbmc.LOGINFO)
+        writeLog('GUI called, reset reminders', xbmc.LOGINFO)
         try:
-            Popup = xbmcgui.WindowXMLDialog(__xml__, __path__)
+            Popup = xbmcgui.WindowXMLDialog(__xml__, PATH)
             Popup.doModal()
             del Popup
         except RuntimeError as e:
@@ -171,11 +156,11 @@ if __name__ == '__main__':
     if len(sys.argv) > 1:
         if sys.argv[0][0:6] == 'plugin':               # calling as plugin path
             _addonHandle = int(sys.argv[1])
-            args = tools.ParamsToDict(sys.argv[2][1:])
+            args = ParamsToDict(sys.argv[2][1:])
         else:
-            args = tools.ParamsToDict(sys.argv[1])
+            args = ParamsToDict(sys.argv[1])
 
-        tools.writeLog('provided parameters: %s' % (str(args)), xbmc.LOGINFO)
+        writeLog('provided parameters: %s' % (str(args)), xbmc.LOGINFO)
         action = args.get('action', '')
         content = args.get('content', '')
         eventId = args.get('id', '')
@@ -188,23 +173,23 @@ if __name__ == '__main__':
             controller(mode='gui')
 
     except FileNotFoundException as e:
-        tools.writeLog(e, xbmc.LOGERROR)
-        tools.Notify().notify(__LS__(30010), __LS__(30079))
+        writeLog(e, xbmc.LOGERROR)
+        Notify().notify(LS(30010), LS(30079))
     except SMTPMail.SMPTMailParameterException as e:
-        tools.writeLog(e, xbmc.LOGERROR)
-        tools.Notify().notify(__LS__(30010), __LS__(30078), icon=xbmcgui.NOTIFICATION_ERROR, repeat=True)
+        writeLog(e, xbmc.LOGERROR)
+        Notify().notify(LS(30010), LS(30078), icon=xbmcgui.NOTIFICATION_ERROR, repeat=True)
     except SMTPMail.SMTPMailNotDeliveredException as e:
-        tools.writeLog(e, xbmc.LOGERROR)
-        tools.dialogOK(__LS__(30010), __LS__(30077) % (SMTPMail.smtp_client['recipient']))
+        writeLog(e, xbmc.LOGERROR)
+        dialogOK(LS(30010), LS(30077) % (SMTPMail.smtp_client['recipient']))
     except Calendar.oAuthMissingSecretFile as e:
-        tools.writeLog(e, xbmc.LOGERROR)
-        tools.Notify().notify(__LS__(30010), __LS__(30070), icon=xbmcgui.NOTIFICATION_ERROR, repeat=True)
+        writeLog(e, xbmc.LOGERROR)
+        Notify().notify(LS(30010), LS(30070), icon=xbmcgui.NOTIFICATION_ERROR, repeat=True)
     except Calendar.oAuthMissingCredentialsFile as e:
-        tools.writeLog(e, xbmc.LOGERROR)
-        tools.Notify().notify(__LS__(30010), __LS__(30072), icon=xbmcgui.NOTIFICATION_ERROR, repeat=True)
+        writeLog(e, xbmc.LOGERROR)
+        Notify().notify(LS(30010), LS(30072), icon=xbmcgui.NOTIFICATION_ERROR, repeat=True)
     except Calendar.oAuthIncomplete as e:
-        tools.writeLog(e, xbmc.LOGERROR)
-        tools.Notify().notify(__LS__(30010), __LS__(30071), icon=xbmcgui.NOTIFICATION_ERROR, repeat=True)
+        writeLog(e, xbmc.LOGERROR)
+        Notify().notify(LS(30010), LS(30071), icon=xbmcgui.NOTIFICATION_ERROR, repeat=True)
     except Calendar.oAuthFlowExchangeError as e:
-        tools.writeLog(e, xbmc.LOGERROR)
-        tools.dialogOK(__LS__(30010), __LS__(30103))
+        writeLog(e, xbmc.LOGERROR)
+        dialogOK(LS(30010), LS(30103))

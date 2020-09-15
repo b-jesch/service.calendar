@@ -1,46 +1,328 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<settings>
-	<category label="30011">
-		<setting type="lsep" label="30014" />
-		<setting id="show_onstart" type="bool" label="30015" default="true" />
-		<setting id="numreminders" type="labelenum" label="30016" values="1|2|3|4|5" enable="eq(-1,true)" default="3" />
-		<setting id="interval" type="labelenum" label="30017" lvalues="30030|30031|30032|30033|30034|30035" enable="eq(-2,true)" />
-		<setting id="cycles" type="labelenum" label="30040" values="1|2|3|4|5" enable="eq(-3,true)" default="3" />
-		<setting id="lastnoticeduration" type="labelenum" label="30021" lvalues="30036|30037|30038|30039" enable="eq(-4,true)" />
-		<setting type="sep" />
-		<setting id="abort_notification" type="action" label="30018" option="close" action="RunScript(service.calendar,action=abort_reminders)" />
-		<setting type="lsep" label="30022" />
-		<setting id="additional_timestamps" type="bool" label="30020" default="true" />
-		<setting id="timemax" type="labelenum" label="30023" lvalues="30024|30025|30026|30027|30028" default="2" />
-	</category>
-	<category label="30012">
-		<setting id="host" type="text" label="30041" default="" />
-		<setting id="user" type="text" label="30042" default="" />
-		<setting id="passwd" type="text" option="hidden" label="30043" default="" />
-		<setting id="enc" type="labelenum" label="30049" values="STARTTLS|SSL/TLS|None" default="SSL/TLS" />
-        <setting type="sep" />
-        <setting id="sender" type="text" label="30044" default="" />
-		<setting id="recipient" type="text" label="30045" default="" />
-		<setting id="charset" type="text" label="30048" default="ISO-8859-1" />
-        <setting type="sep" />
-		<setting id="checksettings" type="action" label="30055" option="close" action="RunScript(service.calendar,action=check_mailsettings)" default="" />
-	</category>
-	<category label="30013">
-		<setting id="requireauthkey" type="action" label="30080" option="close" action="RunScript(service.calendar,action=require_oauth_key)" />
-		<setting id="reenterauthkey" type="action" label="30084" option="close" action="RunScript(service.calendar,action=reenter_oauth_key)" />
-		<setting id="loadoauthkey" type="action" label="30085" option="close" action="RunScript(service.calendar,action=load_oauth_key)" />
-		<setting type="sep" />
-		<setting id="calendars" type="action" label="30090" option="close" action="RunScript(service.calendar,action=set_calendars)" default="primary" />
-		<setting id="notifications" type="action" label="30092" option="close" action="RunScript(service.calendar,action=set_notifications)" default="primary" />
-	</category>
-	<category label="30029">
-		<setting type="lsep" label="30050" />
-		<setting id="glotz_enabled" type="bool" label="30051" default="false" />
-		<setting id="glotz_apikey" type="text" label="30052" default="" enable="eq(-1,true)" />
-		<setting id="glotz_loadkey" type="action" label="30088" option="close"
-				 action="RunScript(service.calendar,action=load_glotz_key)" enable="eq(-2,true)" />
-		<setting id="glotz_color" type="action" label="30053" default="#808080" option="close"
-				 action="RunScript(script.skin.helper.colorpicker,winproperty=glotz_color)" enable="eq(-3,true)"/>
-		<setting id="glotz_notify" type="bool" label="30054" default="true" enable="eq(-4,true)"/>
-	</category>
+<?xml version="1.0" ?>
+<settings version="1">
+	<section id="service.calendar">
+		<category help="" id="einstellungen" label="30011">
+			<group id="1" label="30014">
+				<setting help="" id="show_onstart" label="30015" type="boolean">
+					<level>0</level>
+					<default>true</default>
+					<control type="toggle"/>
+				</setting>
+				<setting help="" id="numreminders" label="30016" type="string">
+					<level>0</level>
+					<default>3</default>
+					<constraints>
+						<options>
+							<option>1</option>
+							<option>2</option>
+							<option>3</option>
+							<option>4</option>
+							<option>5</option>
+						</options>
+					</constraints>
+					<dependencies>
+						<dependency type="enable">
+							<condition operator="is" setting="show_onstart">true</condition>
+						</dependency>
+					</dependencies>
+					<control format="string" type="spinner"/>
+				</setting>
+				<setting help="" id="interval" label="30017" type="string">
+					<level>0</level>
+					<default>30032</default>
+					<constraints>
+						<options>
+							<option label="30030">30030</option>
+							<option label="30031">30031</option>
+							<option label="30032">30032</option>
+							<option label="30033">30033</option>
+							<option label="30034">30034</option>
+							<option label="30035">30035</option>
+						</options>
+						<allowempty>true</allowempty>
+					</constraints>
+					<dependencies>
+						<dependency type="enable">
+							<condition operator="is" setting="show_onstart">true</condition>
+						</dependency>
+					</dependencies>
+					<control format="string" type="spinner"/>
+				</setting>
+				<setting help="" id="cycles" label="30040" type="string">
+					<level>0</level>
+					<default>3</default>
+					<constraints>
+						<options>
+							<option>1</option>
+							<option>2</option>
+							<option>3</option>
+							<option>4</option>
+							<option>5</option>
+						</options>
+					</constraints>
+					<dependencies>
+						<dependency type="enable">
+							<condition operator="is" setting="show_onstart">true</condition>
+						</dependency>
+					</dependencies>
+					<control format="string" type="spinner"/>
+				</setting>
+				<setting help="" id="lastnoticeduration" label="30021" type="string">
+					<level>0</level>
+					<default>30037</default>
+					<constraints>
+						<options>
+							<option label="30036">30036</option>
+							<option label="30037">30037</option>
+							<option label="30038">30038</option>
+							<option label="30039">30039</option>
+						</options>
+						<allowempty>true</allowempty>
+					</constraints>
+					<dependencies>
+						<dependency type="enable">
+							<condition operator="is" setting="show_onstart">true</condition>
+						</dependency>
+					</dependencies>
+					<control format="string" type="spinner"/>
+				</setting>
+			</group>
+			<group id="2">
+				<setting help="" id="abort_notification" label="30018" type="action">
+					<level>0</level>
+					<data>RunScript(service.calendar,action=abort_reminders)</data>
+					<constraints>
+						<allowempty>true</allowempty>
+					</constraints>
+					<control format="action" type="button">
+						<close>true</close>
+					</control>
+				</setting>
+			</group>
+			<group id="3" label="30022">
+				<setting help="" id="additional_timestamps" label="30020" type="boolean">
+					<level>0</level>
+					<default>true</default>
+					<control type="toggle"/>
+				</setting>
+				<setting help="" id="timemax" label="30023" type="string">
+					<level>0</level>
+					<default>30026</default>
+					<constraints>
+						<options>
+							<option label="30024">30024</option>
+							<option label="30025">30025</option>
+							<option label="30026">30026</option>
+							<option label="30027">30027</option>
+							<option label="30028">30028</option>
+						</options>
+					</constraints>
+					<control format="string" type="spinner"/>
+				</setting>
+			</group>
+		</category>
+		<category help="" id="mail" label="30012">
+			<group id="1">
+				<setting help="" id="host" label="30041" type="string">
+					<level>0</level>
+					<default/>
+					<constraints>
+						<allowempty>true</allowempty>
+					</constraints>
+					<control format="string" type="edit">
+						<heading>30041</heading>
+					</control>
+				</setting>
+				<setting help="" id="user" label="30042" type="string">
+					<level>0</level>
+					<default/>
+					<constraints>
+						<allowempty>true</allowempty>
+					</constraints>
+					<control format="string" type="edit">
+						<heading>30042</heading>
+					</control>
+				</setting>
+				<setting help="" id="passwd" label="30043" type="string">
+					<level>0</level>
+					<default/>
+					<constraints>
+						<allowempty>true</allowempty>
+					</constraints>
+					<control format="string" type="edit">
+						<heading>30043</heading>
+						<hidden>true</hidden>
+					</control>
+				</setting>
+				<setting help="" id="enc" label="30049" type="string">
+					<level>0</level>
+					<default>SSL/TLS</default>
+					<constraints>
+						<options>
+							<option label="STARTTLS">STARTTLS</option>
+							<option label="SSL/TLS">SSL/TLS</option>
+							<option label="None">None</option>
+						</options>
+					</constraints>
+					<control format="string" type="spinner"/>
+				</setting>
+			</group>
+			<group id="2">
+				<setting help="" id="sender" label="30044" type="string">
+					<level>0</level>
+					<default/>
+					<constraints>
+						<allowempty>true</allowempty>
+					</constraints>
+					<control format="string" type="edit">
+						<heading>30044</heading>
+					</control>
+				</setting>
+				<setting help="" id="recipient" label="30045" type="string">
+					<level>0</level>
+					<default/>
+					<constraints>
+						<allowempty>true</allowempty>
+					</constraints>
+					<control format="string" type="edit">
+						<heading>30045</heading>
+					</control>
+				</setting>
+				<setting help="" id="charset" label="30048" type="string">
+					<level>0</level>
+					<default>ISO-8859-1</default>
+					<control format="string" type="edit">
+						<heading>30048</heading>
+					</control>
+				</setting>
+			</group>
+			<group id="3">
+				<setting help="" id="checksettings" label="30055" type="action">
+					<level>0</level>
+					<default/>
+					<constraints>
+						<allowempty>true</allowempty>
+					</constraints>
+					<control format="string" type="button">
+						<data>RunScript(service.calendar,action=check_mailsettings)</data>
+						<close>true</close>
+					</control>
+				</setting>
+			</group>
+		</category>
+		<category help="" id="google kalender api" label="30013">
+			<group id="1">
+				<setting help="" id="requireauthkey" label="30080" type="action">
+					<level>0</level>
+					<data>RunScript(service.calendar,action=require_oauth_key)</data>
+					<constraints>
+						<allowempty>true</allowempty>
+					</constraints>
+					<control format="action" type="button">
+						<close>true</close>
+					</control>
+				</setting>
+				<setting help="" id="reenterauthkey" label="30084" type="action">
+					<level>0</level>
+					<data>RunScript(service.calendar,action=reenter_oauth_key)</data>
+					<constraints>
+						<allowempty>true</allowempty>
+					</constraints>
+					<control format="action" type="button">
+						<close>true</close>
+					</control>
+				</setting>
+				<setting help="" id="loadoauthkey" label="30085" type="action">
+					<level>0</level>
+					<data>RunScript(service.calendar,action=load_oauth_key)</data>
+					<constraints>
+						<allowempty>true</allowempty>
+					</constraints>
+					<control format="action" type="button">
+						<close>true</close>
+					</control>
+				</setting>
+			</group>
+			<group id="2">
+				<setting help="" id="calendars" label="30090" type="action">
+					<level>0</level>
+					<default>primary</default>
+					<control format="string" type="button">
+						<data>RunScript(service.calendar,action=set_calendars)</data>
+						<close>true</close>
+					</control>
+				</setting>
+				<setting help="" id="notifications" label="30092" type="action">
+					<level>0</level>
+					<default>primary</default>
+					<control format="string" type="button">
+						<data>RunScript(service.calendar,action=set_notifications)</data>
+						<close>true</close>
+					</control>
+				</setting>
+			</group>
+		</category>
+		<category help="" id="weitere kalender" label="30029">
+			<group id="1" label="30050">
+				<setting help="" id="glotz_enabled" label="30051" type="boolean">
+					<level>0</level>
+					<default>false</default>
+					<control type="toggle"/>
+				</setting>
+				<setting help="" id="glotz_apikey" label="30052" type="string">
+					<level>0</level>
+					<default/>
+					<constraints>
+						<allowempty>true</allowempty>
+					</constraints>
+					<dependencies>
+						<dependency type="enable">
+							<condition operator="is" setting="glotz_enabled">true</condition>
+						</dependency>
+					</dependencies>
+					<control format="string" type="edit">
+						<heading>30052</heading>
+					</control>
+				</setting>
+				<setting help="" id="glotz_loadkey" label="30088" type="action">
+					<level>0</level>
+					<data>RunScript(service.calendar,action=load_glotz_key)</data>
+					<constraints>
+						<allowempty>true</allowempty>
+					</constraints>
+					<dependencies>
+						<dependency type="enable">
+							<condition operator="is" setting="glotz_enabled">true</condition>
+						</dependency>
+					</dependencies>
+					<control format="action" type="button">
+						<close>true</close>
+					</control>
+				</setting>
+				<setting help="" id="glotz_color" label="30053" type="action">
+					<level>0</level>
+					<default>#808080</default>
+					<dependencies>
+						<dependency type="enable">
+							<condition operator="is" setting="glotz_enabled">true</condition>
+						</dependency>
+					</dependencies>
+					<control format="string" type="button">
+						<data>RunScript(script.skin.helper.colorpicker,winproperty=glotz_color)</data>
+						<close>true</close>
+					</control>
+				</setting>
+				<setting help="" id="glotz_notify" label="30054" type="boolean">
+					<level>0</level>
+					<default>true</default>
+					<dependencies>
+						<dependency type="enable">
+							<condition operator="is" setting="glotz_enabled">true</condition>
+						</dependency>
+					</dependencies>
+					<control type="toggle"/>
+				</setting>
+			</group>
+		</category>
+	</section>
 </settings>

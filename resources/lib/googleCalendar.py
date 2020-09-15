@@ -1,5 +1,8 @@
 # -*- encoding: utf-8 -*-
 
+from .tools import *
+import xbmcplugin
+
 from googleapiclient import discovery
 from oauth2client import client
 from oauth2client.file import Storage
@@ -10,7 +13,6 @@ import os
 import operator
 from resources.lib import tinyurl
 from resources.lib.simplemail import SMTPMail
-import resources.lib.tools as tools
 import time
 import calendar
 from datetime import datetime, timedelta
@@ -18,20 +20,9 @@ from dateutil import parser, relativedelta
 import json
 import sys
 
-import xbmc
-import xbmcaddon
-import xbmcplugin
-import xbmcgui
-import xbmcvfs
-
-__addon__ = xbmcaddon.Addon()
-__addonname__ = __addon__.getAddonInfo('id')
-__addonpath__ = xbmcvfs.translatePath(__addon__.getAddonInfo('path'))
-__profiles__ = xbmcvfs.translatePath(__addon__.getAddonInfo('profile'))
-__LS__ = __addon__.getLocalizedString
-__icon__ = os.path.join(__addonpath__, 'resources', 'skins', 'Default', 'media', 'icon.png')
-__symbolpath__ = os.path.join(__addonpath__, 'resources', 'skins', 'Default', 'media')
-__cake__ = os.path.join(__symbolpath__, 'cake_2.png')
+ICON = os.path.join(PATH, 'resources', 'skins', 'Default', 'media', 'icon.png')
+SYMBOL_PATH = os.path.join(PATH, 'resources', 'skins', 'Default', 'media')
+CAKE = os.path.join(SYMBOL_PATH, 'cake_2.png')
 
 mail = SMTPMail()
 
@@ -53,23 +44,23 @@ class Calendar(object):
     # If modifying these scopes, delete your previously saved credentials
     # at ~/.credentials/service.calendar.json
 
-    CLIENTS_PATH = os.path.join(__profiles__, '_credentials')
+    CLIENTS_PATH = os.path.join(PROFILES, '_credentials')
     if not os.path.exists(CLIENTS_PATH): os.makedirs(CLIENTS_PATH)
 
-    COLOR_PATH = os.path.join(__profiles__, '_colors')
+    COLOR_PATH = os.path.join(PROFILES, '_colors')
     if not os.path.exists(COLOR_PATH): os.makedirs(COLOR_PATH)
 
     SCOPES = 'https://www.googleapis.com/auth/calendar.readonly'
-    CLIENT_SECRET_FILE = os.path.join(__addonpath__, '_credentials', 'service.calendar.oauth.json')
+    CLIENT_SECRET_FILE = os.path.join(PATH, '_credentials', 'service.calendar.oauth.json')
     CLIENT_CREDENTIALS = os.path.join(CLIENTS_PATH, 'service.calendar.credits.json')
     APPLICATION_NAME = 'service.calendar'
     SHEET_ID = 30008
 
-    TEMP_STORAGE_CALENDARS = os.path.join(__profiles__, 'calendars.json')
-    GLOTZ_URL = 'https://www.glotz.info/v2/user/calendar/%s' % (tools.getAddonSetting('glotz_apikey'))
+    TEMP_STORAGE_CALENDARS = os.path.join(PROFILES, 'calendars.json')
+    GLOTZ_URL = 'https://www.glotz.info/v2/user/calendar/%s' % (getAddonSetting('glotz_apikey'))
 
     def __init__(self):
-        self.addtimestamps = tools.getAddonSetting('additional_timestamps', sType=tools.BOOL)
+        self.addtimestamps = getAddonSetting('additional_timestamps', sType=BOOL)
 
     def establish(self):
         credentials = self.get_credentials()
@@ -104,23 +95,23 @@ class Calendar(object):
                 mail.checkproperties()
 
                 if require_from_setup:
-                    _dialog = __LS__(30082)
+                    _dialog = LS(30082)
                 else:
-                    _dialog = '%s %s' % (__LS__(30081), __LS__(30082))
+                    _dialog = '%s %s' % (LS(30081), LS(30082))
 
-                if not tools.dialogYesNo(__LS__(30080), _dialog):
+                if not dialogYesNo(LS(30080), _dialog):
                     raise self.oAuthIncomplete('oAuth2 flow aborted by user')
-                tools.dialogOK(__LS__(30080), __LS__(30083))
+                dialogOK(LS(30080), LS(30083))
 
-                mail.sendmail(__LS__(30100) % __addonname__, __LS__(30101) % auth_uri)
-                if not tools.dialogYesNo(__LS__(30080), __LS__(30087)):
+                mail.sendmail(LS(30100) % ADDONNAME, LS(30101) % auth_uri)
+                if not dialogYesNo(LS(30080), LS(30087)):
                     raise self.oAuthIncomplete('oAuth2 flow aborted by user')
                 reenter = 'kb'
 
             if reenter == 'kb':
-                auth_code = tools.dialogKeyboard(__LS__(30084))
+                auth_code = dialogKeyboard(LS(30084))
             elif reenter == 'file':
-                auth_code = tools.dialogFile(__LS__(30086))
+                auth_code = dialogFile(LS(30086))
 
             if auth_code == '':
                 raise self.oAuthIncomplete('no key provided')
@@ -133,19 +124,19 @@ class Calendar(object):
             raise self.oAuthFlowExchangeError(e)
 
         except self.oAuthIncomplete:
-            tools.Notify().notify(__LS__(30010), __LS__(30071), icon=xbmcgui.NOTIFICATION_ERROR, repeat=False)
+            Notify().notify(LS(30010), LS(30071), icon=xbmcgui.NOTIFICATION_ERROR, repeat=False)
 
         except self.oAuthFlowExchangeError:
-            tools.dialogOK(__LS__(30010), __LS__(30103))
+            dialogOK(LS(30010), LS(30103))
 
         finally:
             exit()
 
     def get_events(self, storage, timeMin, timeMax, maxResult=30, calendars='primary', evtype='default'):
-        if not os.path.exists(storage) or not tools.lastmodified(storage, 60):
+        if not os.path.exists(storage) or not lastmodified(storage, 60):
             events = []
             established = self.establish()
-            tools.writeLog('establish online connection for getting events: %s' % established)
+            writeLog('establish online connection for getting events: %s' % established)
             if not established:
                 return events
 
@@ -187,15 +178,15 @@ class Calendar(object):
                     gadget = _record.get('gadget', None)
                     if gadget:
                         if gadget.get('preferences').get('goo.contactsEventType') == 'BIRTHDAY':
-                            _item.update({'specialicon': __cake__})
+                            _item.update({'specialicon': CAKE})
 
                     events.append(_item)
 
             # get additional calendars, glotz.info
 
-            if tools.getAddonSetting('glotz_enabled', sType=tools.BOOL) and tools.getAddonSetting('glotz_apikey') != '':
-                if evtype == 'default' or (evtype == 'notification' and tools.getAddonSetting('glotz_notify', sType=tools.BOOL)):
-                    tools.writeLog('getting events from glotz.info')
+            if getAddonSetting('glotz_enabled', sType=BOOL) and getAddonSetting('glotz_apikey') != '':
+                if evtype == 'default' or (evtype == 'notification' and getAddonSetting('glotz_notify', sType=BOOL)):
+                    writeLog('getting events from glotz.info')
                     try:
                         cal_set = json.loads(urlopen(self.GLOTZ_URL).read())
                         icon = self.get_calendarBGcolorImage('glotz_color')
@@ -231,15 +222,15 @@ class Calendar(object):
 
                             events.append(_item)
                     except Exception as e:
-                        tools.writeLog('Error on line {}'.format(sys.exc_info()[-1].tb_lineno), level=xbmc.LOGERROR)
-                        tools.writeLog(type(e).__name__, level=xbmc.LOGERROR)
-                        tools.writeLog(e, level=xbmc.LOGERROR)
+                        writeLog('Error on line {}'.format(sys.exc_info()[-1].tb_lineno), level=xbmc.LOGERROR)
+                        writeLog(type(e).__name__, level=xbmc.LOGERROR)
+                        writeLog(e, level=xbmc.LOGERROR)
 
             events.sort(key=operator.itemgetter('timestamp'))
 
             with open(storage, 'w') as filehandle:  json.dump(events, filehandle)
         else:
-            tools.writeLog('getting events from local storage')
+            writeLog('getting events from local storage')
             with open(storage, 'r') as filehandle: events = json.load(filehandle)
         return events
 
@@ -259,13 +250,13 @@ class Calendar(object):
 
         if event.get('allday', 0) > 0:
             if _tdelta.months == 0 and _tdelta.weeks == 0 and _tdelta.days == 0: event.update({'range': ''})
-            elif _tdelta.months == 0 and _tdelta.weeks == 0 and _tdelta.days == 1: event.update({'range': __LS__(30111)})
-            elif _tdelta.months == 0 and _tdelta.weeks == 0: event.update({'range': __LS__(30112) % _tdelta.days})
-            elif _tdelta.months == 0 and _tdelta.weeks == 1: event.update({'range': __LS__(30113)})
-            elif _tdelta.months == 0 and _tdelta.weeks > 0: event.update({'range': __LS__(30114) % _tdelta.weeks})
-            elif _tdelta.months == 1: event.update({'range': __LS__(30115)})
-            elif _tdelta.months > 1: event.update({'range': __LS__(30116) % _tdelta.months})
-            else: event.update({'range': __LS__(30117)})
+            elif _tdelta.months == 0 and _tdelta.weeks == 0 and _tdelta.days == 1: event.update({'range': LS(30111)})
+            elif _tdelta.months == 0 and _tdelta.weeks == 0: event.update({'range': LS(30112) % _tdelta.days})
+            elif _tdelta.months == 0 and _tdelta.weeks == 1: event.update({'range': LS(30113)})
+            elif _tdelta.months == 0 and _tdelta.weeks > 0: event.update({'range': LS(30114) % _tdelta.weeks})
+            elif _tdelta.months == 1: event.update({'range': LS(30115)})
+            elif _tdelta.months > 1: event.update({'range': LS(30116) % _tdelta.months})
+            else: event.update({'range': LS(30117)})
         else:
             if _ts != _end:
                 event.update({'range': _ts.strftime('%H:%M') + ' - ' + _end.strftime('%H:%M')})
@@ -273,28 +264,28 @@ class Calendar(object):
                 event.update({'range': _ts.strftime('%H:%M')})
 
         if optTimeStamps:
-            tools.writeLog('calculate additional timestamps')
+            writeLog('calculate additional timestamps')
 
             _tdelta = relativedelta.relativedelta(_ts.date(), timebase.date())
             if _tdelta.months == 0:
-                if _tdelta.days == 0: ats = __LS__(30139)
-                elif _tdelta.days == 1: ats = __LS__(30140)
-                elif _tdelta.days == 2: ats = __LS__(30141)
-                elif 3 <= _tdelta.days <= 6: ats = __LS__(30142) % _tdelta.days
-                elif _tdelta.weeks == 1: ats = __LS__(30143)
-                elif _tdelta.weeks > 1: ats = __LS__(30144) % _tdelta.weeks
-                else: ats = __LS__(30117)
-            elif _tdelta.months == 1: ats = __LS__(30146)
-            else: ats = __LS__(30147) % _tdelta.months
+                if _tdelta.days == 0: ats = LS(30139)
+                elif _tdelta.days == 1: ats = LS(30140)
+                elif _tdelta.days == 2: ats = LS(30141)
+                elif 3 <= _tdelta.days <= 6: ats = LS(30142) % _tdelta.days
+                elif _tdelta.weeks == 1: ats = LS(30143)
+                elif _tdelta.weeks > 1: ats = LS(30144) % _tdelta.weeks
+                else: ats = LS(30117)
+            elif _tdelta.months == 1: ats = LS(30146)
+            else: ats = LS(30147) % _tdelta.months
             event.update({'timestamps': ats})
 
         return event
 
     def get_calendars(self):
-        if not os.path.exists(self.TEMP_STORAGE_CALENDARS) or not tools.lastmodified(self.TEMP_STORAGE_CALENDARS, 60):
+        if not os.path.exists(self.TEMP_STORAGE_CALENDARS) or not lastmodified(self.TEMP_STORAGE_CALENDARS, 60):
             cals = []
             established = self.establish()
-            tools.writeLog('establish online connection for getting calendars: %s' % established)
+            writeLog('establish online connection for getting calendars: %s' % established)
             if not established:
                 return cals
             cal_list = self.service.calendarList().list().execute()
@@ -302,19 +293,19 @@ class Calendar(object):
             with open(self.TEMP_STORAGE_CALENDARS, 'w') as filehandle: json.dump(cals, filehandle)
             return cals
         else:
-            tools.writeLog('getting calendars from local storage')
+            writeLog('getting calendars from local storage')
             with open(self.TEMP_STORAGE_CALENDARS, 'r') as filehandle: return json.load(filehandle)
 
     def get_calendarIdFromSetup(self, setting):
         calId = []
-        _cals = tools.getAddonSetting(setting).split(', ')
+        _cals = getAddonSetting(setting).split(', ')
         if len(_cals) == 1 and _cals[0] == 'primary':
             calId.append('primary')
         else:
             cals = self.get_calendars()
             for cal in cals:
                 if cal.get('summaryOverride', cal.get('summary', 'primary')) in _cals: calId.append(cal.get('id'))
-        tools.writeLog('getting cal ids from setup: %s' % (', '.join(calId)))
+        writeLog('getting cal ids from setup: %s' % (', '.join(calId)))
         return calId
 
     def get_calendarBGcolorImage(self, calendarId):
@@ -323,18 +314,18 @@ class Calendar(object):
         for cal in cals:
             if cal.get('id') == calendarId:
                 color = cal.get('backgroundColor', '#808080')
-                return tools.createImage(15, 40, color, os.path.join(self.COLOR_PATH, color + '.png'))
+                return createImage(15, 40, color, os.path.join(self.COLOR_PATH, color + '.png'))
 
         color = xbmcgui.Window(10000).getProperty(calendarId)
 
         if color:
-            tools.setAddonSetting(calendarId, color)
+            setAddonSetting(calendarId, color)
             xbmcgui.Window(10000).clearProperty(calendarId)
         else:
-            color = tools.getAddonSetting(calendarId)
+            color = getAddonSetting(calendarId)
             if not color: color = '#808080'
             
-        return tools.createImage(15, 40, color, os.path.join(self.COLOR_PATH, color + '.png'))
+        return createImage(15, 40, color, os.path.join(self.COLOR_PATH, color + '.png'))
 
     def build_sheet(self, handle, storage, content, now, timemax, maxResult, calendars):
         self.sheet = []
@@ -383,9 +374,9 @@ class Calendar(object):
                     if event.get('allday', 0) > allday: allday = event.get('allday')
                     if event.get('specialicon', '') != '': specialicon = event.get('specialicon')
 
-                if allday == 0: eventicon = os.path.join(__symbolpath__, 'eventmarker_1.png')
-                elif allday == 1: eventicon = os.path.join(__symbolpath__, 'eventmarker_2.png')
-                else: eventicon = os.path.join(__symbolpath__, 'eventmarker_3.png')
+                if allday == 0: eventicon = os.path.join(SYMBOL_PATH, 'eventmarker_1.png')
+                elif allday == 1: eventicon = os.path.join(SYMBOL_PATH, 'eventmarker_2.png')
+                else: eventicon = os.path.join(SYMBOL_PATH, 'eventmarker_3.png')
 
             self.sheet.append({'cid': cid, 'valid': '1', 'dom': str(dom)})
             if num_events > 0:

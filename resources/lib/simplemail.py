@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 import smtplib
 from email.message import Message
-from . import tools
+from .tools import *
 
 
 class SMTPMail(object):
@@ -22,13 +22,13 @@ class SMTPMail(object):
         pass
 
     smtp_client = dict({
-        'host': tools.getAddonSetting('host'),
-        'user': tools.getAddonSetting('user'),
-        'passwd': tools.getAddonSetting('passwd'),
-        'enc': tools.getAddonSetting('enc'),
-        'sender': tools.getAddonSetting('sender'),
-        'recipient': tools.getAddonSetting('recipient'),
-        'charset': tools.getAddonSetting('charset')
+        'host': getAddonSetting('host'),
+        'user': getAddonSetting('user'),
+        'passwd': getAddonSetting('passwd'),
+        'enc': getAddonSetting('enc'),
+        'sender': getAddonSetting('sender'),
+        'recipient': getAddonSetting('recipient'),
+        'charset': getAddonSetting('charset')
     })
 
     def __init__(self):

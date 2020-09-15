@@ -2,6 +2,7 @@
 import xbmc
 import xbmcgui
 import xbmcaddon
+import xbmcvfs
 import json
 import platform
 import re
@@ -10,6 +11,13 @@ import time
 
 from PIL import Image
 from urllib.parse import parse_qsl
+
+ADDON = xbmcaddon.Addon()
+ADDONNAME = ADDON.getAddonInfo('id')
+PATH = xbmcvfs.translatePath(ADDON.getAddonInfo('path'))
+PROFILES = xbmcvfs.translatePath(ADDON.getAddonInfo('profile'))
+ADDONVERSION = ADDON.getAddonInfo('version')
+LS = ADDON.getLocalizedString
 
 # Constants
 
@@ -23,7 +31,7 @@ def NUM():
     return 2
 
 def writeLog(message, level=xbmc.LOGDEBUG):
-    xbmc.log('[%s] %s' % (xbmcaddon.Addon().getAddonInfo('id'), message), level)
+    xbmc.log('[%s %s] %s' % (ADDONNAME, ADDONVERSION, message), level)
 
 
 class Notify(object):
@@ -92,20 +100,26 @@ def jsonrpc(query):
     return json.loads(xbmc.executeJSONRPC(json.dumps(querystring, encoding='utf-8')))
 
 
-def getAddonSetting(setting, sType=STRING, multiplicator=1):
-    if sType == BOOL:
-        return  True if xbmcaddon.Addon().getSetting(setting).upper() == 'TRUE' else False
-    elif sType == NUM:
-        try:
-            return int(re.match('\d+', xbmcaddon.Addon().getSetting(setting)).group()) * multiplicator
-        except AttributeError:
-            return 0
-    else:
-        return xbmcaddon.Addon().getSetting(setting)
+def getAddonSetting(setting, sType=STRING, multiplicator=1, isLabel=False):
+    try:
+        if sType == BOOL:
+            return  True if ADDON.getSetting(setting).upper() == 'TRUE' else False
+        elif sType == NUM:
+            try:
+                if isLabel:
+                    return int(re.match('\d+', LS(int(ADDON.getSetting(setting)))).group()) * multiplicator
+                else:
+                    return int(re.match('\d+', ADDON.getSetting(setting)).group()) * multiplicator
+            except AttributeError:
+                return 0
+        else:
+            return ADDON.getSetting(setting)
+    except RuntimeError:
+        return None
 
 
 def setAddonSetting(setting, value):
-    xbmcaddon.Addon().setSetting(setting, value)
+    ADDON.setSetting(setting, value)
 
 
 def ParamsToDict(args):

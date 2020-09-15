@@ -1,10 +1,5 @@
 # -*- encoding: utf-8 -*-
-
-import os
-import xbmc
-import xbmcgui
-
-from . import tools
+from .tools import *
 
 ACTION_SELECT = 7
 ACTION_SHOW_INFO = 11
@@ -30,14 +25,14 @@ class DialogKaiToast(BaseWindow):
 
     def onAction(self, action):
 
-        tools.writeLog('Action received: ID %s' % str(action.getId()))
+        writeLog('Action received: ID %s' % str(action.getId()))
         if (action == ACTION_NAV_BACK) or (action == ACTION_SELECT) or (action == ACTION_SHOW_INFO):
             xbmcgui.Window(10000).setProperty('reminders', '0')
-            tools.writeLog('Display of notifications aborted by user', level=xbmc.LOGINFO)
+            writeLog('Display of notifications aborted by user', level=xbmc.LOGINFO)
             self.close()
 
     def onInit(self):
-        tools.writeLog('Init notification window')
+        writeLog('Init notification window')
         self.getControl(DialogKaiToast.AVATAR_ID).setImage(self.icon)
         try:
             if hasattr(self.getControl(DialogKaiToast.LABEL_1_ID), 'addLabel'):
@@ -53,13 +48,13 @@ class DialogKaiToast(BaseWindow):
             else:
                 pass
         except AttributeError as e:
-            tools.writeLog('could not set all attributes to DialogKaiToast properly', xbmc.LOGFATAL)
-            tools.writeLog(e, xbmc.LOGFATAL)
+            writeLog('could not set all attributes to DialogKaiToast properly', xbmc.LOGFATAL)
+            writeLog(e, xbmc.LOGFATAL)
 
     @classmethod
     def onClick(cls, controlID):
-        tools.writeLog('click received: ID %s' % (controlID))
+        writeLog('click received: ID %s' % (controlID))
 
     def close(self):
         BaseWindow.close(self)
-        tools.writeLog('Close notification window')
+        writeLog('Close notification window')
