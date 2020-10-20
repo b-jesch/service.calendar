@@ -161,9 +161,9 @@ class Calendar(object):
                                   'timestamp': int(time.mktime(_ts.timetuple())),
                                   'icon': icon,
                                   'id': _record.get('id', ''),
-                                  'summary': _record.get('summary', ''),
-                                  'description': _record.get('description', None),
-                                  'location': _record.get('location', None)})
+                                  'summary': removeTags(_record.get('summary', '')),
+                                  'description': removeTags(_record.get('description', None)),
+                                  'location': removeTags(_record.get('location', None))})
 
                     if _record['start'].get('dateTime', False):
                         _item.update({'start': {'dateTime': datetime.isoformat(_ts)}})
@@ -264,8 +264,6 @@ class Calendar(object):
                 event.update({'range': _ts.strftime('%H:%M')})
 
         if optTimeStamps:
-            writeLog('calculate additional timestamps')
-
             _tdelta = relativedelta.relativedelta(_ts.date(), timebase.date())
             if _tdelta.months == 0:
                 if _tdelta.days == 0: ats = LS(30139)
@@ -413,7 +411,10 @@ class Calendar(object):
                     li.setProperty('id', event.get('id', ''))
                     li.setProperty('range', event.get('range', ''))
                     li.setProperty('allday', str(event.get('allday', 0)))
-                    li.setProperty('description', event.get('description') or event.get('location'))
+                    try:
+                        li.setProperty('description', event.get('description', event.get('location')).splitlines()[0])
+                    except AttributeError:
+                        li.setProperty('description', event.get('location', event.get('description')))
                     li.setProperty('banner', event.get('banner', ''))
                     xbmcplugin.addDirectoryItem(handle, url='', listitem=li)
 

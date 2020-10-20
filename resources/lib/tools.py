@@ -34,6 +34,14 @@ def writeLog(message, level=xbmc.LOGDEBUG):
     xbmc.log('[%s %s] %s' % (ADDONNAME, ADDONVERSION, message), level)
 
 
+TAG_RE = re.compile('<.*?>|&([a-z0-9]+|#[0-9]{1,6}|#x[0-9a-f]{1,6});')
+
+
+def removeTags(raw):
+    if raw is None: return None
+    return TAG_RE.sub('', raw)
+
+
 class Notify(object):
     def __init__(self):
         self.prev_header = ''

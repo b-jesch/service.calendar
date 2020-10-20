@@ -34,7 +34,7 @@ try:
         for event in events:
             event = googlecal.prepareForAddon(event)
             Notify().notify('%s %s %s' % (event['timestamps'], LS(30145), event['shortdate']),
-                                  event['summary'] or event['description'].splitlines()[0], icon=__icon__)
+                            '%s %s' % (event['range'], (event['summary'] or event['description'].splitlines()[0])), icon=__icon__)
             _ev_count += 1
             xbmc.Monitor().waitForAbort(7)
             if _ev_count > getAddonSetting('numreminders', sType=NUM) or xbmcgui.Window(10000).getProperty('reminders') != '1': break
