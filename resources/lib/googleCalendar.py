@@ -132,8 +132,8 @@ class Calendar(object):
         finally:
             exit()
 
-    def get_events(self, storage, timeMin, timeMax, maxResult=30, calendars='primary', evtype='default'):
-        if not os.path.exists(storage) or not lastmodified(storage, 60):
+    def get_events(self, storage, timeMin, timeMax, maxResult=30, calendars='primary', evtype='default', force_online=False):
+        if force_online or not os.path.exists(storage) or not lastmodified(storage, 60):
             events = []
             established = self.establish()
             writeLog('establish online connection for getting events: %s' % established)

@@ -203,7 +203,7 @@
 					<constraints>
 						<allowempty>true</allowempty>
 					</constraints>
-					<control format="string" type="button">
+					<control format="action" type="button">
 						<data>RunScript(service.calendar,action=check_mailsettings)</data>
 						<close>true</close>
 					</control>
@@ -244,20 +244,20 @@
 				</setting>
 			</group>
 			<group id="2">
-				<setting help="" id="calendars" label="30090" type="action">
+				<setting help="" id="calendars" label="30090" type="string">
 					<level>0</level>
 					<default>primary</default>
-					<control format="string" type="button">
+					<control format="action" type="button">
 						<data>RunScript(service.calendar,action=set_calendars)</data>
-						<close>true</close>
+						<close>false</close>
 					</control>
 				</setting>
-				<setting help="" id="notifications" label="30092" type="action">
+				<setting help="" id="notifications" label="30092" type="string">
 					<level>0</level>
 					<default>primary</default>
-					<control format="string" type="button">
+					<control format="action" type="button">
 						<data>RunScript(service.calendar,action=set_notifications)</data>
-						<close>true</close>
+						<close>false</close>
 					</control>
 				</setting>
 			</group>

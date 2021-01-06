@@ -103,16 +103,19 @@ def controller(mode=None, handle=None, content=None, eventId=None):
     elif mode == 'set_calendars':
         set_localsetting('calendars')
         googlecal = Calendar()
-        googlecal.get_events(TEMP_STORAGE_EVENTS, now, timemax, maxResult=30, calendars=googlecal.get_calendarIdFromSetup('calendars'))
+        googlecal.get_events(TEMP_STORAGE_EVENTS, now, timemax, maxResult=30,
+                             calendars=googlecal.get_calendarIdFromSetup('calendars'), force_online=True)
 
     elif mode == 'set_notifications':
         set_localsetting('notifications')
         googlecal = Calendar()
-        googlecal.get_events(TEMP_STORAGE_NOTIFICATIONS, now, timemax, maxResult=30, calendars=googlecal.get_calendarIdFromSetup('notifications'))
+        googlecal.get_events(TEMP_STORAGE_NOTIFICATIONS, now, timemax, maxResult=30,
+                             calendars=googlecal.get_calendarIdFromSetup('notifications'), force_online=True)
 
     elif mode == 'getcontent':
         googlecal = Calendar()
-        googlecal.build_sheet(handle, TEMP_STORAGE_EVENTS, content, now, timemax, maxResult=30, calendars=googlecal.get_calendarIdFromSetup('calendars'))
+        googlecal.build_sheet(handle, TEMP_STORAGE_EVENTS, content, now, timemax, maxResult=30,
+                              calendars=googlecal.get_calendarIdFromSetup('calendars'))
 
     elif mode == 'getinfo' and eventId != '':
         googlecal = Calendar()
