@@ -54,8 +54,8 @@ msgid "Abort Notification of Reminders now"
 msgstr "Hinweismeldungen jetzt beenden"
 
 msgctxt "#30019"
-msgid "Press Info Key"
-msgstr "Info-Taste drücken"
+msgid "Press Ok/Info Key"
+msgstr "Ok/Info-Taste drücken"
 
 msgctxt "#30020"
 msgid "additional Time Remarks"

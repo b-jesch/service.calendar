@@ -48,11 +48,13 @@ try:
             xbmc.Monitor().waitForAbort(getAddonSetting('lastnoticeduration', sType=NUM, isLabel=True))
             DialogKT.close()
 
-        _cycle += 1
         if _cycle >= getAddonSetting('cycles', sType=NUM):
             writeLog('max count of reminder cycles reached, stop notifications')
             break
+
+        _cycle += 1
         xbmc.Monitor().waitForAbort(getAddonSetting('interval', sType=NUM, multiplicator=60, isLabel=True))
+    xbmcgui.Window(10000).setProperty('reminders', '0')
 
 except TypeError as e:
     writeLog(e, xbmc.LOGERROR)

@@ -37,12 +37,16 @@ class DialogKaiToast(BaseWindow):
         try:
             if hasattr(self.getControl(DialogKaiToast.LABEL_1_ID), 'addLabel'):
                 self.getControl(DialogKaiToast.LABEL_1_ID).addLabel(self.label_1)
+            elif hasattr(self.getControl(DialogKaiToast.LABEL_1_ID), 'setLabel'):
+                self.getControl(DialogKaiToast.LABEL_1_ID).setLabel(self.label_1)
             elif hasattr(self.getControl(DialogKaiToast.LABEL_1_ID), 'setText'):
                 self.getControl(DialogKaiToast.LABEL_1_ID).setText(self.label_1)
             else:
                 pass
             if hasattr(self.getControl(DialogKaiToast.LABEL_2_ID), 'addLabel'):
                 self.getControl(DialogKaiToast.LABEL_2_ID).addLabel(self.label_2)
+            elif hasattr(self.getControl(DialogKaiToast.LABEL_2_ID), 'setLabel'):
+                self.getControl(DialogKaiToast.LABEL_2_ID).setLabel(self.label_2)
             elif hasattr(self.getControl(DialogKaiToast.LABEL_2_ID), 'setText'):
                 self.getControl(DialogKaiToast.LABEL_2_ID).setText(self.label_2)
             else:

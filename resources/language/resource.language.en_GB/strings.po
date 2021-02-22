@@ -55,7 +55,7 @@ msgid "Abort Notification of Reminders now"
 msgstr ""
 
 msgctxt "#30019"
-msgid "Press Info Key"
+msgid "Press Ok/Info Key"
 msgstr ""
 
 msgctxt "#30020"
