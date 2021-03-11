@@ -111,7 +111,7 @@ def jsonrpc(query):
 def getAddonSetting(setting, sType=STRING, multiplicator=1, isLabel=False):
     try:
         if sType == BOOL:
-            return  True if ADDON.getSetting(setting).upper() == 'TRUE' else False
+            return True if ADDON.getSetting(setting).upper() == 'TRUE' else False
         elif sType == NUM:
             try:
                 if isLabel:

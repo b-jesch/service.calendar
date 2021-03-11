@@ -8,6 +8,25 @@
 					<default>true</default>
 					<control type="toggle"/>
 				</setting>
+				<setting help="" id="delay_startup" label="30046" type="string">
+					<level>1</level>
+					<default>30030</default>
+					<constraints>
+						<options>
+							<option label="30047">30047</option>
+							<option label="30030">30030</option>
+							<option label="30031">30031</option>
+							<option label="30032">30032</option>
+						</options>
+						<allowempty>true</allowempty>
+					</constraints>
+					<dependencies>
+						<dependency type="enable">
+							<condition operator="is" setting="show_onstart">true</condition>
+						</dependency>
+					</dependencies>
+					<control format="string" type="spinner"/>
+				</setting>
 				<setting help="" id="numreminders" label="30016" type="string">
 					<level>0</level>
 					<default>3</default>

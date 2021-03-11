@@ -15,6 +15,11 @@ __icon2__ = os.path.join(PATH, 'resources', 'skins', 'Default', 'media', 'icon_a
 TEMP_STORAGE_CALENDARS = os.path.join(PROFILES, 'calendars.json')
 TEMP_STORAGE_NOTIFICATIONS = os.path.join(PROFILES, 'notifications.json')
 
+_delay = getAddonSetting('delay_startup', sType=NUM, multiplicator=60000, isLabel=True)
+if _delay > 0:
+    writeLog('Start delayed in %d secs' % (_delay / 1000))
+    xbmc.sleep(_delay)
+
 if getAddonSetting('show_onstart', sType=BOOL):
     xbmcgui.Window(10000).setProperty('reminders', '1')
 else:

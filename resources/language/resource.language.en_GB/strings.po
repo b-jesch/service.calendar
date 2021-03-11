@@ -162,7 +162,13 @@ msgctxt "#30045"
 msgid "Email of Recipient"
 msgstr ""
 
-#empty strings from id 30046 to 30047
+msgctxt "#30046"
+msgid "Start Addon delayed for"
+msgstr ""
+
+msgctxt "#30047"
+msgid "off"
+msgstr ""
 
 msgctxt "#30048"
 msgid "Charset"

@@ -161,6 +161,14 @@ msgctxt "#30045"
 msgid "Email of Recipient"
 msgstr "Email-Adresse des Empfängers"
 
+msgctxt "#30046"
+msgid "Start Addon delayed for"
+msgstr "Starte Addon verzögert nach"
+
+msgctxt "#30047"
+msgid "off"
+msgstr "aus"
+
 msgctxt "#30048"
 msgid "Charset"
 msgstr "Zeichensatz"
