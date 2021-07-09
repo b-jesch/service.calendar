@@ -285,7 +285,7 @@ msgid "File with API key"
 msgstr ""
 
 msgctxt "#30090"
-msgid "My calendars"
+msgid "My calendars:"
 msgstr ""
 
 msgctxt "#30091"
@@ -293,7 +293,7 @@ msgid "Choose calendars from list"
 msgstr ""
 
 msgctxt "#30092"
-msgid "My Notifications"
+msgid "My Notifications:"
 msgstr ""
 
 msgctxt "#30093"

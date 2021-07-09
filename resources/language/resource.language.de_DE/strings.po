@@ -282,16 +282,16 @@ msgid "File with API key"
 msgstr "Datei mit API-Schlüssel"
 
 msgctxt "#30090"
-msgid "My calendars"
-msgstr "Meine Kalender"
+msgid "My calendars:"
+msgstr "Meine Kalender:"
 
 msgctxt "#30091"
 msgid "Choose calendars from list"
 msgstr "Kalender aus Liste auswählen"
 
 msgctxt "#30092"
-msgid "My Notifications"
-msgstr "Meine Benachrichtigungen"
+msgid "My Notifications:"
+msgstr "Meine Benachrichtigungen:"
 
 msgctxt "#30093"
 msgid "No further information available"
