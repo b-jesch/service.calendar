@@ -23,7 +23,7 @@
     <forum>https://www.kodinerds.net/index.php/Thread/56444-WIP-Google-Kalender/</forum>
     <website></website>
     <email>birger.jesch@gmail.com</email>
-    <source>https://github.com/b-jesch/service.calendar</source>
+    <source>https://github.com/b-jesch/service.calendar/tree/Matrix</source>
     <news>
 3.0.4+matrix: Messaging of notification window improved
 3.0.3+matrix: Dependency of oauth2client updated (datetime bugfix)
