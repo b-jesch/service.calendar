@@ -91,7 +91,7 @@ class Calendar(object):
 
             auth_code = ''
             if reenter is None:
-                auth_uri = tinyurl.create_one(flow.step1_get_authorize_url())
+                auth_uri = tinyurl.create_one(flow.step1_get_authorize_url()).decode()
                 mail.checkproperties()
 
                 if require_from_setup:
